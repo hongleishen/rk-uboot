@@ -37,3 +37,16 @@ U_BOOT_CMD(
 	"print monitor, compiler and linker version",
 	""
 );
+
+
+static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+    printf("hello shl =====\n");
+    return 0;
+}
+
+U_BOOT_CMD(
+	shl_test,	1,		1,	do_shl_test,
+	"It's just shl test",
+	""
+);
