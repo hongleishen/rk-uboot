@@ -101,6 +101,17 @@ int _log(enum log_category_t cat, enum log_level_t level, const char *file,
 		      pr_fmt(_fmt), ##_args); \
 	})
 
+/*
+添加  #define     DEBUG
+则编译报错：
+common/built-in.o：在函数‘fprintf’中：
+/home/topeet/Android/rk356x_linux/u-boot/common/console.c:399：对‘vscnprintf’未定义的引用
+scripts/Makefile.spl:359: recipe for target 'spl/u-boot-spl' failed
+make[1]: *** [spl/u-boot-spl] Error 1
+
+vscnprintf 通常不是C标准库的一部分。它主要在某些项目或内核级代码（如Linux内核）中出现。你可能不会在标准的C库或应用级代码中看到它。
+
+*/
 #ifdef DEBUG
 #define _DEBUG	1
 #else
@@ -136,9 +147,22 @@ int _log(enum log_category_t cat, enum log_level_t level, const char *file,
 
 #endif /* _DEBUG */
 
+#if 0
 /* Show a message if DEBUG is defined in a file */
 #define debug(fmt, args...)			\
 	debug_cond(_DEBUG, fmt, ##args)
+
+#else
+    #define shl_debug_cond(cond, fmt, args...)			\
+	do {						\
+		if (1)				\
+			printf(pr_fmt(fmt), ##args);	\
+	} while (0)
+
+#define debug(fmt, args...)			\
+	shl_debug_cond(_DEBUG, fmt, ##args)
+
+#endif
 
 /* Show a message if not in SPL */
 #define warn_non_spl(fmt, args...)			\
