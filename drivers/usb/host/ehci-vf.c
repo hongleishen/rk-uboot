@@ -50,6 +50,7 @@ static const unsigned nc_reg_bases[] = {
 
 static void usb_internal_phy_clock_gate(int index)
 {
+	my_dbg(" [52]  shl_add\n");
 	void __iomem *phy_reg;
 
 	phy_reg = (void __iomem *)phy_bases[index];
@@ -58,6 +59,7 @@ static void usb_internal_phy_clock_gate(int index)
 
 static void usb_power_config(int index)
 {
+	my_dbg(" [60]  shl_add\n");
 	struct anadig_reg __iomem *anadig =
 		(struct anadig_reg __iomem *)ANADIG_BASE_ADDR;
 	void __iomem *pll_ctrl;
@@ -84,6 +86,7 @@ static void usb_power_config(int index)
 
 static void usb_phy_enable(int index, struct usb_ehci *ehci)
 {
+	my_dbg(" [86]  shl_add\n");
 	void __iomem *phy_reg;
 	void __iomem *phy_ctrl;
 	void __iomem *usb_cmd;
@@ -119,6 +122,7 @@ static void usb_phy_enable(int index, struct usb_ehci *ehci)
 
 static void usb_oc_config(int index)
 {
+	my_dbg(" [121]  shl_add\n");
 	void __iomem *ctrl;
 
 	ctrl = (void __iomem *)(nc_reg_bases[index] + USB_NC_REG_OFFSET);
@@ -129,16 +133,19 @@ static void usb_oc_config(int index)
 
 int __weak board_usb_phy_mode(int port)
 {
+	my_dbg(" [131]  shl_add\n");
 	return 0;
 }
 
 int __weak board_ehci_hcd_init(int port)
 {
+	my_dbg(" [136]  shl_add\n");
 	return 0;
 }
 
 int ehci_vf_common_init(struct usb_ehci *ehci, int index)
 {
+	my_dbg(" [141]  shl_add\n");
 	int ret;
 
 	/* Do board specific initialisation */
@@ -158,6 +165,7 @@ int ehci_vf_common_init(struct usb_ehci *ehci, int index)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [160]  shl_add\n");
 	struct usb_ehci *ehci;
 	enum usb_init_type type;
 	int ret;
@@ -194,6 +202,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [196]  shl_add\n");
 	return 0;
 }
 #else
@@ -216,6 +225,7 @@ struct ehci_vf_priv_data {
 
 static int vf_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [218]  shl_add\n");
 	struct ehci_vf_priv_data *priv = dev_get_priv(dev);
 	const void *dt_blob = gd->fdt_blob;
 	int node = dev_of_offset(dev);
@@ -268,6 +278,7 @@ static int vf_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int vf_init_after_reset(struct ehci_ctrl *dev)
 {
+	my_dbg(" [270]  shl_add\n");
 	struct ehci_vf_priv_data *priv = dev->priv;
 	enum usb_init_type type = priv->init_type;
 	struct usb_ehci *ehci = priv->ehci;
@@ -295,6 +306,7 @@ static const struct ehci_ops vf_ehci_ops = {
 
 static int vf_usb_bind(struct udevice *dev)
 {
+	my_dbg(" [297]  shl_add\n");
 	static int num_controllers;
 
 	/*
@@ -311,6 +323,7 @@ static int vf_usb_bind(struct udevice *dev)
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [313]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct ehci_vf_priv_data *priv = dev_get_priv(dev);
 	struct usb_ehci *ehci = priv->ehci;
@@ -359,3 +372,4 @@ U_BOOT_DRIVER(usb_ehci) = {
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif
+

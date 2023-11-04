@@ -118,6 +118,7 @@ static void dwc2_udc_set_nak(struct dwc2_ep *ep);
 
 void set_udc_gadget_private_data(void *p)
 {
+	my_dbg(" [120]  shl_add\n");
 	debug_cond(DEBUG_SETUP != 0,
 		   "%s: the_controller: 0x%p, p: 0x%p\n", __func__,
 		   the_controller, p);
@@ -126,6 +127,7 @@ void set_udc_gadget_private_data(void *p)
 
 void *get_udc_gadget_private_data(struct usb_gadget *gadget)
 {
+	my_dbg(" [128]  shl_add\n");
 	return gadget->dev.device_data;
 }
 
@@ -153,6 +155,7 @@ struct dwc2_usbotg_reg *reg;
 
 bool dfu_usb_get_reset(void)
 {
+	my_dbg(" [155]  shl_add\n");
 	return !!(readl(&reg->gintsts) & INT_RESET);
 }
 
@@ -168,6 +171,7 @@ __weak void otg_phy_off(struct dwc2_udc *dev) {}
  */
 static void udc_disable(struct dwc2_udc *dev)
 {
+	my_dbg(" [170]  shl_add\n");
 	debug_cond(DEBUG_SETUP != 0, "%s: %p\n", __func__, dev);
 
 	udc_set_address(dev, 0);
@@ -185,6 +189,7 @@ static void udc_disable(struct dwc2_udc *dev)
  */
 static void udc_reinit(struct dwc2_udc *dev)
 {
+	my_dbg(" [187]  shl_add\n");
 	unsigned int i;
 
 	debug_cond(DEBUG_SETUP != 0, "%s: %p\n", __func__, dev);
@@ -218,6 +223,7 @@ static void udc_reinit(struct dwc2_udc *dev)
  */
 static int udc_enable(struct dwc2_udc *dev)
 {
+	my_dbg(" [220]  shl_add\n");
 	debug_cond(DEBUG_SETUP != 0, "%s: %p\n", __func__, dev);
 
 	otg_phy_init(dev);
@@ -238,6 +244,7 @@ static int udc_enable(struct dwc2_udc *dev)
 */
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [240]  shl_add\n");
 	struct dwc2_udc *dev = the_controller;
 	int retval = 0;
 	unsigned long flags = 0;
@@ -287,6 +294,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
  */
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [289]  shl_add\n");
 	struct dwc2_udc *dev = the_controller;
 	unsigned long flags = 0;
 
@@ -312,6 +320,7 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 static int dwc2_gadget_start(struct usb_gadget *g,
 			     struct usb_gadget_driver *driver)
 {
+	my_dbg(" [314]  shl_add\n");
 	struct dwc2_udc *dev = the_controller;
 
 	debug_cond(DEBUG_SETUP != 0, "%s: %s\n", __func__, "no name");
@@ -338,6 +347,7 @@ static int dwc2_gadget_start(struct usb_gadget *g,
 
 static int dwc2_gadget_stop(struct usb_gadget *g)
 {
+	my_dbg(" [340]  shl_add\n");
 	struct dwc2_udc *dev = the_controller;
 
 	if (!dev)
@@ -361,6 +371,7 @@ static int dwc2_gadget_stop(struct usb_gadget *g)
  */
 static void done(struct dwc2_ep *ep, struct dwc2_request *req, int status)
 {
+	my_dbg(" [363]  shl_add\n");
 	unsigned int stopped = ep->stopped;
 
 	debug("%s: %s %p, req = %p, stopped = %d\n",
@@ -412,6 +423,7 @@ static void done(struct dwc2_ep *ep, struct dwc2_request *req, int status)
  */
 static void nuke(struct dwc2_ep *ep, int status)
 {
+	my_dbg(" [414]  shl_add\n");
 	struct dwc2_request *req;
 
 	debug("%s: %s %p\n", __func__, ep->ep.name, ep);
@@ -426,6 +438,7 @@ static void nuke(struct dwc2_ep *ep, int status)
 static void stop_activity(struct dwc2_udc *dev,
 			  struct usb_gadget_driver *driver)
 {
+	my_dbg(" [428]  shl_add\n");
 	int i;
 
 	/* don't disconnect drivers more than once */
@@ -453,6 +466,7 @@ static void stop_activity(struct dwc2_udc *dev,
 
 static void reconfig_usbd(struct dwc2_udc *dev)
 {
+	my_dbg(" [455]  shl_add\n");
 	/* 2. Soft-reset OTG Core and then unreset again. */
 	int i;
 	unsigned int uTemp = writel(CORE_SOFT_RESET, &reg->grstctl);
@@ -582,6 +596,7 @@ static void reconfig_usbd(struct dwc2_udc *dev)
 
 static void set_max_pktsize(struct dwc2_udc *dev, enum usb_device_speed speed)
 {
+	my_dbg(" [584]  shl_add\n");
 	unsigned int ep_ctrl;
 	int i;
 
@@ -613,6 +628,7 @@ static void set_max_pktsize(struct dwc2_udc *dev, enum usb_device_speed speed)
 static int dwc2_ep_enable(struct usb_ep *_ep,
 			 const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [615]  shl_add\n");
 	struct dwc2_ep *ep;
 	struct dwc2_udc *dev;
 	unsigned long flags = 0;
@@ -678,6 +694,7 @@ static int dwc2_ep_enable(struct usb_ep *_ep,
  */
 static int dwc2_ep_disable(struct usb_ep *_ep)
 {
+	my_dbg(" [680]  shl_add\n");
 	struct dwc2_ep *ep;
 	unsigned long flags = 0;
 
@@ -707,6 +724,7 @@ static int dwc2_ep_disable(struct usb_ep *_ep)
 static struct usb_request *dwc2_alloc_request(struct usb_ep *ep,
 					     gfp_t gfp_flags)
 {
+	my_dbg(" [709]  shl_add\n");
 	struct dwc2_request *req;
 
 	debug("%s: %s %p\n", __func__, ep->name, ep);
@@ -723,6 +741,7 @@ static struct usb_request *dwc2_alloc_request(struct usb_ep *ep,
 
 static void dwc2_free_request(struct usb_ep *ep, struct usb_request *_req)
 {
+	my_dbg(" [725]  shl_add\n");
 	struct dwc2_request *req;
 
 	debug("%s: %p\n", __func__, ep);
@@ -735,6 +754,7 @@ static void dwc2_free_request(struct usb_ep *ep, struct usb_request *_req)
 /* dequeue JUST ONE request */
 static int dwc2_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [737]  shl_add\n");
 	struct dwc2_ep *ep;
 	struct dwc2_request *req;
 	unsigned long flags = 0;
@@ -768,6 +788,7 @@ static int dwc2_dequeue(struct usb_ep *_ep, struct usb_request *_req)
  */
 static int dwc2_fifo_status(struct usb_ep *_ep)
 {
+	my_dbg(" [770]  shl_add\n");
 	int count = 0;
 	struct dwc2_ep *ep;
 
@@ -791,6 +812,7 @@ static int dwc2_fifo_status(struct usb_ep *_ep)
  */
 static void dwc2_fifo_flush(struct usb_ep *_ep)
 {
+	my_dbg(" [793]  shl_add\n");
 	struct dwc2_ep *ep;
 
 	ep = container_of(_ep, struct dwc2_ep, ep);
@@ -886,6 +908,7 @@ static struct dwc2_udc memory = {
 
 int dwc2_udc_probe(struct dwc2_plat_otg_data *pdata)
 {
+	my_dbg(" [888]  shl_add\n");
 	struct dwc2_udc *dev = &memory;
 	int retval = 0;
 
@@ -921,6 +944,7 @@ int dwc2_udc_probe(struct dwc2_plat_otg_data *pdata)
 
 int dwc2_udc_handle_interrupt(void)
 {
+	my_dbg(" [923]  shl_add\n");
 	u32 intr_status = readl(&reg->gintsts);
 	u32 gintmsk = readl(&reg->gintmsk);
 
@@ -934,6 +958,7 @@ int dwc2_udc_handle_interrupt(void)
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [936]  shl_add\n");
 	return dwc2_udc_handle_interrupt();
 }
 
@@ -949,11 +974,13 @@ struct dwc2_priv_data {
 
 int dm_usb_gadget_handle_interrupts(struct udevice *dev)
 {
+	my_dbg(" [951]  shl_add\n");
 	return dwc2_udc_handle_interrupt();
 }
 
 int dwc2_phy_setup(struct udevice *dev, struct phy **array, int *num_phys)
 {
+	my_dbg(" [956]  shl_add\n");
 	int i, ret, count;
 	struct phy *usb_phys;
 
@@ -1020,6 +1047,7 @@ phys_init_err:
 
 void dwc2_phy_shutdown(struct udevice *dev, struct phy *usb_phys, int num_phys)
 {
+	my_dbg(" [1022]  shl_add\n");
 	int i, ret;
 
 	for (i = 0; i < num_phys; i++) {
@@ -1037,6 +1065,7 @@ void dwc2_phy_shutdown(struct udevice *dev, struct phy *usb_phys, int num_phys)
 
 static int dwc2_udc_otg_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [1039]  shl_add\n");
 	struct dwc2_plat_otg_data *platdata = dev_get_platdata(dev);
 	ulong drvdata;
 	void (*set_params)(struct dwc2_plat_otg_data *data);
@@ -1081,6 +1110,7 @@ static int dwc2_udc_otg_ofdata_to_platdata(struct udevice *dev)
 
 static void dwc2_set_stm32mp1_hsotg_params(struct dwc2_plat_otg_data *p)
 {
+	my_dbg(" [1083]  shl_add\n");
 	p->activate_stm_id_vb_detection = true;
 	p->usb_gusbcfg =
 		0 << 15		/* PHY Low Power Clock sel*/
@@ -1097,6 +1127,7 @@ static void dwc2_set_stm32mp1_hsotg_params(struct dwc2_plat_otg_data *p)
 static int dwc2_udc_otg_reset_init(struct udevice *dev,
 				   struct reset_ctl_bulk *resets)
 {
+	my_dbg(" [1099]  shl_add\n");
 	int ret;
 
 	ret = reset_get_bulk(dev, resets);
@@ -1123,6 +1154,7 @@ static int dwc2_udc_otg_reset_init(struct udevice *dev,
 static int dwc2_udc_otg_clk_init(struct udevice *dev,
 				 struct clk_bulk *clks)
 {
+	my_dbg(" [1125]  shl_add\n");
 	int ret;
 
 	ret = clk_get_bulk(dev, clks);
@@ -1143,6 +1175,7 @@ static int dwc2_udc_otg_clk_init(struct udevice *dev,
 
 static int dwc2_udc_otg_probe(struct udevice *dev)
 {
+	my_dbg(" [1145]  shl_add\n");
 	struct dwc2_plat_otg_data *platdata = dev_get_platdata(dev);
 	struct dwc2_priv_data *priv = dev_get_priv(dev);
 	struct dwc2_usbotg_reg *usbotg_reg =
@@ -1199,6 +1232,7 @@ static int dwc2_udc_otg_probe(struct udevice *dev)
 
 static int dwc2_udc_otg_remove(struct udevice *dev)
 {
+	my_dbg(" [1201]  shl_add\n");
 	struct dwc2_priv_data *priv = dev_get_priv(dev);
 
 	usb_del_gadget_udc(&the_controller->gadget);
@@ -1232,6 +1266,7 @@ U_BOOT_DRIVER(dwc2_udc_otg) = {
 
 int dwc2_udc_B_session_valid(struct udevice *dev)
 {
+	my_dbg(" [1234]  shl_add\n");
 	struct dwc2_plat_otg_data *platdata = dev_get_platdata(dev);
 	struct dwc2_usbotg_reg *usbotg_reg =
 		(struct dwc2_usbotg_reg *)platdata->regs_otg;
@@ -1239,3 +1274,4 @@ int dwc2_udc_B_session_valid(struct udevice *dev)
 	return readl(&usbotg_reg->gotgctl) & B_SESSION_VALID;
 }
 #endif /* CONFIG_IS_ENABLED(DM_USB_GADGET) */
+

@@ -91,6 +91,7 @@ static struct udc_endp_regs *const inep_regs_p =
 static void udc_state_transition(usb_device_state_t initial,
 				 usb_device_state_t final)
 {
+	my_dbg(" [93]  shl_add\n");
 	if (initial < final) {
 		switch (initial) {
 		case STATE_ATTACHED:
@@ -143,6 +144,7 @@ static void udc_state_transition(usb_device_state_t initial,
 /* Stall endpoint */
 static void udc_stall_ep(u32 ep_num)
 {
+	my_dbg(" [145]  shl_add\n");
 	writel(readl(&inep_regs_p[ep_num].endp_cntl) | ENDP_CNTL_STALL,
 	       &inep_regs_p[ep_num].endp_cntl);
 
@@ -152,6 +154,7 @@ static void udc_stall_ep(u32 ep_num)
 
 static void *get_fifo(int ep_num, int in)
 {
+	my_dbg(" [154]  shl_add\n");
 	u32 *fifo_ptr = (u32 *)CONFIG_SYS_FIFO_BASE;
 
 	switch (ep_num) {
@@ -183,6 +186,7 @@ static void *get_fifo(int ep_num, int in)
 
 static int usbgetpckfromfifo(int epNum, u8 *bufp, u32 len)
 {
+	my_dbg(" [185]  shl_add\n");
 	u8 *fifo_ptr = (u8 *)get_fifo(epNum, 0);
 	u32 i, nw, nb;
 	u32 *wrdp;
@@ -223,6 +227,7 @@ static int usbgetpckfromfifo(int epNum, u8 *bufp, u32 len)
 
 static void usbputpcktofifo(int epNum, u8 *bufp, u32 len)
 {
+	my_dbg(" [225]  shl_add\n");
 	u32 i, nw, nb;
 	u32 *wrdp;
 	u8 *bytp;
@@ -260,6 +265,7 @@ static void usbputpcktofifo(int epNum, u8 *bufp, u32 len)
 static void dw_write_noniso_tx_fifo(struct usb_endpoint_instance
 				       *endpoint)
 {
+	my_dbg(" [262]  shl_add\n");
 	struct urb *urb = endpoint->tx_urb;
 	int align;
 
@@ -303,6 +309,7 @@ static void dw_write_noniso_tx_fifo(struct usb_endpoint_instance
  */
 static void dw_udc_setup(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [305]  shl_add\n");
 	u8 *datap = (u8 *)&ep0_urb->device_request;
 	int ep_addr = endpoint->endpoint_address;
 
@@ -357,6 +364,7 @@ static void dw_udc_setup(struct usb_endpoint_instance *endpoint)
  */
 static void dw_udc_ep0_rx(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [359]  shl_add\n");
 	u8 dummy[64];
 
 	UDCDBG("RX on EP0");
@@ -391,6 +399,7 @@ static void dw_udc_ep0_rx(struct usb_endpoint_instance *endpoint)
  */
 static void dw_udc_ep0_tx(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [393]  shl_add\n");
 	struct usb_device_request *request = &ep0_urb->device_request;
 	int ep_addr;
 
@@ -448,6 +457,7 @@ static void dw_udc_ep0_tx(struct usb_endpoint_instance *endpoint)
 
 static struct usb_endpoint_instance *dw_find_ep(int ep)
 {
+	my_dbg(" [450]  shl_add\n");
 	int i;
 
 	for (i = 0; i < udc_device->bus->max_endpoints; i++) {
@@ -465,6 +475,7 @@ static struct usb_endpoint_instance *dw_find_ep(int ep)
  */
 static void dw_udc_epn_rx(int ep)
 {
+	my_dbg(" [467]  shl_add\n");
 	int nbytes = 0;
 	struct urb *urb;
 	struct usb_endpoint_instance *endpoint = dw_find_ep(ep);
@@ -490,6 +501,7 @@ static void dw_udc_epn_rx(int ep)
  */
 static void dw_udc_epn_tx(int ep)
 {
+	my_dbg(" [492]  shl_add\n");
 	struct usb_endpoint_instance *endpoint = dw_find_ep(ep);
 
 	if (!endpoint)
@@ -535,6 +547,7 @@ static void dw_udc_epn_tx(int ep)
 /* Called to start packet transmission. */
 int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [537]  shl_add\n");
 	udc_unset_nak(endpoint->endpoint_address & USB_ENDPOINT_NUMBER_MASK);
 	return 0;
 }
@@ -542,6 +555,7 @@ int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 /* Start to initialize h/w stuff */
 int udc_init(void)
 {
+	my_dbg(" [544]  shl_add\n");
 	int i;
 	u32 plug_st;
 
@@ -579,6 +593,7 @@ int udc_init(void)
 
 int is_usbd_high_speed(void)
 {
+	my_dbg(" [581]  shl_add\n");
 	return (readl(&udc_regs_p->dev_stat) & DEV_STAT_ENUM) ? 0 : 1;
 }
 
@@ -589,6 +604,7 @@ int is_usbd_high_speed(void)
 void udc_setup_ep(struct usb_device_instance *device,
 		  u32 ep, struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [591]  shl_add\n");
 	UDCDBGA("setting up endpoint addr %x", endpoint->endpoint_address);
 	int ep_addr;
 	int ep_num, ep_type;
@@ -718,6 +734,7 @@ void udc_setup_ep(struct usb_device_instance *device,
 /* Turn on the USB connection by enabling the pullup resistor */
 void udc_connect(void)
 {
+	my_dbg(" [720]  shl_add\n");
 	u32 plug_st, dev_cntl;
 
 	dev_cntl = readl(&udc_regs_p->dev_cntl);
@@ -738,6 +755,7 @@ void udc_connect(void)
 /* Turn off the USB connection by disabling the pullup resistor */
 void udc_disconnect(void)
 {
+	my_dbg(" [740]  shl_add\n");
 	u32 plug_st;
 
 	writel(DEV_CNTL_SOFTDISCONNECT, &udc_regs_p->dev_cntl);
@@ -750,6 +768,7 @@ void udc_disconnect(void)
 /* Switch on the UDC */
 void udc_enable(struct usb_device_instance *device)
 {
+	my_dbg(" [752]  shl_add\n");
 	UDCDBGA("enable device %p, status %d", device, device->status);
 
 	/* Save the device structure pointer */
@@ -772,6 +791,7 @@ void udc_enable(struct usb_device_instance *device)
  */
 void udc_startup_events(struct usb_device_instance *device)
 {
+	my_dbg(" [774]  shl_add\n");
 	/* The DEVICE_INIT event puts the USB device in the state STATE_INIT. */
 	usbd_device_event_irq(device, DEVICE_INIT, 0);
 
@@ -799,6 +819,7 @@ void udc_startup_events(struct usb_device_instance *device)
  */
 static void dw_udc_plug_irq(void)
 {
+	my_dbg(" [801]  shl_add\n");
 	if (readl(&plug_regs_p->plug_state) & PLUG_STATUS_ATTACHED) {
 		/*
 		 * USB cable attached
@@ -823,6 +844,7 @@ static void dw_udc_plug_irq(void)
  */
 static void dw_udc_dev_irq(void)
 {
+	my_dbg(" [825]  shl_add\n");
 	if (readl(&udc_regs_p->dev_int) & DEV_INT_USBRESET) {
 		writel(~0x0, &udc_regs_p->endp_int_mask);
 
@@ -893,6 +915,7 @@ static void dw_udc_dev_irq(void)
  */
 static void dw_udc_endpoint_irq(void)
 {
+	my_dbg(" [895]  shl_add\n");
 	while (readl(&udc_regs_p->endp_int) & ENDP0_INT_CTRLOUT) {
 
 		writel(ENDP0_INT_CTRLOUT, &udc_regs_p->endp_int);
@@ -977,6 +1000,7 @@ static void dw_udc_endpoint_irq(void)
  */
 void udc_irq(void)
 {
+	my_dbg(" [979]  shl_add\n");
 	/*
 	 * Loop while we have interrupts.
 	 * If we don't do this, the input chain
@@ -996,6 +1020,7 @@ void udc_irq(void)
 /* Flow control */
 void udc_set_nak(int epid)
 {
+	my_dbg(" [998]  shl_add\n");
 	writel(readl(&inep_regs_p[epid].endp_cntl) | ENDP_CNTL_SNAK,
 	       &inep_regs_p[epid].endp_cntl);
 
@@ -1005,6 +1030,7 @@ void udc_set_nak(int epid)
 
 void udc_unset_nak(int epid)
 {
+	my_dbg(" [1007]  shl_add\n");
 	u32 val;
 
 	val = readl(&inep_regs_p[epid].endp_cntl);
@@ -1017,3 +1043,4 @@ void udc_unset_nak(int epid)
 	val |= ENDP_CNTL_CNAK;
 	writel(val, &outep_regs_p[epid].endp_cntl);
 }
+

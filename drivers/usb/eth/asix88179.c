@@ -221,6 +221,7 @@ struct asix_private {
 static int asix_write_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 			     u16 size, void *data)
 {
+	my_dbg(" [223]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buf, size);
 
@@ -246,6 +247,7 @@ static int asix_write_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 static int asix_read_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 			    u16 size, void *data)
 {
+	my_dbg(" [248]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buf, size);
 
@@ -270,6 +272,7 @@ static int asix_read_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 
 static int asix_read_mac(struct ueth_data *dev, uint8_t *enetaddr)
 {
+	my_dbg(" [272]  shl_add\n");
 	int ret;
 
 	ret = asix_read_cmd(dev, AX_ACCESS_MAC, AX_NODE_ID, 6, 6, enetaddr);
@@ -281,6 +284,7 @@ static int asix_read_mac(struct ueth_data *dev, uint8_t *enetaddr)
 
 static int asix_write_mac(struct ueth_data *dev, uint8_t *enetaddr)
 {
+	my_dbg(" [283]  shl_add\n");
 	int ret;
 
 	ret = asix_write_cmd(dev, AX_ACCESS_MAC, AX_NODE_ID, ETH_ALEN,
@@ -294,6 +298,7 @@ static int asix_write_mac(struct ueth_data *dev, uint8_t *enetaddr)
 static int asix_basic_reset(struct ueth_data *dev,
 			struct asix_private *dev_priv)
 {
+	my_dbg(" [296]  shl_add\n");
 	u8 buf[5];
 	u16 *tmp16;
 	u8 *tmp;
@@ -363,6 +368,7 @@ static int asix_basic_reset(struct ueth_data *dev,
 
 static int asix_wait_link(struct ueth_data *dev)
 {
+	my_dbg(" [365]  shl_add\n");
 	int timeout = 0;
 	int link_detected;
 	u8 buf[2];
@@ -395,6 +401,7 @@ static int asix_wait_link(struct ueth_data *dev)
 static int asix_init_common(struct ueth_data *dev,
 			struct asix_private *dev_priv)
 {
+	my_dbg(" [397]  shl_add\n");
 	u8 buf[2], tmp[5], link_sts;
 	u16 *tmp16, mode;
 
@@ -468,6 +475,7 @@ static int asix_send_common(struct ueth_data *dev,
 			struct asix_private *dev_priv,
 			void *packet, int length)
 {
+	my_dbg(" [470]  shl_add\n");
 	int err;
 	u32 packet_len, tx_hdr2;
 	int actual_len, framesize;
@@ -510,6 +518,7 @@ static int asix_send_common(struct ueth_data *dev,
  */
 static int asix_init(struct eth_device *eth, bd_t *bd)
 {
+	my_dbg(" [512]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct asix_private *dev_priv = (struct asix_private *)dev->dev_priv;
 
@@ -518,6 +527,7 @@ static int asix_init(struct eth_device *eth, bd_t *bd)
 
 static int asix_write_hwaddr(struct eth_device *eth)
 {
+	my_dbg(" [520]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return asix_write_mac(dev, eth->enetaddr);
@@ -525,6 +535,7 @@ static int asix_write_hwaddr(struct eth_device *eth)
 
 static int asix_send(struct eth_device *eth, void *packet, int length)
 {
+	my_dbg(" [527]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct asix_private *dev_priv = (struct asix_private *)dev->dev_priv;
 
@@ -533,6 +544,7 @@ static int asix_send(struct eth_device *eth, void *packet, int length)
 
 static int asix_recv(struct eth_device *eth)
 {
+	my_dbg(" [535]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct asix_private *dev_priv = (struct asix_private *)dev->dev_priv;
 
@@ -600,6 +612,7 @@ static int asix_recv(struct eth_device *eth)
 
 static void asix_halt(struct eth_device *eth)
 {
+	my_dbg(" [602]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
@@ -608,6 +621,7 @@ static void asix_halt(struct eth_device *eth)
  */
 void ax88179_eth_before_probe(void)
 {
+	my_dbg(" [610]  shl_add\n");
 	curr_eth_dev = 0;
 }
 
@@ -632,6 +646,7 @@ static const struct asix_dongle asix_dongles[] = {
 int ax88179_eth_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct ueth_data *ss)
 {
+	my_dbg(" [634]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_interface_descriptor *iface_desc;
 	struct asix_private *dev_priv;
@@ -720,6 +735,7 @@ int ax88179_eth_probe(struct usb_device *dev, unsigned int ifnum,
 int ax88179_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 				struct eth_device *eth)
 {
+	my_dbg(" [722]  shl_add\n");
 	struct asix_private *dev_priv = (struct asix_private *)ss->dev_priv;
 
 	if (!eth) {
@@ -749,6 +765,7 @@ int ax88179_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 
 static int ax88179_eth_start(struct udevice *dev)
 {
+	my_dbg(" [751]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 
 	return asix_init_common(&priv->ueth, priv);
@@ -756,6 +773,7 @@ static int ax88179_eth_start(struct udevice *dev)
 
 void ax88179_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [758]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 
@@ -769,6 +787,7 @@ void ax88179_eth_stop(struct udevice *dev)
 
 int ax88179_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [771]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 
 	return asix_send_common(&priv->ueth, priv, packet, length);
@@ -776,6 +795,7 @@ int ax88179_eth_send(struct udevice *dev, void *packet, int length)
 
 int ax88179_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [778]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	int ret, len;
@@ -845,6 +865,7 @@ int ax88179_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 
 static int ax88179_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [847]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 
@@ -856,6 +877,7 @@ static int ax88179_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 int ax88179_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [858]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
@@ -865,6 +887,7 @@ int ax88179_write_hwaddr(struct udevice *dev)
 
 static int ax88179_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [867]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct asix_private *priv = dev_get_priv(dev);
 	struct usb_device *usb_dev;
@@ -918,3 +941,4 @@ static const struct usb_device_id ax88179_eth_id_table[] = {
 
 U_BOOT_USB_DEVICE(ax88179_eth, ax88179_eth_id_table);
 #endif /* !CONFIG_DM_ETH */
+

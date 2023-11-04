@@ -49,6 +49,7 @@
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [51]  shl_add\n");
 #if defined(CONFIG_R8A7795)
 	const u32 mask = SMSTPCR703 | SMSTPCR702 | SMSTPCR701 | SMSTPCR700;
 #else
@@ -77,6 +78,7 @@ int ehci_hcd_stop(int index)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		  struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [79]  shl_add\n");
 	const void __iomem *base =
 		(void __iomem *)(uintptr_t)RCAR_GEN3_USB_BASE(index);
 	struct usb_ehci *ehci = (struct usb_ehci *)(uintptr_t)base;
@@ -104,3 +106,4 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 	return 0;
 }
+

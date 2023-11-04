@@ -26,6 +26,7 @@ struct musb_config musb_cfg = {
  */
 static void enable_vbus(void)
 {
+	my_dbg(" [28]  shl_add\n");
 	u32 value;
 
 	/* configure GPIO bank4 pin 15 in output direction */
@@ -43,6 +44,7 @@ static void enable_vbus(void)
  */
 static u8 phy_on(void)
 {
+	my_dbg(" [45]  shl_add\n");
 	u32 timeout;
 	u32 cfgchip2;
 
@@ -70,6 +72,7 @@ static u8 phy_on(void)
  */
 static void phy_off(void)
 {
+	my_dbg(" [72]  shl_add\n");
 	u32 cfgchip2;
 
 	/*
@@ -86,6 +89,7 @@ static void phy_off(void)
  */
 int musb_platform_init(void)
 {
+	my_dbg(" [88]  shl_add\n");
 	u32  revision;
 
 	/* enable psc for usb2.0 */
@@ -118,6 +122,7 @@ int musb_platform_init(void)
  */
 void musb_platform_deinit(void)
 {
+	my_dbg(" [120]  shl_add\n");
 	/* Turn of the phy */
 	phy_off();
 
@@ -126,3 +131,4 @@ void musb_platform_deinit(void)
 		DA8XX_USB_RXINT_MASK), &da8xx_usb_regs->intmsk_clr);
 	writel(0, &da8xx_usb_regs->eoi);
 }
+

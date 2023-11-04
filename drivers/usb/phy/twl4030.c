@@ -39,6 +39,7 @@
 
 static int twl4030_usb_write(u8 address, u8 data)
 {
+	my_dbg(" [41]  shl_add\n");
 	int ret;
 
 	ret = twl4030_i2c_write_u8(TWL4030_CHIP_USB, address, data);
@@ -50,6 +51,7 @@ static int twl4030_usb_write(u8 address, u8 data)
 
 static int twl4030_usb_read(u8 address)
 {
+	my_dbg(" [52]  shl_add\n");
 	u8 data;
 	int ret;
 
@@ -64,6 +66,7 @@ static int twl4030_usb_read(u8 address)
 
 static void twl4030_usb_ldo_init(void)
 {
+	my_dbg(" [66]  shl_add\n");
 	/* Enable writing to power configuration registers */
 	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
 			     TWL4030_PM_MASTER_PROTECT_KEY, 0xC0);
@@ -103,6 +106,7 @@ static void twl4030_usb_ldo_init(void)
 
 static void twl4030_phy_power(void)
 {
+	my_dbg(" [105]  shl_add\n");
 	u8 pwr, clk;
 
 	/* Power the PHY */
@@ -123,6 +127,7 @@ static void twl4030_phy_power(void)
  */
 int twl4030_usb_ulpi_init(void)
 {
+	my_dbg(" [125]  shl_add\n");
 	long timeout = 1000 * 1000; /* 1 sec */;
 	u8 clk, sts, pwr;
 
@@ -174,3 +179,4 @@ int twl4030_usb_ulpi_init(void)
 
 	return 0;
 }
+

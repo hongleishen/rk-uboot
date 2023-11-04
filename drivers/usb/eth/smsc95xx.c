@@ -161,6 +161,7 @@ struct smsc95xx_private {
  */
 static int smsc95xx_write_reg(struct usb_device *udev, u32 index, u32 data)
 {
+	my_dbg(" [163]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(u32, tmpbuf, 1);
 
@@ -182,6 +183,7 @@ static int smsc95xx_write_reg(struct usb_device *udev, u32 index, u32 data)
 
 static int smsc95xx_read_reg(struct usb_device *udev, u32 index, u32 *data)
 {
+	my_dbg(" [184]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(u32, tmpbuf, 1);
 
@@ -204,6 +206,7 @@ static int smsc95xx_read_reg(struct usb_device *udev, u32 index, u32 *data)
 /* Loop until the read is completed with timeout */
 static int smsc95xx_phy_wait_not_busy(struct usb_device *udev)
 {
+	my_dbg(" [206]  shl_add\n");
 	unsigned long start_time = get_timer(0);
 	u32 val;
 
@@ -218,6 +221,7 @@ static int smsc95xx_phy_wait_not_busy(struct usb_device *udev)
 
 static int smsc95xx_mdio_read(struct usb_device *udev, int phy_id, int idx)
 {
+	my_dbg(" [220]  shl_add\n");
 	u32 val, addr;
 
 	/* confirm MII not busy */
@@ -243,6 +247,7 @@ static int smsc95xx_mdio_read(struct usb_device *udev, int phy_id, int idx)
 static void smsc95xx_mdio_write(struct usb_device *udev, int phy_id, int idx,
 				int regval)
 {
+	my_dbg(" [245]  shl_add\n");
 	u32 val, addr;
 
 	/* confirm MII not busy */
@@ -264,6 +269,7 @@ static void smsc95xx_mdio_write(struct usb_device *udev, int phy_id, int idx,
 
 static int smsc95xx_eeprom_confirm_not_busy(struct usb_device *udev)
 {
+	my_dbg(" [266]  shl_add\n");
 	unsigned long start_time = get_timer(0);
 	u32 val;
 
@@ -280,6 +286,7 @@ static int smsc95xx_eeprom_confirm_not_busy(struct usb_device *udev)
 
 static int smsc95xx_wait_eeprom(struct usb_device *udev)
 {
+	my_dbg(" [282]  shl_add\n");
 	unsigned long start_time = get_timer(0);
 	u32 val;
 
@@ -300,6 +307,7 @@ static int smsc95xx_wait_eeprom(struct usb_device *udev)
 static int smsc95xx_read_eeprom(struct usb_device *udev, u32 offset, u32 length,
 				u8 *data)
 {
+	my_dbg(" [302]  shl_add\n");
 	u32 val;
 	int i, ret;
 
@@ -329,6 +337,7 @@ static int smsc95xx_read_eeprom(struct usb_device *udev, u32 offset, u32 length,
  */
 static int mii_nway_restart(struct usb_device *udev, struct ueth_data *dev)
 {
+	my_dbg(" [331]  shl_add\n");
 	int bmcr;
 	int r = -1;
 
@@ -346,6 +355,7 @@ static int mii_nway_restart(struct usb_device *udev, struct ueth_data *dev)
 static int smsc95xx_phy_initialize(struct usb_device *udev,
 				   struct ueth_data *dev)
 {
+	my_dbg(" [348]  shl_add\n");
 	smsc95xx_mdio_write(udev, dev->phy_id, MII_BMCR, BMCR_RESET);
 	smsc95xx_mdio_write(udev, dev->phy_id, MII_ADVERTISE,
 			    ADVERTISE_ALL | ADVERTISE_CSMA |
@@ -365,6 +375,7 @@ static int smsc95xx_phy_initialize(struct usb_device *udev,
 static int smsc95xx_init_mac_address(unsigned char *enetaddr,
 				     struct usb_device *udev)
 {
+	my_dbg(" [367]  shl_add\n");
 	int ret;
 
 	/* try reading mac address from EEPROM */
@@ -391,6 +402,7 @@ static int smsc95xx_write_hwaddr_common(struct usb_device *udev,
 					struct smsc95xx_private *priv,
 					unsigned char *enetaddr)
 {
+	my_dbg(" [393]  shl_add\n");
 	u32 addr_lo = get_unaligned_le32(&enetaddr[0]);
 	u32 addr_hi = get_unaligned_le16(&enetaddr[4]);
 	int ret;
@@ -415,6 +427,7 @@ static int smsc95xx_write_hwaddr_common(struct usb_device *udev,
 static int smsc95xx_set_csums(struct usb_device *udev, int use_tx_csum,
 			      int use_rx_csum)
 {
+	my_dbg(" [417]  shl_add\n");
 	u32 read_buf;
 	int ret = smsc95xx_read_reg(udev, COE_CR, &read_buf);
 	if (ret < 0)
@@ -440,6 +453,7 @@ static int smsc95xx_set_csums(struct usb_device *udev, int use_tx_csum,
 
 static void smsc95xx_set_multicast(struct smsc95xx_private *priv)
 {
+	my_dbg(" [442]  shl_add\n");
 	/* No multicast in u-boot */
 	priv->mac_cr &= ~(MAC_CR_PRMS_ | MAC_CR_MCPAS_ | MAC_CR_HPFILT_);
 }
@@ -448,6 +462,7 @@ static void smsc95xx_set_multicast(struct smsc95xx_private *priv)
 static void smsc95xx_start_tx_path(struct usb_device *udev,
 				   struct smsc95xx_private *priv)
 {
+	my_dbg(" [450]  shl_add\n");
 	u32 reg_val;
 
 	/* Enable Tx at MAC */
@@ -464,6 +479,7 @@ static void smsc95xx_start_tx_path(struct usb_device *udev,
 static void smsc95xx_start_rx_path(struct usb_device *udev,
 				   struct smsc95xx_private *priv)
 {
+	my_dbg(" [466]  shl_add\n");
 	priv->mac_cr |= MAC_CR_RXEN_;
 	smsc95xx_write_reg(udev, MAC_CR, priv->mac_cr);
 }
@@ -472,6 +488,7 @@ static int smsc95xx_init_common(struct usb_device *udev, struct ueth_data *dev,
 				struct smsc95xx_private *priv,
 				unsigned char *enetaddr)
 {
+	my_dbg(" [474]  shl_add\n");
 	int ret;
 	u32 write_buf;
 	u32 read_buf;
@@ -675,6 +692,7 @@ static int smsc95xx_init_common(struct usb_device *udev, struct ueth_data *dev,
 
 static int smsc95xx_send_common(struct ueth_data *dev, void *packet, int length)
 {
+	my_dbg(" [677]  shl_add\n");
 	int err;
 	int actual_len;
 	u32 tx_cmd_a;
@@ -716,6 +734,7 @@ static int smsc95xx_send_common(struct ueth_data *dev, void *packet, int length)
  */
 static int smsc95xx_init(struct eth_device *eth, bd_t *bd)
 {
+	my_dbg(" [718]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct usb_device *udev = dev->pusb_dev;
 	struct smsc95xx_private *priv =
@@ -726,6 +745,7 @@ static int smsc95xx_init(struct eth_device *eth, bd_t *bd)
 
 static int smsc95xx_send(struct eth_device *eth, void *packet, int length)
 {
+	my_dbg(" [728]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return smsc95xx_send_common(dev, packet, length);
@@ -733,6 +753,7 @@ static int smsc95xx_send(struct eth_device *eth, void *packet, int length)
 
 static int smsc95xx_recv(struct eth_device *eth)
 {
+	my_dbg(" [735]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	DEFINE_CACHE_ALIGN_BUFFER(unsigned char, recv_buf, RX_URB_SIZE);
 	unsigned char *buf_ptr;
@@ -801,11 +822,13 @@ static int smsc95xx_recv(struct eth_device *eth)
 
 static void smsc95xx_halt(struct eth_device *eth)
 {
+	my_dbg(" [803]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 static int smsc95xx_write_hwaddr(struct eth_device *eth)
 {
+	my_dbg(" [808]  shl_add\n");
 	struct ueth_data *dev = eth->priv;
 	struct usb_device *udev = dev->pusb_dev;
 	struct smsc95xx_private *priv = dev->dev_priv;
@@ -818,6 +841,7 @@ static int smsc95xx_write_hwaddr(struct eth_device *eth)
  */
 void smsc95xx_eth_before_probe(void)
 {
+	my_dbg(" [820]  shl_add\n");
 	curr_eth_dev = 0;
 }
 
@@ -839,6 +863,7 @@ static const struct smsc95xx_dongle smsc95xx_dongles[] = {
 int smsc95xx_eth_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct ueth_data *ss)
 {
+	my_dbg(" [841]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_interface_descriptor *iface_desc;
 	int i;
@@ -914,6 +939,7 @@ int smsc95xx_eth_probe(struct usb_device *dev, unsigned int ifnum,
 int smsc95xx_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 				struct eth_device *eth)
 {
+	my_dbg(" [916]  shl_add\n");
 	debug("** %s()\n", __func__);
 	if (!eth) {
 		debug("%s: missing parameter.\n", __func__);
@@ -933,6 +959,7 @@ int smsc95xx_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 #ifdef CONFIG_DM_ETH
 static int smsc95xx_eth_start(struct udevice *dev)
 {
+	my_dbg(" [935]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct smsc95xx_private *priv = dev_get_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
@@ -945,11 +972,13 @@ static int smsc95xx_eth_start(struct udevice *dev)
 
 void smsc95xx_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [947]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 int smsc95xx_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [952]  shl_add\n");
 	struct smsc95xx_private *priv = dev_get_priv(dev);
 
 	return smsc95xx_send_common(&priv->ueth, packet, length);
@@ -957,6 +986,7 @@ int smsc95xx_eth_send(struct udevice *dev, void *packet, int length)
 
 int smsc95xx_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [959]  shl_add\n");
 	struct smsc95xx_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	uint8_t *ptr;
@@ -1007,6 +1037,7 @@ err:
 
 static int smsc95xx_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [1009]  shl_add\n");
 	struct smsc95xx_private *priv = dev_get_priv(dev);
 
 	packet_len = ALIGN(packet_len + sizeof(u32), 4);
@@ -1017,6 +1048,7 @@ static int smsc95xx_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 int smsc95xx_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [1019]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct smsc95xx_private *priv = dev_get_priv(dev);
@@ -1026,6 +1058,7 @@ int smsc95xx_write_hwaddr(struct udevice *dev)
 
 int smsc95xx_read_rom_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [1028]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	int ret;
@@ -1039,6 +1072,7 @@ int smsc95xx_read_rom_hwaddr(struct udevice *dev)
 
 static int smsc95xx_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [1041]  shl_add\n");
 	struct smsc95xx_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 
@@ -1076,3 +1110,4 @@ static const struct usb_device_id smsc95xx_eth_id_table[] = {
 
 U_BOOT_USB_DEVICE(smsc95xx_eth, smsc95xx_eth_id_table);
 #endif
+

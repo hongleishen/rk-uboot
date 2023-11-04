@@ -35,6 +35,7 @@ int
 usb_descriptor_fillbuf(void *buf, unsigned buflen,
 		const struct usb_descriptor_header **src)
 {
+	my_dbg(" [37]  shl_add\n");
 	u8	*dest = buf;
 
 	if (!src)
@@ -81,6 +82,7 @@ int usb_gadget_config_buf(
 	const struct usb_descriptor_header	**desc
 )
 {
+	my_dbg(" [83]  shl_add\n");
 	struct usb_config_descriptor		*cp = buf;
 	int					len;
 
@@ -106,3 +108,4 @@ int usb_gadget_config_buf(
 	cp->bmAttributes |= USB_CONFIG_ATT_ONE;
 	return len;
 }
+

@@ -40,6 +40,7 @@ struct ti_musb_platdata {
 
 static int ti_musb_get_usb_index(int node)
 {
+	my_dbg(" [42]  shl_add\n");
 	const void *fdt = gd->fdt_blob;
 	int i = 0;
 	char path[64];
@@ -67,6 +68,7 @@ static int ti_musb_get_usb_index(int node)
 
 static void ti_musb_set_phy_power(struct udevice *dev, u8 on)
 {
+	my_dbg(" [69]  shl_add\n");
 	struct ti_musb_platdata *platdata = dev_get_platdata(dev);
 
 	if (on) {
@@ -81,6 +83,7 @@ static void ti_musb_set_phy_power(struct udevice *dev, u8 on)
 
 static int ti_musb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [83]  shl_add\n");
 	struct ti_musb_platdata *platdata = dev_get_platdata(dev);
 	const void *fdt = gd->fdt_blob;
 	int node = dev_of_offset(dev);
@@ -144,6 +147,7 @@ static int ti_musb_ofdata_to_platdata(struct udevice *dev)
 
 static int ti_musb_host_probe(struct udevice *dev)
 {
+	my_dbg(" [146]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	struct ti_musb_platdata *platdata = dev_get_platdata(dev);
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
@@ -167,6 +171,7 @@ static int ti_musb_host_probe(struct udevice *dev)
 
 static int ti_musb_host_remove(struct udevice *dev)
 {
+	my_dbg(" [169]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 
 	musb_stop(host->host);
@@ -176,6 +181,7 @@ static int ti_musb_host_remove(struct udevice *dev)
 
 static int ti_musb_host_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [178]  shl_add\n");
 	struct ti_musb_platdata *platdata = dev_get_platdata(dev);
 	const void *fdt = gd->fdt_blob;
 	int node = dev_of_offset(dev);
@@ -205,6 +211,7 @@ U_BOOT_DRIVER(ti_musb_host) = {
 
 static int ti_musb_wrapper_bind(struct udevice *parent)
 {
+	my_dbg(" [207]  shl_add\n");
 	ofnode node;
 	int ret;
 
@@ -254,3 +261,4 @@ U_BOOT_DRIVER(ti_musb_wrapper) = {
 };
 
 #endif /* CONFIG_IS_ENABLED(DM_USB) */
+

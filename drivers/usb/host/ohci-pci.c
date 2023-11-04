@@ -16,6 +16,7 @@
 
 static int ohci_pci_probe(struct udevice *dev)
 {
+	my_dbg(" [18]  shl_add\n");
 	struct ohci_regs *regs;
 
 	regs = dm_pci_map_bar(dev, PCI_BASE_ADDRESS_0, PCI_REGION_MEM);
@@ -24,6 +25,7 @@ static int ohci_pci_probe(struct udevice *dev)
 
 static int ohci_pci_remove(struct udevice *dev)
 {
+	my_dbg(" [26]  shl_add\n");
 	return ohci_deregister(dev);
 }
 
@@ -50,3 +52,4 @@ static struct pci_device_id ohci_pci_supported[] = {
 };
 
 U_BOOT_PCI_DEVICE(ohci_pci, ohci_pci_supported);
+

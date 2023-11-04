@@ -22,12 +22,14 @@
 
 static int vbus_is_present(struct usba_udc *udc)
 {
+	my_dbg(" [24]  shl_add\n");
 	/* No Vbus detection: Assume always present */
 	return 1;
 }
 
 static void next_fifo_transaction(struct usba_ep *ep, struct usba_request *req)
 {
+	my_dbg(" [30]  shl_add\n");
 	unsigned int transaction_len;
 
 	transaction_len = req->req.length - req->req.actual;
@@ -50,6 +52,7 @@ static void next_fifo_transaction(struct usba_ep *ep, struct usba_request *req)
 
 static void submit_request(struct usba_ep *ep, struct usba_request *req)
 {
+	my_dbg(" [52]  shl_add\n");
 	DBG(DBG_QUEUE, "%s: submit_request: req %p (length %d), dma: %d\n",
 	    ep->ep.name, req, req->req.length, req->using_dma);
 
@@ -68,6 +71,7 @@ static void submit_request(struct usba_ep *ep, struct usba_request *req)
 
 static void submit_next_request(struct usba_ep *ep)
 {
+	my_dbg(" [70]  shl_add\n");
 	struct usba_request *req;
 
 	if (list_empty(&ep->queue)) {
@@ -82,6 +86,7 @@ static void submit_next_request(struct usba_ep *ep)
 
 static void send_status(struct usba_udc *udc, struct usba_ep *ep)
 {
+	my_dbg(" [84]  shl_add\n");
 	ep->state = STATUS_STAGE_IN;
 	usba_ep_writel(ep, SET_STA, USBA_TX_PK_RDY);
 	usba_ep_writel(ep, CTL_ENB, USBA_TX_COMPLETE);
@@ -89,6 +94,7 @@ static void send_status(struct usba_udc *udc, struct usba_ep *ep)
 
 static void receive_data(struct usba_ep *ep)
 {
+	my_dbg(" [91]  shl_add\n");
 	struct usba_udc *udc = ep->udc;
 	struct usba_request *req;
 	unsigned long status;
@@ -145,6 +151,7 @@ static void receive_data(struct usba_ep *ep)
 static void
 request_complete(struct usba_ep *ep, struct usba_request *req, int status)
 {
+	my_dbg(" [147]  shl_add\n");
 	if (req->req.status == -EINPROGRESS)
 		req->req.status = status;
 
@@ -157,6 +164,7 @@ request_complete(struct usba_ep *ep, struct usba_request *req, int status)
 static void
 request_complete_list(struct usba_ep *ep, struct list_head *list, int status)
 {
+	my_dbg(" [159]  shl_add\n");
 	struct usba_request *req, *tmp_req;
 
 	list_for_each_entry_safe(req, tmp_req, list, queue) {
@@ -168,6 +176,7 @@ request_complete_list(struct usba_ep *ep, struct list_head *list, int status)
 static int
 usba_ep_enable(struct usb_ep *_ep, const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [170]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 	struct usba_udc *udc = ep->udc;
 	unsigned long flags = 0, ept_cfg, maxpacket;
@@ -270,6 +279,7 @@ usba_ep_enable(struct usb_ep *_ep, const struct usb_endpoint_descriptor *desc)
 
 static int usba_ep_disable(struct usb_ep *_ep)
 {
+	my_dbg(" [272]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 	struct usba_udc *udc = ep->udc;
 	LIST_HEAD(req_list);
@@ -309,6 +319,7 @@ static int usba_ep_disable(struct usb_ep *_ep)
 static struct usb_request *
 usba_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 {
+	my_dbg(" [311]  shl_add\n");
 	struct usba_request *req;
 
 	DBG(DBG_GADGET, "ep_alloc_request: %p, 0x%x\n", _ep, gfp_flags);
@@ -325,6 +336,7 @@ usba_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 static void
 usba_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [327]  shl_add\n");
 	struct usba_request *req = to_usba_req(_req);
 
 	DBG(DBG_GADGET, "ep_free_request: %p, %p\n", _ep, _req);
@@ -335,6 +347,7 @@ usba_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
 static int
 usba_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 {
+	my_dbg(" [337]  shl_add\n");
 	struct usba_request *req = to_usba_req(_req);
 	struct usba_ep *ep = to_usba_ep(_ep);
 	struct usba_udc *udc = ep->udc;
@@ -377,6 +390,7 @@ usba_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 
 static int usba_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [379]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 	struct usba_request *req = to_usba_req(_req);
 
@@ -399,6 +413,7 @@ static int usba_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 
 static int usba_ep_set_halt(struct usb_ep *_ep, int value)
 {
+	my_dbg(" [401]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 	unsigned long flags = 0;
 	int ret = 0;
@@ -444,6 +459,7 @@ static int usba_ep_set_halt(struct usb_ep *_ep, int value)
 
 static int usba_ep_fifo_status(struct usb_ep *_ep)
 {
+	my_dbg(" [446]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 
 	return USBA_BFEXT(BYTE_COUNT, usba_ep_readl(ep, STA));
@@ -451,6 +467,7 @@ static int usba_ep_fifo_status(struct usb_ep *_ep)
 
 static void usba_ep_fifo_flush(struct usb_ep *_ep)
 {
+	my_dbg(" [453]  shl_add\n");
 	struct usba_ep *ep = to_usba_ep(_ep);
 	struct usba_udc *udc = ep->udc;
 
@@ -471,6 +488,7 @@ static const struct usb_ep_ops usba_ep_ops = {
 
 static int usba_udc_get_frame(struct usb_gadget *gadget)
 {
+	my_dbg(" [473]  shl_add\n");
 	struct usba_udc *udc = to_usba_udc(gadget);
 
 	return USBA_BFEXT(FRAME_NUMBER, usba_readl(udc, FNUM));
@@ -478,6 +496,7 @@ static int usba_udc_get_frame(struct usb_gadget *gadget)
 
 static int usba_udc_wakeup(struct usb_gadget *gadget)
 {
+	my_dbg(" [480]  shl_add\n");
 	struct usba_udc *udc = to_usba_udc(gadget);
 	unsigned long flags = 0;
 	u32 ctrl;
@@ -497,6 +516,7 @@ static int usba_udc_wakeup(struct usb_gadget *gadget)
 static int
 usba_udc_set_selfpowered(struct usb_gadget *gadget, int is_selfpowered)
 {
+	my_dbg(" [499]  shl_add\n");
 	struct usba_udc *udc = to_usba_udc(gadget);
 	unsigned long flags = 0;
 
@@ -531,6 +551,7 @@ static struct usb_endpoint_descriptor usba_ep0_desc = {
  */
 static void reset_all_endpoints(struct usba_udc *udc)
 {
+	my_dbg(" [533]  shl_add\n");
 	struct usba_ep *ep;
 	struct usba_request *req, *tmp_req;
 
@@ -559,6 +580,7 @@ static void reset_all_endpoints(struct usba_udc *udc)
 
 static struct usba_ep *get_ep_by_addr(struct usba_udc *udc, u16 wIndex)
 {
+	my_dbg(" [561]  shl_add\n");
 	struct usba_ep *ep;
 
 	if ((wIndex & USB_ENDPOINT_NUMBER_MASK) == 0)
@@ -583,12 +605,14 @@ static struct usba_ep *get_ep_by_addr(struct usba_udc *udc, u16 wIndex)
 /* Called with interrupts disabled and udc->lock held */
 static inline void set_protocol_stall(struct usba_udc *udc, struct usba_ep *ep)
 {
+	my_dbg(" [585]  shl_add\n");
 	usba_ep_writel(ep, SET_STA, USBA_FORCE_STALL);
 	ep->state = WAIT_FOR_SETUP;
 }
 
 static inline int is_stalled(struct usba_udc *udc, struct usba_ep *ep)
 {
+	my_dbg(" [591]  shl_add\n");
 	if (usba_ep_readl(ep, STA) & USBA_FORCE_STALL)
 		return 1;
 	return 0;
@@ -596,6 +620,7 @@ static inline int is_stalled(struct usba_udc *udc, struct usba_ep *ep)
 
 static inline void set_address(struct usba_udc *udc, unsigned int addr)
 {
+	my_dbg(" [598]  shl_add\n");
 	u32 regval;
 
 	DBG(DBG_BUS, "setting address %u...\n", addr);
@@ -606,6 +631,7 @@ static inline void set_address(struct usba_udc *udc, unsigned int addr)
 
 static int do_test_mode(struct usba_udc *udc)
 {
+	my_dbg(" [608]  shl_add\n");
 	static const char test_packet_buffer[] = {
 		/* JKJKJKJK * 9 */
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -692,6 +718,7 @@ static int do_test_mode(struct usba_udc *udc)
 /* Avoid overly long expressions */
 static inline bool feature_is_dev_remote_wakeup(struct usb_ctrlrequest *crq)
 {
+	my_dbg(" [694]  shl_add\n");
 	if (crq->wValue == cpu_to_le16(USB_DEVICE_REMOTE_WAKEUP))
 		return true;
 	return false;
@@ -699,6 +726,7 @@ static inline bool feature_is_dev_remote_wakeup(struct usb_ctrlrequest *crq)
 
 static inline bool feature_is_dev_test_mode(struct usb_ctrlrequest *crq)
 {
+	my_dbg(" [701]  shl_add\n");
 	if (crq->wValue == cpu_to_le16(USB_DEVICE_TEST_MODE))
 		return true;
 	return false;
@@ -706,6 +734,7 @@ static inline bool feature_is_dev_test_mode(struct usb_ctrlrequest *crq)
 
 static inline bool feature_is_ep_halt(struct usb_ctrlrequest *crq)
 {
+	my_dbg(" [708]  shl_add\n");
 	if (crq->wValue == cpu_to_le16(USB_ENDPOINT_HALT))
 		return true;
 	return false;
@@ -714,6 +743,7 @@ static inline bool feature_is_ep_halt(struct usb_ctrlrequest *crq)
 static int handle_ep0_setup(struct usba_udc *udc, struct usba_ep *ep,
 		struct usb_ctrlrequest *crq)
 {
+	my_dbg(" [716]  shl_add\n");
 	int retval = 0;
 
 	switch (crq->bRequest) {
@@ -841,6 +871,7 @@ stall:
 
 static void usba_control_irq(struct usba_udc *udc, struct usba_ep *ep)
 {
+	my_dbg(" [843]  shl_add\n");
 	struct usba_request *req;
 	u32 epstatus;
 	u32 epctrl;
@@ -1023,6 +1054,7 @@ restart:
 
 static void usba_ep_irq(struct usba_udc *udc, struct usba_ep *ep)
 {
+	my_dbg(" [1025]  shl_add\n");
 	struct usba_request *req;
 	u32 epstatus;
 	u32 epctrl;
@@ -1066,6 +1098,7 @@ static void usba_ep_irq(struct usba_udc *udc, struct usba_ep *ep)
 
 static int usba_udc_irq(struct usba_udc *udc)
 {
+	my_dbg(" [1068]  shl_add\n");
 	u32 status, ep_status;
 
 	spin_lock(&udc->lock);
@@ -1162,6 +1195,7 @@ static int usba_udc_irq(struct usba_udc *udc)
 
 static int atmel_usba_start(struct usba_udc *udc)
 {
+	my_dbg(" [1164]  shl_add\n");
 	udc->devstatus = 1 << USB_DEVICE_SELF_POWERED;
 
 	udc->vbus_prev = 0;
@@ -1177,6 +1211,7 @@ static int atmel_usba_start(struct usba_udc *udc)
 
 static int atmel_usba_stop(struct usba_udc *udc)
 {
+	my_dbg(" [1179]  shl_add\n");
 	udc->gadget.speed = USB_SPEED_UNKNOWN;
 	reset_all_endpoints(udc);
 
@@ -1200,6 +1235,7 @@ static struct usba_udc controller = {
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [1202]  shl_add\n");
 	struct usba_udc *udc = &controller;
 
 	return usba_udc_irq(udc);
@@ -1208,6 +1244,7 @@ int usb_gadget_handle_interrupts(int index)
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1210]  shl_add\n");
 	struct usba_udc *udc = &controller;
 	int ret;
 
@@ -1236,6 +1273,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1238]  shl_add\n");
 	struct usba_udc *udc = &controller;
 
 	if (!driver || !driver->unbind || !driver->disconnect) {
@@ -1255,6 +1293,7 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 static struct usba_ep *usba_udc_pdata(struct usba_platform_data *pdata,
 				      struct usba_udc *udc)
 {
+	my_dbg(" [1257]  shl_add\n");
 	struct usba_ep *eps;
 	int i;
 
@@ -1294,6 +1333,7 @@ static struct usba_ep *usba_udc_pdata(struct usba_platform_data *pdata,
 
 int usba_udc_probe(struct usba_platform_data *pdata)
 {
+	my_dbg(" [1296]  shl_add\n");
 	struct usba_udc *udc;
 
 	udc = &controller;
@@ -1302,3 +1342,4 @@ int usba_udc_probe(struct usba_platform_data *pdata)
 
 	return 0;
 }
+

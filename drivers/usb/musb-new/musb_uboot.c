@@ -28,6 +28,7 @@ struct musb_host_data musb_host;
 
 static void musb_host_complete_urb(struct urb *urb)
 {
+	my_dbg(" [30]  shl_add\n");
 	urb->dev->status &= ~USB_ST_NOT_PROC;
 	urb->dev->act_len = urb->actual_length;
 }
@@ -37,6 +38,7 @@ static void construct_urb(struct urb *urb, struct usb_host_endpoint *hep,
 			  unsigned long pipe, void *buffer, int len,
 			  struct devrequest *setup, int interval)
 {
+	my_dbg(" [39]  shl_add\n");
 	int epnum = usb_pipeendpoint(pipe);
 	int is_in = usb_pipein(pipe);
 
@@ -65,6 +67,7 @@ static void construct_urb(struct urb *urb, struct usb_host_endpoint *hep,
 
 static int submit_urb(struct usb_hcd *hcd, struct urb *urb)
 {
+	my_dbg(" [67]  shl_add\n");
 	struct musb *host = hcd->hcd_priv;
 	int ret;
 	unsigned long timeout;
@@ -93,6 +96,7 @@ static int _musb_submit_control_msg(struct musb_host_data *host,
 	struct usb_device *dev, unsigned long pipe,
 	void *buffer, int len, struct devrequest *setup)
 {
+	my_dbg(" [95]  shl_add\n");
 	construct_urb(&host->urb, &host->hep, dev, USB_ENDPOINT_XFER_CONTROL,
 		      pipe, buffer, len, setup, 0);
 
@@ -106,6 +110,7 @@ static int _musb_submit_control_msg(struct musb_host_data *host,
 static int _musb_submit_bulk_msg(struct musb_host_data *host,
 	struct usb_device *dev, unsigned long pipe, void *buffer, int len)
 {
+	my_dbg(" [108]  shl_add\n");
 	construct_urb(&host->urb, &host->hep, dev, USB_ENDPOINT_XFER_BULK,
 		      pipe, buffer, len, NULL, 0);
 	return submit_urb(&host->hcd, &host->urb);
@@ -115,6 +120,7 @@ static int _musb_submit_int_msg(struct musb_host_data *host,
 	struct usb_device *dev, unsigned long pipe,
 	void *buffer, int len, int interval, bool nonblock)
 {
+	my_dbg(" [117]  shl_add\n");
 	construct_urb(&host->urb, &host->hep, dev, USB_ENDPOINT_XFER_INT, pipe,
 		      buffer, len, NULL, interval);
 	return submit_urb(&host->hcd, &host->urb);
@@ -124,6 +130,7 @@ static struct int_queue *_musb_create_int_queue(struct musb_host_data *host,
 	struct usb_device *dev, unsigned long pipe, int queuesize,
 	int elementsize, void *buffer, int interval)
 {
+	my_dbg(" [126]  shl_add\n");
 	struct int_queue *queue;
 	int ret, index = usb_pipein(pipe) * 16 + usb_pipeendpoint(pipe);
 
@@ -158,6 +165,7 @@ static struct int_queue *_musb_create_int_queue(struct musb_host_data *host,
 static int _musb_destroy_int_queue(struct musb_host_data *host,
 	struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [160]  shl_add\n");
 	int index = usb_pipein(queue->urb.pipe) * 16 + 
 		    usb_pipeendpoint(queue->urb.pipe);
 
@@ -172,6 +180,7 @@ static int _musb_destroy_int_queue(struct musb_host_data *host,
 static void *_musb_poll_int_queue(struct musb_host_data *host,
 	struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [174]  shl_add\n");
 	if (queue->urb.status != -EINPROGRESS)
 		return NULL; /* URB has already completed in a prev. poll */
 
@@ -186,6 +195,7 @@ static void *_musb_poll_int_queue(struct musb_host_data *host,
 static int _musb_reset_root_port(struct musb_host_data *host,
 	struct usb_device *dev)
 {
+	my_dbg(" [188]  shl_add\n");
 	void *mbase = host->host->mregs;
 	u8 power;
 
@@ -218,6 +228,7 @@ static int _musb_reset_root_port(struct musb_host_data *host,
 
 int musb_lowlevel_init(struct musb_host_data *host)
 {
+	my_dbg(" [220]  shl_add\n");
 	void *mbase;
 	/* USB spec says it may take up to 1 second for a device to connect */
 	unsigned long timeout = get_timer(0) + 1000;
@@ -252,6 +263,7 @@ int musb_lowlevel_init(struct musb_host_data *host)
 #if !CONFIG_IS_ENABLED(DM_USB)
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [254]  shl_add\n");
 	if (!musb_host.host) {
 		printf("MUSB host is not registered\n");
 		return -ENODEV;
@@ -264,18 +276,21 @@ int usb_lowlevel_stop(int index)
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
 			    void *buffer, int length)
 {
+	my_dbg(" [266]  shl_add\n");
 	return _musb_submit_bulk_msg(&musb_host, dev, pipe, buffer, length);
 }
 
 int submit_control_msg(struct usb_device *dev, unsigned long pipe,
 		       void *buffer, int length, struct devrequest *setup)
 {
+	my_dbg(" [272]  shl_add\n");
 	return _musb_submit_control_msg(&musb_host, dev, pipe, buffer, length, setup);
 }
 
 int submit_int_msg(struct usb_device *dev, unsigned long pipe,
 		   void *buffer, int length, int interval, bool nonblock)
 {
+	my_dbg(" [278]  shl_add\n");
 	return _musb_submit_int_msg(&musb_host, dev, pipe, buffer, length,
 				    interval, nonblock);
 }
@@ -284,27 +299,32 @@ struct int_queue *create_int_queue(struct usb_device *dev,
 		unsigned long pipe, int queuesize, int elementsize,
 		void *buffer, int interval)
 {
+	my_dbg(" [286]  shl_add\n");
 	return _musb_create_int_queue(&musb_host, dev, pipe, queuesize, elementsize,
 				      buffer, interval);
 }
 
 void *poll_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [292]  shl_add\n");
 	return _musb_poll_int_queue(&musb_host, dev, queue);
 }
 
 int destroy_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [297]  shl_add\n");
 	return _musb_destroy_int_queue(&musb_host, dev, queue);
 }
 
 int usb_reset_root_port(struct usb_device *dev)
 {
+	my_dbg(" [302]  shl_add\n");
 	return _musb_reset_root_port(&musb_host, dev);
 }
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [307]  shl_add\n");
 	return musb_lowlevel_init(&musb_host);
 }
 #endif /* !CONFIG_IS_ENABLED(DM_USB) */
@@ -314,6 +334,7 @@ static int musb_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 				   unsigned long pipe, void *buffer, int length,
 				   struct devrequest *setup)
 {
+	my_dbg(" [316]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_submit_control_msg(host, udev, pipe, buffer, length, setup);
 }
@@ -321,6 +342,7 @@ static int musb_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 static int musb_submit_bulk_msg(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [323]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_submit_bulk_msg(host, udev, pipe, buffer, length);
 }
@@ -329,6 +351,7 @@ static int musb_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length,
 			       int interval, bool nonblock)
 {
+	my_dbg(" [331]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_submit_int_msg(host, udev, pipe, buffer, length, interval,
 				    nonblock);
@@ -338,6 +361,7 @@ static struct int_queue *musb_create_int_queue(struct udevice *dev,
 		struct usb_device *udev, unsigned long pipe, int queuesize,
 		int elementsize, void *buffer, int interval)
 {
+	my_dbg(" [340]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_create_int_queue(host, udev, pipe, queuesize, elementsize,
 				      buffer, interval);
@@ -346,6 +370,7 @@ static struct int_queue *musb_create_int_queue(struct udevice *dev,
 static void *musb_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 				 struct int_queue *queue)
 {
+	my_dbg(" [348]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_poll_int_queue(host, udev, queue);
 }
@@ -353,12 +378,14 @@ static void *musb_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 static int musb_destroy_int_queue(struct udevice *dev, struct usb_device *udev,
 				  struct int_queue *queue)
 {
+	my_dbg(" [355]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_destroy_int_queue(host, udev, queue);
 }
 
 static int musb_reset_root_port(struct udevice *dev, struct usb_device *udev)
 {
+	my_dbg(" [361]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	return _musb_reset_root_port(host, udev);
 }
@@ -380,6 +407,7 @@ static struct musb *gadget;
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [382]  shl_add\n");
 	WATCHDOG_RESET();
 	if (!gadget || !gadget->isr)
 		return -EINVAL;
@@ -389,6 +417,7 @@ int usb_gadget_handle_interrupts(int index)
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [391]  shl_add\n");
 	int ret;
 
 	if (!driver || driver->speed < USB_SPEED_FULL || !driver->bind ||
@@ -419,6 +448,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [421]  shl_add\n");
 	if (driver->disconnect)
 		driver->disconnect(&gadget->g);
 	if (driver->unbind)
@@ -430,6 +460,7 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 int musb_register(struct musb_hdrc_platform_data *plat, void *bdata,
 			void *ctl_regs)
 {
+	my_dbg(" [432]  shl_add\n");
 	struct musb **musbp;
 
 	switch (plat->mode) {
@@ -455,3 +486,4 @@ int musb_register(struct musb_hdrc_platform_data *plat, void *bdata,
 
 	return 0;
 }
+

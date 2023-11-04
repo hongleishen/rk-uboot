@@ -52,6 +52,7 @@ static int ep_matches(
 	struct usb_endpoint_descriptor	*desc
 )
 {
+	my_dbg(" [54]  shl_add\n");
 	u8		type;
 	const char	*tmp;
 	u16		max;
@@ -176,6 +177,7 @@ static int ep_matches(
 static struct usb_ep *
 find_ep(struct usb_gadget *gadget, const char *name)
 {
+	my_dbg(" [178]  shl_add\n");
 	struct usb_ep	*ep;
 
 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
@@ -220,6 +222,7 @@ struct usb_ep *usb_ep_autoconfig(
 	struct usb_endpoint_descriptor	*desc
 )
 {
+	my_dbg(" [222]  shl_add\n");
 	struct usb_ep	*ep = NULL;
 	u8		type;
 
@@ -309,6 +312,7 @@ struct usb_ep *usb_ep_autoconfig(
  */
 void usb_ep_autoconfig_reset(struct usb_gadget *gadget)
 {
+	my_dbg(" [311]  shl_add\n");
 	struct usb_ep	*ep;
 
 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
@@ -319,3 +323,4 @@ void usb_ep_autoconfig_reset(struct usb_gadget *gadget)
 #endif
 	epnum = 0;
 }
+

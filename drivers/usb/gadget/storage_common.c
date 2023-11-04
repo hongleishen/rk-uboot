@@ -297,6 +297,7 @@ struct fsg_lun {
 #if 0
 static struct fsg_lun *fsg_lun_from_dev(struct device *dev)
 {
+	my_dbg(" [299]  shl_add\n");
 	return container_of(dev, struct fsg_lun, dev);
 }
 #endif
@@ -369,6 +370,7 @@ enum data_direction {
 
 static inline u32 get_unaligned_be24(u8 *buf)
 {
+	my_dbg(" [371]  shl_add\n");
 	return 0xffffff & (u32) get_unaligned_be32(buf - 1);
 }
 
@@ -572,6 +574,7 @@ fsg_ep_desc(struct usb_gadget *g, struct usb_endpoint_descriptor *fs,
 	    struct usb_ss_ep_comp_descriptor *comp_desc,
 	    struct usb_ep *ep)
 {
+	my_dbg(" [574]  shl_add\n");
 	struct usb_endpoint_descriptor *speed_desc = NULL;
 
 	/* select desired speed */
@@ -629,6 +632,7 @@ static struct usb_gadget_strings	fsg_stringtab = {
 static int fsg_lun_open(struct fsg_lun *curlun, unsigned int num_sectors,
 			const char *filename)
 {
+	my_dbg(" [631]  shl_add\n");
 	int				ro;
 
 	/* R/W if we can, R/O if we must */
@@ -644,6 +648,7 @@ static int fsg_lun_open(struct fsg_lun *curlun, unsigned int num_sectors,
 
 static void fsg_lun_close(struct fsg_lun *curlun)
 {
+	my_dbg(" [646]  shl_add\n");
 }
 
 /*-------------------------------------------------------------------------*/
@@ -654,11 +659,13 @@ static void fsg_lun_close(struct fsg_lun *curlun)
  */
 static int fsg_lun_fsync_sub(struct fsg_lun *curlun)
 {
+	my_dbg(" [656]  shl_add\n");
 	return 0;
 }
 
 static void store_cdrom_address(u8 *dest, int msf, u32 addr)
 {
+	my_dbg(" [661]  shl_add\n");
 	if (msf) {
 		/* Convert to Minutes-Seconds-Frames */
 		addr >>= 2;		/* Convert to 2048-byte frames */
@@ -676,3 +683,4 @@ static void store_cdrom_address(u8 *dest, int msf, u32 addr)
 }
 
 /*-------------------------------------------------------------------------*/
+

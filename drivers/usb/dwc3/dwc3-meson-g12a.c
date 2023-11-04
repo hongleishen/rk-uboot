@@ -125,6 +125,7 @@ struct dwc3_meson_g12a {
 static void dwc3_meson_g12a_usb2_set_mode(struct dwc3_meson_g12a *priv,
 					  int i, enum usb_dr_mode mode)
 {
+	my_dbg(" [127]  shl_add\n");
 	switch (mode) {
 	case USB_DR_MODE_HOST:
 	case USB_DR_MODE_OTG:
@@ -143,6 +144,7 @@ static void dwc3_meson_g12a_usb2_set_mode(struct dwc3_meson_g12a *priv,
 
 static int dwc3_meson_g12a_usb2_init(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [145]  shl_add\n");
 	int i;
 
 	if (priv->otg_mode == USB_DR_MODE_PERIPHERAL)
@@ -179,6 +181,7 @@ static int dwc3_meson_g12a_usb2_init(struct dwc3_meson_g12a *priv)
 
 static void dwc3_meson_g12a_usb3_init(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [181]  shl_add\n");
 	regmap_update_bits(priv->regmap, USB_R3,
 			USB_R3_P30_SSC_RANGE_MASK |
 			USB_R3_P30_REF_SSP_EN,
@@ -208,6 +211,7 @@ static void dwc3_meson_g12a_usb3_init(struct dwc3_meson_g12a *priv)
 
 static void dwc3_meson_g12a_usb_init_mode(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [210]  shl_add\n");
 	if (priv->otg_phy_mode == USB_DR_MODE_PERIPHERAL) {
 		regmap_update_bits(priv->regmap, USB_R0,
 				USB_R0_U2D_ACT, USB_R0_U2D_ACT);
@@ -225,6 +229,7 @@ static void dwc3_meson_g12a_usb_init_mode(struct dwc3_meson_g12a *priv)
 
 static int dwc3_meson_g12a_usb_init(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [227]  shl_add\n");
 	int ret;
 
 	ret = dwc3_meson_g12a_usb2_init(priv);
@@ -256,6 +261,7 @@ static int dwc3_meson_g12a_usb_init(struct dwc3_meson_g12a *priv)
 
 int dwc3_meson_g12a_force_mode(struct udevice *dev, enum usb_dr_mode mode)
 {
+	my_dbg(" [258]  shl_add\n");
 	struct dwc3_meson_g12a *priv = dev_get_platdata(dev);
 
 	if (!priv)
@@ -294,6 +300,7 @@ int dwc3_meson_g12a_force_mode(struct udevice *dev, enum usb_dr_mode mode)
 
 static int dwc3_meson_g12a_get_phys(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [296]  shl_add\n");
 	int i, ret;
 
 	for (i = 0 ; i < PHY_COUNT ; ++i) {
@@ -319,6 +326,7 @@ static int dwc3_meson_g12a_get_phys(struct dwc3_meson_g12a *priv)
 
 static int dwc3_meson_g12a_reset_init(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [321]  shl_add\n");
 	int ret;
 
 	ret = reset_get_by_index(priv->dev, 0, &priv->reset);
@@ -338,6 +346,7 @@ static int dwc3_meson_g12a_reset_init(struct dwc3_meson_g12a *priv)
 
 static int dwc3_meson_g12a_clk_init(struct dwc3_meson_g12a *priv)
 {
+	my_dbg(" [340]  shl_add\n");
 	int ret;
 
 	ret = clk_get_by_index(priv->dev, 0, &priv->clk);
@@ -357,6 +366,7 @@ static int dwc3_meson_g12a_clk_init(struct dwc3_meson_g12a *priv)
 
 static int dwc3_meson_g12a_probe(struct udevice *dev)
 {
+	my_dbg(" [359]  shl_add\n");
 	struct dwc3_meson_g12a *priv = dev_get_platdata(dev);
 	int ret, i;
 
@@ -423,6 +433,7 @@ err_phy_init:
 
 static int dwc3_meson_g12a_remove(struct udevice *dev)
 {
+	my_dbg(" [425]  shl_add\n");
 	struct dwc3_meson_g12a *priv = dev_get_platdata(dev);
 	int i;
 
@@ -454,3 +465,4 @@ U_BOOT_DRIVER(dwc3_generic_wrapper) = {
 	.platdata_auto_alloc_size = sizeof(struct dwc3_meson_g12a),
 
 };
+

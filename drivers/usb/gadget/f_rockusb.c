@@ -75,6 +75,7 @@ static int rkusb_rst_code; /* The subcode in reset command (0xFF) */
 
 int g_dnl_bind_fixup(struct usb_device_descriptor *dev, const char *name)
 {
+	my_dbg(" [77]  shl_add\n");
 	if (IS_RKUSB_UMS_DNL(name)) {
 		/* Fix to Rockchip's VID and PID */
 		dev->idVendor  = __constant_cpu_to_le16(0x2207);
@@ -102,6 +103,7 @@ int g_dnl_bind_fixup(struct usb_device_descriptor *dev, const char *name)
 __maybe_unused
 static inline void dump_cbw(struct fsg_bulk_cb_wrap *cbw)
 {
+	my_dbg(" [104]  shl_add\n");
 	assert(!cbw);
 
 	debug("%s:\n", __func__);
@@ -119,6 +121,7 @@ static inline void dump_cbw(struct fsg_bulk_cb_wrap *cbw)
 
 static int rkusb_check_lun(struct fsg_common *common)
 {
+	my_dbg(" [121]  shl_add\n");
 	struct fsg_lun *curlun;
 
 	/* Check the LUN */
@@ -148,6 +151,7 @@ static int rkusb_check_lun(struct fsg_common *common)
 
 static void __do_reset(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [150]  shl_add\n");
 	u32 boot_flag = BOOT_NORMAL;
 
 	if (rkusb_rst_code == 0x03)
@@ -162,6 +166,7 @@ static void __do_reset(struct usb_ep *ep, struct usb_request *req)
 static int rkusb_do_reset(struct fsg_common *common,
 			  struct fsg_buffhd *bh)
 {
+	my_dbg(" [164]  shl_add\n");
 	common->data_size_from_cmnd = common->cmnd[4];
 	common->residue = 0;
 	bh->inreq->complete = __do_reset;
@@ -174,6 +179,7 @@ static int rkusb_do_reset(struct fsg_common *common,
 static int rkusb_do_test_unit_ready(struct fsg_common *common,
 				    struct fsg_buffhd *bh)
 {
+	my_dbg(" [176]  shl_add\n");
 	common->residue = 0x06 << 24; /* Max block xfer support from host */
 	common->data_dir = DATA_DIR_NONE;
 	bh->state = BUF_STATE_EMPTY;
@@ -184,6 +190,7 @@ static int rkusb_do_test_unit_ready(struct fsg_common *common,
 static int rkusb_do_read_flash_id(struct fsg_common *common,
 				  struct fsg_buffhd *bh)
 {
+	my_dbg(" [186]  shl_add\n");
 	u8 *buf = (u8 *)bh->buf;
 	u32 len = 5;
 	enum if_type type = ums[common->lun].block_dev.if_type;
@@ -205,6 +212,7 @@ static int rkusb_do_read_flash_id(struct fsg_common *common,
 static int rkusb_do_test_bad_block(struct fsg_common *common,
 				   struct fsg_buffhd *bh)
 {
+	my_dbg(" [207]  shl_add\n");
 	u8 *buf = (u8 *)bh->buf;
 	u32 len = 64;
 
@@ -220,6 +228,7 @@ static int rkusb_do_test_bad_block(struct fsg_common *common,
 static int rkusb_do_read_flash_info(struct fsg_common *common,
 				    struct fsg_buffhd *bh)
 {
+	my_dbg(" [222]  shl_add\n");
 	struct blk_desc *desc = &ums[common->lun].block_dev;
 	u8 *buf = (u8 *)bh->buf;
 	u32 len = sizeof(struct rk_flash_info);
@@ -274,6 +283,7 @@ static int rkusb_do_read_flash_info(struct fsg_common *common,
 static int rkusb_do_get_chip_info(struct fsg_common *common,
 				  struct fsg_buffhd *bh)
 {
+	my_dbg(" [276]  shl_add\n");
 	u8 *buf = (u8 *)bh->buf;
 	u32 len = common->data_size;
 	u32 chip_info[4];
@@ -293,6 +303,7 @@ static int rkusb_do_get_chip_info(struct fsg_common *common,
 static int rkusb_do_lba_erase(struct fsg_common *common,
 			      struct fsg_buffhd *bh)
 {
+	my_dbg(" [295]  shl_add\n");
 	struct fsg_lun *curlun = &common->luns[common->lun];
 	u32 lba, amount;
 	loff_t file_offset;
@@ -332,6 +343,7 @@ out:
 static int rkusb_do_erase_force(struct fsg_common *common,
 				struct fsg_buffhd *bh)
 {
+	my_dbg(" [334]  shl_add\n");
 	struct blk_desc *desc = &ums[common->lun].block_dev;
 	struct fsg_lun *curlun = &common->luns[common->lun];
 	u16 block_size = ROCKCHIP_FLASH_BLOCK_SIZE;
@@ -386,6 +398,7 @@ out:
 #ifdef CONFIG_ROCKCHIP_VENDOR_PARTITION
 static int rkusb_do_vs_write(struct fsg_common *common)
 {
+	my_dbg(" [388]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	u16			type = get_unaligned_be16(&common->cmnd[4]);
 	struct vendor_item	*vhead;
@@ -545,6 +558,7 @@ wait:
 
 static int rkusb_do_vs_read(struct fsg_common *common)
 {
+	my_dbg(" [547]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	u16			type = get_unaligned_be16(&common->cmnd[4]);
 	struct vendor_item	*vhead;
@@ -629,6 +643,7 @@ static int rkusb_do_vs_read(struct fsg_common *common)
 static int rkusb_do_get_storage_info(struct fsg_common *common,
 				     struct fsg_buffhd *bh)
 {
+	my_dbg(" [631]  shl_add\n");
 	enum if_type type = ums[common->lun].block_dev.if_type;
 	int devnum = ums[common->lun].block_dev.devnum;
 	u32 media = BOOT_TYPE_UNKNOWN;
@@ -682,6 +697,7 @@ static int rkusb_do_get_storage_info(struct fsg_common *common,
 static int rkusb_do_read_capacity(struct fsg_common *common,
 				  struct fsg_buffhd *bh)
 {
+	my_dbg(" [684]  shl_add\n");
 	u8 *buf = (u8 *)bh->buf;
 	u32 len = common->data_size;
 	enum if_type type = ums[common->lun].block_dev.if_type;
@@ -731,6 +747,7 @@ static int rkusb_do_read_capacity(struct fsg_common *common,
 static void rkusb_fixup_cbwcb(struct fsg_common *common,
 			      struct fsg_buffhd *bh)
 {
+	my_dbg(" [733]  shl_add\n");
 	struct usb_request      *req = bh->outreq;
 	struct fsg_bulk_cb_wrap *cbw = req->buf;
 
@@ -756,6 +773,7 @@ static void rkusb_fixup_cbwcb(struct fsg_common *common,
 static int rkusb_cmd_process(struct fsg_common *common,
 			     struct fsg_buffhd *bh, int *reply)
 {
+	my_dbg(" [758]  shl_add\n");
 	struct usb_request	*req = bh->outreq;
 	struct fsg_bulk_cb_wrap	*cbw = req->buf;
 	int rc;
@@ -870,3 +888,4 @@ static int rkusb_cmd_process(struct fsg_common *common,
 }
 
 DECLARE_GADGET_BIND_CALLBACK(rkusb_ums_dnl, fsg_add);
+

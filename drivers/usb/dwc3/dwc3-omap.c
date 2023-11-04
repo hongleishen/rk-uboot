@@ -138,22 +138,26 @@ static LIST_HEAD(dwc3_omap_list);
 
 static inline u32 dwc3_omap_readl(void __iomem *base, u32 offset)
 {
+	my_dbg(" [140]  shl_add\n");
 	return readl(base + offset);
 }
 
 static inline void dwc3_omap_writel(void __iomem *base, u32 offset, u32 value)
 {
+	my_dbg(" [145]  shl_add\n");
 	writel(value, base + offset);
 }
 
 static u32 dwc3_omap_read_utmi_status(struct dwc3_omap *omap)
 {
+	my_dbg(" [150]  shl_add\n");
 	return dwc3_omap_readl(omap->base, USBOTGSS_UTMI_OTG_STATUS +
 							omap->utmi_otg_offset);
 }
 
 static void dwc3_omap_write_utmi_status(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [156]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_UTMI_OTG_STATUS +
 					omap->utmi_otg_offset, value);
 
@@ -161,12 +165,14 @@ static void dwc3_omap_write_utmi_status(struct dwc3_omap *omap, u32 value)
 
 static u32 dwc3_omap_read_irq0_status(struct dwc3_omap *omap)
 {
+	my_dbg(" [163]  shl_add\n");
 	return dwc3_omap_readl(omap->base, USBOTGSS_IRQSTATUS_0 -
 						omap->irq0_offset);
 }
 
 static void dwc3_omap_write_irq0_status(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [169]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQSTATUS_0 -
 						omap->irq0_offset, value);
 
@@ -174,12 +180,14 @@ static void dwc3_omap_write_irq0_status(struct dwc3_omap *omap, u32 value)
 
 static u32 dwc3_omap_read_irqmisc_status(struct dwc3_omap *omap)
 {
+	my_dbg(" [176]  shl_add\n");
 	return dwc3_omap_readl(omap->base, USBOTGSS_IRQSTATUS_MISC +
 						omap->irqmisc_offset);
 }
 
 static void dwc3_omap_write_irqmisc_status(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [182]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQSTATUS_MISC +
 					omap->irqmisc_offset, value);
 
@@ -187,6 +195,7 @@ static void dwc3_omap_write_irqmisc_status(struct dwc3_omap *omap, u32 value)
 
 static void dwc3_omap_write_irqmisc_set(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [189]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQENABLE_SET_MISC +
 						omap->irqmisc_offset, value);
 
@@ -194,18 +203,21 @@ static void dwc3_omap_write_irqmisc_set(struct dwc3_omap *omap, u32 value)
 
 static void dwc3_omap_write_irq0_set(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [196]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQENABLE_SET_0 -
 						omap->irq0_offset, value);
 }
 
 static void dwc3_omap_write_irqmisc_clr(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [202]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQENABLE_CLR_MISC +
 						omap->irqmisc_offset, value);
 }
 
 static void dwc3_omap_write_irq0_clr(struct dwc3_omap *omap, u32 value)
 {
+	my_dbg(" [208]  shl_add\n");
 	dwc3_omap_writel(omap->base, USBOTGSS_IRQENABLE_CLR_0 -
 						omap->irq0_offset, value);
 }
@@ -213,6 +225,7 @@ static void dwc3_omap_write_irq0_clr(struct dwc3_omap *omap, u32 value)
 static void dwc3_omap_set_mailbox(struct dwc3_omap *omap,
 	enum omap_dwc3_vbus_id_status status)
 {
+	my_dbg(" [215]  shl_add\n");
 	u32	val;
 
 	switch (status) {
@@ -260,6 +273,7 @@ static void dwc3_omap_set_mailbox(struct dwc3_omap *omap,
 
 static irqreturn_t dwc3_omap_interrupt(int irq, void *_omap)
 {
+	my_dbg(" [262]  shl_add\n");
 	struct dwc3_omap	*omap = _omap;
 	u32			reg;
 
@@ -308,6 +322,7 @@ static irqreturn_t dwc3_omap_interrupt(int irq, void *_omap)
 
 static void dwc3_omap_enable_irqs(struct dwc3_omap *omap)
 {
+	my_dbg(" [310]  shl_add\n");
 	/* enable all IRQs */
 	dwc3_omap_write_irq0_set(omap, USBOTGSS_IRQO_COREIRQ_ST);
 
@@ -316,6 +331,7 @@ static void dwc3_omap_enable_irqs(struct dwc3_omap *omap)
 
 static void dwc3_omap_disable_irqs(struct dwc3_omap *omap)
 {
+	my_dbg(" [318]  shl_add\n");
 	/* disable all IRQs */
 	dwc3_omap_write_irq0_clr(omap, USBOTGSS_IRQO_COREIRQ_ST);
 
@@ -324,6 +340,7 @@ static void dwc3_omap_disable_irqs(struct dwc3_omap *omap)
 
 static void dwc3_omap_map_offset(struct dwc3_omap *omap)
 {
+	my_dbg(" [326]  shl_add\n");
 	/*
 	 * Differentiate between OMAP5 and AM437x.
 	 *
@@ -343,6 +360,7 @@ static void dwc3_omap_map_offset(struct dwc3_omap *omap)
 
 static void dwc3_omap_set_utmi_mode(struct dwc3_omap *omap, int utmi_mode)
 {
+	my_dbg(" [345]  shl_add\n");
 	u32			reg;
 
 	reg = dwc3_omap_read_utmi_status(omap);
@@ -374,6 +392,7 @@ static void dwc3_omap_set_utmi_mode(struct dwc3_omap *omap, int utmi_mode)
  */
 int dwc3_omap_uboot_init(struct dwc3_omap_device *omap_dev)
 {
+	my_dbg(" [376]  shl_add\n");
 	u32			reg;
 	struct device		*dev = NULL;
 	struct dwc3_omap	*omap;
@@ -413,6 +432,7 @@ int dwc3_omap_uboot_init(struct dwc3_omap_device *omap_dev)
  */
 void dwc3_omap_uboot_exit(int index)
 {
+	my_dbg(" [415]  shl_add\n");
 	struct dwc3_omap *omap = NULL;
 
 	list_for_each_entry(omap, &dwc3_omap_list, list) {
@@ -437,6 +457,7 @@ void dwc3_omap_uboot_exit(int index)
  */
 int dwc3_omap_uboot_interrupt_status(int index)
 {
+	my_dbg(" [439]  shl_add\n");
 	struct dwc3_omap *omap = NULL;
 
 	list_for_each_entry(omap, &dwc3_omap_list, list)
@@ -450,3 +471,4 @@ MODULE_ALIAS("platform:omap-dwc3");
 MODULE_AUTHOR("Felipe Balbi <balbi@ti.com>");
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("DesignWare USB3 OMAP Glue Layer");
+

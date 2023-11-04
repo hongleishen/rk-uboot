@@ -50,6 +50,7 @@ static const char manufacturer[] = CONFIG_USB_GADGET_MANUFACTURER;
 
 void g_dnl_set_serialnumber(char *s)
 {
+	my_dbg(" [52]  shl_add\n");
 	memset(g_dnl_serial, 0, MAX_STRING_SERIAL);
 	if (s)
 		strncpy(g_dnl_serial, s, MAX_STRING_SERIAL - 1);
@@ -93,6 +94,7 @@ static struct usb_gadget_strings *g_dnl_composite_strings[] = {
 
 static int g_dnl_unbind(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [95]  shl_add\n");
 	struct usb_gadget *gadget = cdev->gadget;
 
 	debug("%s: calling usb_gadget_disconnect for "
@@ -104,18 +106,21 @@ static int g_dnl_unbind(struct usb_composite_dev *cdev)
 
 static inline struct g_dnl_bind_callback *g_dnl_bind_callback_first(void)
 {
+	my_dbg(" [106]  shl_add\n");
 	return ll_entry_start(struct g_dnl_bind_callback,
 				g_dnl_bind_callbacks);
 }
 
 static inline struct g_dnl_bind_callback *g_dnl_bind_callback_end(void)
 {
+	my_dbg(" [112]  shl_add\n");
 	return ll_entry_end(struct g_dnl_bind_callback,
 				g_dnl_bind_callbacks);
 }
 
 static int g_dnl_do_config(struct usb_configuration *c)
 {
+	my_dbg(" [118]  shl_add\n");
 	const char *s = c->cdev->driver->name;
 	struct g_dnl_bind_callback *callback = g_dnl_bind_callback_first();
 
@@ -130,6 +135,7 @@ static int g_dnl_do_config(struct usb_configuration *c)
 
 static int g_dnl_config_register(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [132]  shl_add\n");
 	struct usb_configuration *config;
 	const char *name = "usb_dnload";
 
@@ -151,28 +157,33 @@ static int g_dnl_config_register(struct usb_composite_dev *cdev)
 __weak
 int board_usb_init(int index, enum usb_init_type init)
 {
+	my_dbg(" [153]  shl_add\n");
 	return 0;
 }
 
 __weak
 int board_usb_cleanup(int index, enum usb_init_type init)
 {
+	my_dbg(" [159]  shl_add\n");
 	return 0;
 }
 
 __weak
 int g_dnl_bind_fixup(struct usb_device_descriptor *dev, const char *name)
 {
+	my_dbg(" [165]  shl_add\n");
 	return 0;
 }
 
 __weak int g_dnl_get_board_bcd_device_number(int gcnum)
 {
+	my_dbg(" [170]  shl_add\n");
 	return gcnum;
 }
 
 __weak int g_dnl_board_usb_cable_connected(void)
 {
+	my_dbg(" [175]  shl_add\n");
 	return -EOPNOTSUPP;
 }
 
@@ -180,21 +191,25 @@ static bool g_dnl_detach_request;
 
 bool g_dnl_detach(void)
 {
+	// my_dbg(" [182]  shl_add\n");
 	return g_dnl_detach_request;
 }
 
 void g_dnl_trigger_detach(void)
 {
+	my_dbg(" [187]  shl_add\n");
 	g_dnl_detach_request = true;
 }
 
 void g_dnl_clear_detach(void)
 {
+	my_dbg(" [192]  shl_add\n");
 	g_dnl_detach_request = false;
 }
 
 static int g_dnl_get_bcd_device_number(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [197]  shl_add\n");
 	struct usb_gadget *gadget = cdev->gadget;
 	int gcnum;
 
@@ -213,6 +228,7 @@ static int g_dnl_get_bcd_device_number(struct usb_composite_dev *cdev)
 static int on_serialno(const char *name, const char *value, enum env_op op,
 		int flags)
 {
+	my_dbg(" [215]  shl_add\n");
 	g_dnl_set_serialnumber((char *)value);
 	return 0;
 }
@@ -220,6 +236,7 @@ U_BOOT_ENV_CALLBACK(serialno, on_serialno);
 
 static int g_dnl_bind(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [222]  shl_add\n");
 	struct usb_gadget *gadget = cdev->gadget;
 	int id, ret;
 	int gcnum;
@@ -291,6 +308,7 @@ static struct usb_composite_driver g_dnl_driver = {
  */
 int g_dnl_register(const char *name)
 {
+	my_dbg(" [293]  shl_add\n");
 	int ret;
 
 	debug("%s: g_dnl_driver.name = %s\n", __func__, name);
@@ -306,5 +324,7 @@ int g_dnl_register(const char *name)
 
 void g_dnl_unregister(void)
 {
+	my_dbg(" [308]  shl_add\n");
 	usb_composite_unregister(&g_dnl_driver);
 }
+

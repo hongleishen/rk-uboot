@@ -75,16 +75,19 @@ static const int cdns_ti_rate_table[] = {	/* in KHZ */
 
 static inline u32 cdns_ti_readl(struct cdns_ti *data, u32 offset)
 {
+	my_dbg(" [77]  shl_add\n");
 	return readl(data->usbss + offset);
 }
 
 static inline void cdns_ti_writel(struct cdns_ti *data, u32 offset, u32 value)
 {
+	my_dbg(" [82]  shl_add\n");
 	writel(value, data->usbss + offset);
 }
 
 static int cdns_ti_probe(struct udevice *dev)
 {
+	my_dbg(" [87]  shl_add\n");
 	struct cdns_ti *data = dev_get_platdata(dev);
 	struct clk usb2_refclk;
 	int modestrap_mode;
@@ -165,6 +168,7 @@ static int cdns_ti_probe(struct udevice *dev)
 
 static int cdns_ti_remove(struct udevice *dev)
 {
+	my_dbg(" [167]  shl_add\n");
 	struct cdns_ti *data = dev_get_platdata(dev);
 	u32 reg;
 
@@ -191,3 +195,4 @@ U_BOOT_DRIVER(cdns_ti) = {
 	.platdata_auto_alloc_size = sizeof(struct cdns_ti),
 	.flags = DM_FLAG_OS_PREPARE,
 };
+

@@ -26,6 +26,7 @@ struct musb_config musb_cfg = {
  */
 static u8 phy_on(void)
 {
+	my_dbg(" [28]  shl_add\n");
 	u32 devconf2;
 	u32 timeout;
 
@@ -54,6 +55,7 @@ static u8 phy_on(void)
  */
 static void phy_off(void)
 {
+	my_dbg(" [56]  shl_add\n");
 	u32 devconf2;
 
 	/*
@@ -71,6 +73,7 @@ static void phy_off(void)
  */
 int musb_platform_init(void)
 {
+	my_dbg(" [73]  shl_add\n");
 	u32 revision;
 	u32 sw_reset;
 
@@ -102,6 +105,7 @@ int musb_platform_init(void)
  */
 void musb_platform_deinit(void)
 {
+	my_dbg(" [104]  shl_add\n");
 	/* Turn off the phy */
 	phy_off();
 }
@@ -117,6 +121,7 @@ void musb_platform_deinit(void)
 __attribute__((weak))
 void read_fifo(u8 ep, u32 length, void *fifo_data)
 {
+	my_dbg(" [119]  shl_add\n");
 	u8  *data = (u8 *)fifo_data;
 	u32 val;
 	int i;
@@ -137,3 +142,4 @@ void read_fifo(u8 ep, u32 length, void *fifo_data)
 		memcpy(data, &val, length);
 	}
 }
+

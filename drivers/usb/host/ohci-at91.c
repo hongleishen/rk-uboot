@@ -13,6 +13,7 @@
 
 int usb_cpu_init(void)
 {
+	my_dbg(" [15]  shl_add\n");
 #ifdef CONFIG_USB_ATMEL_CLK_SEL_PLLB
 	if (at91_pllb_clk_enable(get_pllb_init()))
 		return -1;
@@ -39,6 +40,7 @@ int usb_cpu_init(void)
 
 int usb_cpu_stop(void)
 {
+	my_dbg(" [41]  shl_add\n");
 	at91_periph_clk_disable(ATMEL_ID_UHP);
 
 	at91_system_clk_disable(ATMEL_PMC_UHP);
@@ -64,7 +66,9 @@ int usb_cpu_stop(void)
 
 int usb_cpu_init_fail(void)
 {
+	my_dbg(" [66]  shl_add\n");
 	return usb_cpu_stop();
 }
 
 #endif /* defined(CONFIG_USB_OHCI) && defined(CONFIG_SYS_USB_OHCI_CPU_INIT) */
+

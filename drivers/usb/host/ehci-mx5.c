@@ -81,6 +81,7 @@
 
 int mxc_set_usbcontrol(int port, unsigned int flags)
 {
+	my_dbg(" [83]  shl_add\n");
 	unsigned int v;
 	void __iomem *usb_base = (void __iomem *)OTG_BASE_ADDR;
 	void __iomem *usbother_base;
@@ -213,16 +214,19 @@ int mxc_set_usbcontrol(int port, unsigned int flags)
 
 int __weak board_ehci_hcd_init(int port)
 {
+	my_dbg(" [215]  shl_add\n");
 	return 0;
 }
 
 void __weak board_ehci_hcd_postinit(struct usb_ehci *ehci, int port)
 {
+	my_dbg(" [220]  shl_add\n");
 }
 
 __weak void mx5_ehci_powerup_fixup(struct ehci_ctrl *ctrl, uint32_t *status_reg,
 				   uint32_t *reg)
 {
+	my_dbg(" [225]  shl_add\n");
 	mdelay(50);
 }
 
@@ -234,6 +238,7 @@ static const struct ehci_ops mx5_ehci_ops = {
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [236]  shl_add\n");
 	struct usb_ehci *ehci;
 
 	/* The only user for this is efikamx-usb */
@@ -269,6 +274,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [271]  shl_add\n");
 	return 0;
 }
 #else /* CONFIG_IS_ENABLED(DM_USB) */
@@ -286,6 +292,7 @@ static const struct ehci_ops mx5_ehci_ops = {
 
 static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [288]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	const char *mode;
 
@@ -304,6 +311,7 @@ static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [306]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct usb_ehci *ehci = (struct usb_ehci *)devfdt_get_addr(dev);
 	struct ehci_mx5_priv_data *priv = dev_get_priv(dev);
@@ -371,3 +379,4 @@ U_BOOT_DRIVER(usb_mx5) = {
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif /* !CONFIG_IS_ENABLED(DM_USB) */
+

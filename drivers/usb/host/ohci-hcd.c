@@ -222,6 +222,7 @@ static ed_t *ep_add_ed(ohci_dev_t *ohci_dev, struct usb_device *usb_dev,
 /* TDs ... */
 static struct td *td_alloc(ohci_dev_t *ohci_dev, struct usb_device *usb_dev)
 {
+	my_dbg(" [224]  shl_add\n");
 	int i;
 	struct td *td;
 
@@ -241,6 +242,7 @@ static struct td *td_alloc(ohci_dev_t *ohci_dev, struct usb_device *usb_dev)
 
 static inline void ed_free(struct ed *ed)
 {
+	my_dbg(" [243]  shl_add\n");
 	ed->usb_dev = NULL;
 }
 
@@ -252,6 +254,7 @@ static inline void ed_free(struct ed *ed)
 
 static void urb_free_priv(urb_priv_t *urb)
 {
+	my_dbg(" [254]  shl_add\n");
 	int		i;
 	int		last;
 	struct td	*td;
@@ -281,6 +284,7 @@ static void pkt_print(ohci_t *ohci, urb_priv_t *purb, struct usb_device *dev,
 		      unsigned long pipe, void *buffer, int transfer_len,
 		      struct devrequest *setup, char *str, int small)
 {
+	my_dbg(" [283]  shl_add\n");
 	dbg("%s URB:[%4x] dev:%2lu,ep:%2lu-%c,type:%s,len:%d/%d stat:%#lx",
 			str,
 			sohci_get_current_frame_number(ohci),
@@ -320,6 +324,7 @@ static void pkt_print(ohci_t *ohci, urb_priv_t *purb, struct usb_device *dev,
  * inclusive iso eds */
 void ep_print_int_eds(ohci_t *ohci, char *str)
 {
+	my_dbg(" [322]  shl_add\n");
 	int i, j;
 	 __u32 *ed_p;
 	for (i = 0; i < 32; i++) {
@@ -341,6 +346,7 @@ void ep_print_int_eds(ohci_t *ohci, char *str)
 
 static void ohci_dump_intr_mask(char *label, __u32 mask)
 {
+	my_dbg(" [343]  shl_add\n");
 	dbg("%s: 0x%08x%s%s%s%s%s%s%s%s%s",
 		label,
 		mask,
@@ -358,6 +364,7 @@ static void ohci_dump_intr_mask(char *label, __u32 mask)
 
 static void maybe_print_eds(char *label, __u32 value)
 {
+	my_dbg(" [360]  shl_add\n");
 	ed_t *edp = (ed_t *)value;
 
 	if (value) {
@@ -372,6 +379,7 @@ static void maybe_print_eds(char *label, __u32 value)
 
 static char *hcfs2string(int state)
 {
+	my_dbg(" [374]  shl_add\n");
 	switch (state) {
 	case OHCI_USB_RESET:	return "reset";
 	case OHCI_USB_RESUME:	return "resume";
@@ -384,6 +392,7 @@ static char *hcfs2string(int state)
 /* dump control and status registers */
 static void ohci_dump_status(ohci_t *controller)
 {
+	my_dbg(" [386]  shl_add\n");
 	struct ohci_regs	*regs = controller->regs;
 	__u32			temp;
 
@@ -431,6 +440,7 @@ static void ohci_dump_status(ohci_t *controller)
 
 static void ohci_dump_roothub(ohci_t *controller, int verbose)
 {
+	my_dbg(" [433]  shl_add\n");
 	__u32			temp, ndp, i;
 
 	temp = roothub_a(controller);
@@ -491,6 +501,7 @@ static void ohci_dump_roothub(ohci_t *controller, int verbose)
 
 static void ohci_dump(ohci_t *controller, int verbose)
 {
+	my_dbg(" [493]  shl_add\n");
 	dbg("OHCI controller usb-%s state", controller->slot_name);
 
 	/* dumps some of the state we know about */
@@ -512,6 +523,7 @@ static void ohci_dump(ohci_t *controller, int verbose)
 int sohci_submit_job(ohci_t *ohci, ohci_dev_t *ohci_dev, urb_priv_t *urb,
 		     struct devrequest *setup)
 {
+	my_dbg(" [514]  shl_add\n");
 	ed_t *ed;
 	urb_priv_t *purb_priv = urb;
 	int i, size = 0;
@@ -601,6 +613,7 @@ int sohci_submit_job(ohci_t *ohci, ohci_dev_t *ohci_dev, urb_priv_t *urb,
 /* tell us the current USB frame number */
 static int sohci_get_current_frame_number(ohci_t *ohci)
 {
+	my_dbg(" [603]  shl_add\n");
 	invalidate_dcache_hcca(ohci->hcca);
 	return m16_swap(ohci->hcca->frame_no);
 }
@@ -617,6 +630,7 @@ static int sohci_get_current_frame_number(ohci_t *ohci)
 
 static int ep_int_ballance(ohci_t *ohci, int interval, int load)
 {
+	my_dbg(" [619]  shl_add\n");
 	int i, branch = 0;
 
 	/* search for the least loaded interrupt endpoint
@@ -639,6 +653,7 @@ static int ep_int_ballance(ohci_t *ohci, int interval, int load)
 
 static int ep_2_n_interval(int inter)
 {
+	my_dbg(" [641]  shl_add\n");
 	int i;
 	for (i = 0; ((inter >> i) > 1) && (i < 5); i++);
 	return 1 << i;
@@ -651,6 +666,7 @@ static int ep_2_n_interval(int inter)
  * be mapped the mapping reverses the bits of a word of num_bits length */
 static int ep_rev(int num_bits, int word)
 {
+	my_dbg(" [653]  shl_add\n");
 	int i, wout = 0;
 
 	for (i = 0; i < num_bits; i++)
@@ -666,6 +682,7 @@ static int ep_rev(int num_bits, int word)
 
 static int ep_link(ohci_t *ohci, ed_t *edi)
 {
+	my_dbg(" [668]  shl_add\n");
 	volatile ed_t *ed = edi;
 	int int_branch;
 	int i;
@@ -746,6 +763,7 @@ static int ep_link(ohci_t *ohci, ed_t *edi)
 static void periodic_unlink(struct ohci *ohci, volatile struct ed *ed,
 			    unsigned index, unsigned period)
 {
+	my_dbg(" [748]  shl_add\n");
 	__maybe_unused unsigned long aligned_ed_p;
 
 	for (; index < NUM_INTS; index += period) {
@@ -775,6 +793,7 @@ static void periodic_unlink(struct ohci *ohci, volatile struct ed *ed,
 
 static int ep_unlink(ohci_t *ohci, ed_t *edi)
 {
+	my_dbg(" [777]  shl_add\n");
 	volatile ed_t *ed = edi;
 	int i;
 
@@ -847,6 +866,7 @@ static int ep_unlink(ohci_t *ohci, ed_t *edi)
 static ed_t *ep_add_ed(ohci_dev_t *ohci_dev, struct usb_device *usb_dev,
 		       unsigned long pipe, int interval, int load)
 {
+	my_dbg(" [849]  shl_add\n");
 	td_t *td;
 	ed_t *ed_ret;
 	volatile ed_t *ed;
@@ -898,6 +918,7 @@ static void td_fill(ohci_t *ohci, unsigned int info,
 	void *data, int len,
 	struct usb_device *dev, int index, urb_priv_t *urb_priv)
 {
+	my_dbg(" [900]  shl_add\n");
 	volatile td_t  *td, *td_pt;
 #ifdef OHCI_FILL_TRACE
 	int i;
@@ -955,6 +976,7 @@ static void td_submit_job(ohci_t *ohci, struct usb_device *dev,
 			  struct devrequest *setup, urb_priv_t *urb,
 			  int interval)
 {
+	my_dbg(" [957]  shl_add\n");
 	int data_len = transfer_len;
 	void *data;
 	int cnt = 0;
@@ -1045,6 +1067,7 @@ static void td_submit_job(ohci_t *ohci, struct usb_device *dev,
 
 static void dl_transfer_length(td_t *td)
 {
+	my_dbg(" [1047]  shl_add\n");
 	__u32 tdBE, tdCBP;
 	urb_priv_t *lurb_priv = td->ed->purb;
 
@@ -1065,6 +1088,7 @@ static void dl_transfer_length(td_t *td)
 /*-------------------------------------------------------------------------*/
 static void check_status(td_t *td_list)
 {
+	my_dbg(" [1067]  shl_add\n");
 	urb_priv_t *lurb_priv = td_list->ed->purb;
 	int	   urb_len    = lurb_priv->length;
 	__u32      *phwHeadP  = &td_list->ed->hwHeadP;
@@ -1096,6 +1120,7 @@ static void check_status(td_t *td_list)
  * we reverse the reversed done-list */
 static td_t *dl_reverse_done_list(ohci_t *ohci)
 {
+	my_dbg(" [1098]  shl_add\n");
 	uintptr_t td_list_hc;
 	td_t *td_rev = NULL;
 	td_t *td_list = NULL;
@@ -1121,6 +1146,7 @@ static td_t *dl_reverse_done_list(ohci_t *ohci)
 
 static void finish_urb(ohci_t *ohci, urb_priv_t *urb, int status)
 {
+	my_dbg(" [1123]  shl_add\n");
 	if ((status & (ED_OPER | ED_UNLINK)) && (urb->state != URB_DEL))
 		urb->finished = 1;
 	else
@@ -1135,6 +1161,7 @@ static void finish_urb(ohci_t *ohci, urb_priv_t *urb, int status)
  */
 static int takeback_td(ohci_t *ohci, td_t *td_list)
 {
+	my_dbg(" [1137]  shl_add\n");
 	ed_t *ed;
 	int cc;
 	int stat = 0;
@@ -1181,6 +1208,7 @@ static int takeback_td(ohci_t *ohci, td_t *td_list)
 
 static int dl_done_list(ohci_t *ohci)
 {
+	my_dbg(" [1183]  shl_add\n");
 	int stat = 0;
 	td_t	*td_list = dl_reverse_done_list(ohci);
 
@@ -1220,6 +1248,7 @@ static int dl_done_list(ohci_t *ohci)
 
 int rh_check_port_status(ohci_t *controller)
 {
+	my_dbg(" [1222]  shl_add\n");
 	__u32 temp, ndp, i;
 	int res;
 
@@ -1246,6 +1275,7 @@ static int ohci_submit_rh_msg(ohci_t *ohci, struct usb_device *dev,
 	unsigned long pipe, void *buffer, int transfer_len,
 	struct devrequest *cmd)
 {
+	my_dbg(" [1248]  shl_add\n");
 	void *data = buffer;
 	int leni = transfer_len;
 	int len = 0;
@@ -1468,6 +1498,7 @@ pkt_print(ohci, NULL, dev, pipe, buffer, transfer_len,
 
 static ohci_dev_t *ohci_get_ohci_dev(ohci_t *ohci, int devnum, int intr)
 {
+	my_dbg(" [1470]  shl_add\n");
 	int i;
 
 	if (!intr)
@@ -1496,6 +1527,7 @@ static ohci_dev_t *ohci_get_ohci_dev(ohci_t *ohci, int devnum, int intr)
 static urb_priv_t *ohci_alloc_urb(struct usb_device *dev, unsigned long pipe,
 		void *buffer, int transfer_len, int interval)
 {
+	my_dbg(" [1498]  shl_add\n");
 	urb_priv_t *urb;
 
 	urb = calloc(1, sizeof(urb_priv_t));
@@ -1517,6 +1549,7 @@ static int submit_common_msg(ohci_t *ohci, struct usb_device *dev,
 		unsigned long pipe, void *buffer, int transfer_len,
 		struct devrequest *setup, int interval)
 {
+	my_dbg(" [1519]  shl_add\n");
 	int stat = 0;
 	int maxsize = usb_maxpacket(dev, pipe);
 	int timeout;
@@ -1620,6 +1653,7 @@ static struct int_queue *_ohci_create_int_queue(ohci_t *ohci,
 		struct usb_device *udev, unsigned long pipe, int queuesize,
 		int elementsize, void *buffer, int interval)
 {
+	my_dbg(" [1622]  shl_add\n");
 	struct int_queue *queue;
 	ohci_dev_t *ohci_dev;
 	int i;
@@ -1665,6 +1699,7 @@ static struct int_queue *_ohci_create_int_queue(ohci_t *ohci,
 static void *_ohci_poll_int_queue(ohci_t *ohci, struct usb_device *udev,
 				  struct int_queue *queue)
 {
+	my_dbg(" [1667]  shl_add\n");
 	if (queue->curr_urb == queue->queuesize)
 		return NULL; /* Queue depleted */
 
@@ -1683,6 +1718,7 @@ static void *_ohci_poll_int_queue(ohci_t *ohci, struct usb_device *udev,
 static int _ohci_destroy_int_queue(ohci_t *ohci, struct usb_device *dev,
 				   struct int_queue *queue)
 {
+	my_dbg(" [1685]  shl_add\n");
 	int i;
 
 	for (i = 0; i < queue->queuesize; i++)
@@ -1698,6 +1734,7 @@ static int _ohci_destroy_int_queue(ohci_t *ohci, struct usb_device *dev,
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		int transfer_len)
 {
+	my_dbg(" [1700]  shl_add\n");
 	info("submit_bulk_msg");
 	return submit_common_msg(&gohci, dev, pipe, buffer, transfer_len,
 				 NULL, 0);
@@ -1706,6 +1743,7 @@ int submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		int transfer_len, int interval, bool nonblock)
 {
+	my_dbg(" [1708]  shl_add\n");
 	info("submit_int_msg");
 	return submit_common_msg(&gohci, dev, pipe, buffer, transfer_len, NULL,
 			interval);
@@ -1715,17 +1753,20 @@ struct int_queue *create_int_queue(struct usb_device *dev,
 		unsigned long pipe, int queuesize, int elementsize,
 		void *buffer, int interval)
 {
+	my_dbg(" [1717]  shl_add\n");
 	return _ohci_create_int_queue(&gohci, dev, pipe, queuesize,
 				      elementsize, buffer, interval);
 }
 
 void *poll_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [1723]  shl_add\n");
 	return _ohci_poll_int_queue(&gohci, dev, queue);
 }
 
 int destroy_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [1728]  shl_add\n");
 	return _ohci_destroy_int_queue(&gohci, dev, queue);
 }
 #endif
@@ -1734,6 +1775,7 @@ static int _ohci_submit_control_msg(ohci_t *ohci, struct usb_device *dev,
 	unsigned long pipe, void *buffer, int transfer_len,
 	struct devrequest *setup)
 {
+	my_dbg(" [1736]  shl_add\n");
 	int maxsize = usb_maxpacket(dev, pipe);
 
 	info("submit_control_msg");
@@ -1767,6 +1809,7 @@ static int _ohci_submit_control_msg(ohci_t *ohci, struct usb_device *dev,
 
 static int hc_reset(ohci_t *ohci)
 {
+	my_dbg(" [1769]  shl_add\n");
 #ifdef CONFIG_PCI_EHCI_DEVNO
 	pci_dev_t pdev;
 #endif
@@ -1843,6 +1886,7 @@ static int hc_reset(ohci_t *ohci)
 
 static int hc_start(ohci_t *ohci)
 {
+	my_dbg(" [1845]  shl_add\n");
 	__u32 mask;
 	unsigned int fminterval;
 	int i;
@@ -1902,6 +1946,7 @@ static int hc_start(ohci_t *ohci)
 
 static int hc_interrupt(ohci_t *ohci)
 {
+	my_dbg(" [1904]  shl_add\n");
 	struct ohci_regs *regs = ohci->regs;
 	int ints;
 	int stat = -1;
@@ -1990,6 +2035,7 @@ static int hc_interrupt(ohci_t *ohci)
 
 static void hc_release_ohci(ohci_t *ohci)
 {
+	my_dbg(" [1992]  shl_add\n");
 	dbg("USB HC release ohci usb-%s", ohci->slot_name);
 
 	if (!ohci->disabled)
@@ -2005,6 +2051,7 @@ static char ohci_inited = 0;
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [2007]  shl_add\n");
 #ifdef CONFIG_PCI_OHCI
 	pci_dev_t pdev;
 #endif
@@ -2102,6 +2149,7 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [2104]  shl_add\n");
 	/* this gets called really early - before the controller has */
 	/* even been initialized! */
 	if (!ohci_inited)
@@ -2130,6 +2178,7 @@ int usb_lowlevel_stop(int index)
 int submit_control_msg(struct usb_device *dev, unsigned long pipe,
 	void *buffer, int transfer_len, struct devrequest *setup)
 {
+	my_dbg(" [2132]  shl_add\n");
 	return _ohci_submit_control_msg(&gohci, dev, pipe, buffer,
 					transfer_len, setup);
 }
@@ -2140,6 +2189,7 @@ static int ohci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 				   unsigned long pipe, void *buffer, int length,
 				   struct devrequest *setup)
 {
+	my_dbg(" [2142]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return _ohci_submit_control_msg(ohci, udev, pipe, buffer,
@@ -2149,6 +2199,7 @@ static int ohci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 static int ohci_submit_bulk_msg(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [2151]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return submit_common_msg(ohci, udev, pipe, buffer, length, NULL, 0);
@@ -2158,6 +2209,7 @@ static int ohci_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length,
 			       int interval, bool nonblock)
 {
+	my_dbg(" [2160]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return submit_common_msg(ohci, udev, pipe, buffer, length,
@@ -2168,6 +2220,7 @@ static struct int_queue *ohci_create_int_queue(struct udevice *dev,
 		struct usb_device *udev, unsigned long pipe, int queuesize,
 		int elementsize, void *buffer, int interval)
 {
+	my_dbg(" [2170]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return _ohci_create_int_queue(ohci, udev, pipe, queuesize, elementsize,
@@ -2177,6 +2230,7 @@ static struct int_queue *ohci_create_int_queue(struct udevice *dev,
 static void *ohci_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 				 struct int_queue *queue)
 {
+	my_dbg(" [2179]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return _ohci_poll_int_queue(ohci, udev, queue);
@@ -2185,6 +2239,7 @@ static void *ohci_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 static int ohci_destroy_int_queue(struct udevice *dev, struct usb_device *udev,
 				  struct int_queue *queue)
 {
+	my_dbg(" [2187]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(usb_get_bus(dev));
 
 	return _ohci_destroy_int_queue(ohci, udev, queue);
@@ -2192,6 +2247,7 @@ static int ohci_destroy_int_queue(struct udevice *dev, struct usb_device *udev,
 
 int ohci_register(struct udevice *dev, struct ohci_regs *regs)
 {
+	my_dbg(" [2194]  shl_add\n");
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
 	ohci_t *ohci = dev_get_priv(dev);
 	u32 reg;
@@ -2219,6 +2275,7 @@ int ohci_register(struct udevice *dev, struct ohci_regs *regs)
 
 int ohci_deregister(struct udevice *dev)
 {
+	my_dbg(" [2221]  shl_add\n");
 	ohci_t *ohci = dev_get_priv(dev);
 
 	if (hc_reset(ohci) < 0)
@@ -2239,3 +2296,4 @@ struct dm_usb_ops ohci_usb_ops = {
 };
 
 #endif
+

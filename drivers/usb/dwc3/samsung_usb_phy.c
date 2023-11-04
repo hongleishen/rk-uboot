@@ -14,6 +14,7 @@
 
 void exynos5_usb3_phy_init(struct exynos_usb3_phy *phy)
 {
+	my_dbg(" [16]  shl_add\n");
 	u32 reg;
 
 	/* Reset USB 3.0 PHY */
@@ -76,3 +77,4 @@ void exynos5_usb3_phy_init(struct exynos_usb3_phy *phy)
 	reg &= ~PHYCLKRST_PORTRESET;
 	writel(reg, &phy->phy_clk_rst);
 }
+

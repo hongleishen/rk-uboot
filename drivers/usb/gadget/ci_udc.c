@@ -58,6 +58,7 @@
 #define DBG(x...) printf(x)
 static const char *reqname(unsigned r)
 {
+	my_dbg(" [60]  shl_add\n");
 	switch (r) {
 	case USB_REQ_GET_STATUS: return "GET_STATUS";
 	case USB_REQ_CLEAR_FEATURE: return "CLEAR_FEATURE";
@@ -152,6 +153,7 @@ static struct ci_drv controller = {
  */
 static struct ept_queue_head *ci_get_qh(int ep_num, int dir_in)
 {
+	my_dbg(" [154]  shl_add\n");
 	return &controller.epts[(ep_num * 2) + dir_in];
 }
 
@@ -165,6 +167,7 @@ static struct ept_queue_head *ci_get_qh(int ep_num, int dir_in)
  */
 static struct ept_queue_item *ci_get_qtd(int ep_num, int dir_in)
 {
+	my_dbg(" [167]  shl_add\n");
 	int index = (ep_num * 2) + dir_in;
 	uint8_t *imem = controller.items_mem + (index * ILIST_ENT_SZ);
 	return (struct ept_queue_item *)imem;
@@ -178,6 +181,7 @@ static struct ept_queue_item *ci_get_qtd(int ep_num, int dir_in)
  */
 static void ci_flush_qh(int ep_num)
 {
+	my_dbg(" [180]  shl_add\n");
 	struct ept_queue_head *head = ci_get_qh(ep_num, 0);
 	const unsigned long start = (unsigned long)head;
 	const unsigned long end = start + 2 * sizeof(*head);
@@ -193,6 +197,7 @@ static void ci_flush_qh(int ep_num)
  */
 static void ci_invalidate_qh(int ep_num)
 {
+	my_dbg(" [195]  shl_add\n");
 	struct ept_queue_head *head = ci_get_qh(ep_num, 0);
 	unsigned long start = (unsigned long)head;
 	unsigned long end = start + 2 * sizeof(*head);
@@ -208,6 +213,7 @@ static void ci_invalidate_qh(int ep_num)
  */
 static void ci_flush_qtd(int ep_num)
 {
+	my_dbg(" [210]  shl_add\n");
 	struct ept_queue_item *item = ci_get_qtd(ep_num, 0);
 	const unsigned long start = (unsigned long)item;
 	const unsigned long end = start + 2 * ILIST_ENT_SZ;
@@ -223,6 +229,7 @@ static void ci_flush_qtd(int ep_num)
  */
 static void ci_flush_td(struct ept_queue_item *td)
 {
+	my_dbg(" [225]  shl_add\n");
 	const unsigned long start = (unsigned long)td;
 	const unsigned long end = (unsigned long)td + ILIST_ENT_SZ;
 	flush_dcache_range(start, end);
@@ -236,6 +243,7 @@ static void ci_flush_td(struct ept_queue_item *td)
  */
 static void ci_invalidate_qtd(int ep_num)
 {
+	my_dbg(" [238]  shl_add\n");
 	struct ept_queue_item *item = ci_get_qtd(ep_num, 0);
 	const unsigned long start = (unsigned long)item;
 	const unsigned long end = start + 2 * ILIST_ENT_SZ;
@@ -251,6 +259,7 @@ static void ci_invalidate_qtd(int ep_num)
  */
 static void ci_invalidate_td(struct ept_queue_item *td)
 {
+	my_dbg(" [253]  shl_add\n");
 	const unsigned long start = (unsigned long)td;
 	const unsigned long end = start + ILIST_ENT_SZ;
 	invalidate_dcache_range(start, end);
@@ -259,6 +268,7 @@ static void ci_invalidate_td(struct ept_queue_item *td)
 static struct usb_request *
 ci_ep_alloc_request(struct usb_ep *ep, unsigned int gfp_flags)
 {
+	my_dbg(" [261]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(ep, struct ci_ep, ep);
 	int num = -1;
 	struct ci_req *ci_req;
@@ -283,6 +293,7 @@ ci_ep_alloc_request(struct usb_ep *ep, unsigned int gfp_flags)
 
 static void ci_ep_free_request(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [285]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(ep, struct ci_ep, ep);
 	struct ci_req *ci_req = container_of(req, struct ci_req, req);
 	int num = -1;
@@ -303,6 +314,7 @@ static void ci_ep_free_request(struct usb_ep *ep, struct usb_request *req)
 
 static void ep_enable(int num, int in, int maxpacket)
 {
+	my_dbg(" [305]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 	unsigned n;
 
@@ -324,6 +336,7 @@ static void ep_enable(int num, int in, int maxpacket)
 static int ci_ep_enable(struct usb_ep *ep,
 		const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [326]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(ep, struct ci_ep, ep);
 	int num, in;
 	num = desc->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
@@ -348,6 +361,7 @@ static int ci_ep_enable(struct usb_ep *ep,
 
 static int ci_ep_disable(struct usb_ep *ep)
 {
+	my_dbg(" [350]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(ep, struct ci_ep, ep);
 
 	ci_ep->desc = NULL;
@@ -356,6 +370,7 @@ static int ci_ep_disable(struct usb_ep *ep)
 
 static int ci_bounce(struct ci_req *ci_req, int in)
 {
+	my_dbg(" [358]  shl_add\n");
 	struct usb_request *req = &ci_req->req;
 	unsigned long addr = (unsigned long)req->buf;
 	unsigned long hwaddr;
@@ -401,6 +416,7 @@ flush:
 
 static void ci_debounce(struct ci_req *ci_req, int in)
 {
+	my_dbg(" [403]  shl_add\n");
 	struct usb_request *req = &ci_req->req;
 	unsigned long addr = (unsigned long)req->buf;
 	unsigned long hwaddr = (unsigned long)ci_req->hw_buf;
@@ -420,6 +436,7 @@ static void ci_debounce(struct ci_req *ci_req, int in)
 
 static void ci_ep_submit_next_request(struct ci_ep *ci_ep)
 {
+	my_dbg(" [422]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 	struct ept_queue_item *item;
 	struct ept_queue_head *head;
@@ -527,6 +544,7 @@ static void ci_ep_submit_next_request(struct ci_ep *ci_ep)
 
 static int ci_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [529]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(_ep, struct ci_ep, ep);
 	struct ci_req *ci_req;
 
@@ -552,6 +570,7 @@ static int ci_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 static int ci_ep_queue(struct usb_ep *ep,
 		struct usb_request *req, gfp_t gfp_flags)
 {
+	my_dbg(" [554]  shl_add\n");
 	struct ci_ep *ci_ep = container_of(ep, struct ci_ep, ep);
 	struct ci_req *ci_req = container_of(req, struct ci_req, req);
 	int in, ret;
@@ -591,6 +610,7 @@ static int ci_ep_queue(struct usb_ep *ep,
 
 static void flip_ep0_direction(void)
 {
+	my_dbg(" [593]  shl_add\n");
 	if (ep0_desc.bEndpointAddress == USB_DIR_IN) {
 		DBG("%s: Flipping ep0 to OUT\n", __func__);
 		ep0_desc.bEndpointAddress = 0;
@@ -602,6 +622,7 @@ static void flip_ep0_direction(void)
 
 static void handle_ep_complete(struct ci_ep *ci_ep)
 {
+	my_dbg(" [604]  shl_add\n");
 	struct ept_queue_item *item, *next_td;
 	int num, in, len, j;
 	struct ci_req *ci_req;
@@ -658,6 +679,7 @@ static void handle_ep_complete(struct ci_ep *ci_ep)
 
 static void handle_setup(void)
 {
+	my_dbg(" [660]  shl_add\n");
 	struct ci_ep *ci_ep = &controller.ep[0];
 	struct ci_req *ci_req;
 	struct usb_request *req;
@@ -762,6 +784,7 @@ static void handle_setup(void)
 
 static void stop_activity(void)
 {
+	my_dbg(" [764]  shl_add\n");
 	int i, num, in;
 	struct ept_queue_head *head;
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
@@ -790,6 +813,7 @@ static void stop_activity(void)
 
 void udc_irq(void)
 {
+	my_dbg(" [792]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 	unsigned n = readl(&udc->usbsts);
 	writel(n, &udc->usbsts);
@@ -859,6 +883,7 @@ void udc_irq(void)
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [861]  shl_add\n");
 	u32 value;
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 
@@ -871,6 +896,7 @@ int usb_gadget_handle_interrupts(int index)
 
 void udc_disconnect(void)
 {
+	my_dbg(" [873]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 	/* disable pullup */
 	stop_activity();
@@ -882,6 +908,7 @@ void udc_disconnect(void)
 
 static int ci_pullup(struct usb_gadget *gadget, int is_on)
 {
+	my_dbg(" [884]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 	if (is_on) {
 		/* RESET */
@@ -911,6 +938,7 @@ static int ci_pullup(struct usb_gadget *gadget, int is_on)
 
 static int ci_udc_probe(void)
 {
+	my_dbg(" [913]  shl_add\n");
 	struct ept_queue_head *head;
 	int i;
 
@@ -1000,6 +1028,7 @@ static int ci_udc_probe(void)
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1002]  shl_add\n");
 	int ret;
 
 	if (!driver)
@@ -1035,6 +1064,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1037]  shl_add\n");
 	udc_disconnect();
 
 	driver->unbind(&controller.gadget);
@@ -1049,7 +1079,9 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 
 bool dfu_usb_get_reset(void)
 {
+	my_dbg(" [1051]  shl_add\n");
 	struct ci_udc *udc = (struct ci_udc *)controller.ctrl->hcor;
 
 	return !!(readl(&udc->usbsts) & STS_URI);
 }
+

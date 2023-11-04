@@ -50,6 +50,7 @@ DEFINE_MUTEX(udc_lock);
 int usb_gadget_map_request(struct usb_gadget *gadget,
 		struct usb_request *req, int is_in)
 {
+	my_dbg(" [52]  shl_add\n");
 	if (req->length == 0)
 		return 0;
 
@@ -63,6 +64,7 @@ EXPORT_SYMBOL_GPL(usb_gadget_map_request);
 void usb_gadget_unmap_request(struct usb_gadget *gadget,
 		struct usb_request *req, int is_in)
 {
+	my_dbg(" [65]  shl_add\n");
 	if (req->length == 0)
 		return;
 
@@ -83,6 +85,7 @@ EXPORT_SYMBOL_GPL(usb_gadget_unmap_request);
 void usb_gadget_giveback_request(struct usb_ep *ep,
 		struct usb_request *req)
 {
+	my_dbg(" [85]  shl_add\n");
 	req->complete(ep, req);
 }
 EXPORT_SYMBOL_GPL(usb_gadget_giveback_request);
@@ -92,6 +95,7 @@ EXPORT_SYMBOL_GPL(usb_gadget_giveback_request);
 void usb_gadget_set_state(struct usb_gadget *gadget,
 		enum usb_device_state state)
 {
+	my_dbg(" [94]  shl_add\n");
 	gadget->state = state;
 }
 EXPORT_SYMBOL_GPL(usb_gadget_set_state);
@@ -110,6 +114,7 @@ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
 void usb_gadget_udc_reset(struct usb_gadget *gadget,
 		struct usb_gadget_driver *driver)
 {
+	my_dbg(" [112]  shl_add\n");
 	driver->reset(gadget);
 	usb_gadget_set_state(gadget, USB_STATE_DEFAULT);
 }
@@ -130,6 +135,7 @@ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
  */
 static inline int usb_gadget_udc_start(struct usb_udc *udc)
 {
+	my_dbg(" [132]  shl_add\n");
 	return udc->gadget->ops->udc_start(udc->gadget, udc->driver);
 }
 
@@ -147,6 +153,7 @@ static inline int usb_gadget_udc_start(struct usb_udc *udc)
  */
 static inline void usb_gadget_udc_stop(struct usb_udc *udc)
 {
+	my_dbg(" [149]  shl_add\n");
 	udc->gadget->ops->udc_stop(udc->gadget);
 }
 
@@ -159,6 +166,7 @@ static inline void usb_gadget_udc_stop(struct usb_udc *udc)
  */
 static void usb_udc_release(struct device *dev)
 {
+	my_dbg(" [161]  shl_add\n");
 	struct usb_udc *udc;
 
 	udc = container_of(dev, struct usb_udc, dev);
@@ -177,6 +185,7 @@ static void usb_udc_release(struct device *dev)
 int usb_add_gadget_udc_release(struct device *parent, struct usb_gadget *gadget,
 		void (*release)(struct device *dev))
 {
+	my_dbg(" [179]  shl_add\n");
 	struct usb_udc		*udc;
 	int			ret = -ENOMEM;
 
@@ -217,12 +226,14 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc_release);
  */
 int usb_add_gadget_udc(struct device *parent, struct usb_gadget *gadget)
 {
+	my_dbg(" [219]  shl_add\n");
 	return usb_add_gadget_udc_release(parent, gadget, NULL);
 }
 EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
 
 static void usb_gadget_remove_driver(struct usb_udc *udc)
 {
+	my_dbg(" [225]  shl_add\n");
 	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
 			udc->driver->function);
 
@@ -243,6 +254,7 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
  */
 void usb_del_gadget_udc(struct usb_gadget *gadget)
 {
+	my_dbg(" [245]  shl_add\n");
 	struct usb_udc		*udc = NULL;
 
 	mutex_lock(&udc_lock);
@@ -281,6 +293,7 @@ EXPORT_SYMBOL_GPL(usb_del_gadget_udc);
 static inline void usb_gadget_udc_set_speed(struct usb_udc *udc,
 					    enum usb_device_speed speed)
 {
+	my_dbg(" [283]  shl_add\n");
 	if (udc->gadget->ops->udc_set_speed) {
 		enum usb_device_speed s;
 
@@ -291,6 +304,7 @@ static inline void usb_gadget_udc_set_speed(struct usb_udc *udc,
 
 static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *driver)
 {
+	my_dbg(" [293]  shl_add\n");
 	int ret;
 
 	dev_dbg(&udc->dev, "registering UDC driver [%s]\n",
@@ -321,6 +335,7 @@ err1:
 
 int usb_gadget_probe_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [323]  shl_add\n");
 	struct usb_udc		*udc = NULL;
 	int			ret;
 
@@ -346,12 +361,14 @@ EXPORT_SYMBOL_GPL(usb_gadget_probe_driver);
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [348]  shl_add\n");
 	return usb_gadget_probe_driver(driver);
 }
 EXPORT_SYMBOL_GPL(usb_gadget_register_driver);
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [354]  shl_add\n");
 	struct usb_udc		*udc = NULL;
 	int			ret = -ENODEV;
 
@@ -376,3 +393,4 @@ EXPORT_SYMBOL_GPL(usb_gadget_unregister_driver);
 MODULE_DESCRIPTION("UDC Framework");
 MODULE_AUTHOR("Felipe Balbi <balbi@ti.com>");
 MODULE_LICENSE("GPL v2");
+

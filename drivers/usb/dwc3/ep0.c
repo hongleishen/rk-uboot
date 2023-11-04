@@ -33,6 +33,7 @@ static void __dwc3_ep0_do_control_data(struct dwc3 *dwc,
 
 static const char *dwc3_ep0_state_string(enum dwc3_ep0_state state)
 {
+	my_dbg(" [35]  shl_add\n");
 	switch (state) {
 	case EP0_UNCONNECTED:
 		return "Unconnected";
@@ -50,6 +51,7 @@ static const char *dwc3_ep0_state_string(enum dwc3_ep0_state state)
 static int dwc3_ep0_start_trans(struct dwc3 *dwc, u8 epnum, dma_addr_t buf_dma,
 				u32 len, u32 type, unsigned chain)
 {
+	my_dbg(" [52]  shl_add\n");
 	struct dwc3_gadget_ep_cmd_params params;
 	struct dwc3_trb			*trb;
 	struct dwc3_ep			*dep;
@@ -110,6 +112,7 @@ static int dwc3_ep0_start_trans(struct dwc3 *dwc, u8 epnum, dma_addr_t buf_dma,
 static int __dwc3_gadget_ep0_queue(struct dwc3_ep *dep,
 		struct dwc3_request *req)
 {
+	my_dbg(" [112]  shl_add\n");
 	struct dwc3		*dwc = dep->dwc;
 
 	req->request.actual	= 0;
@@ -213,6 +216,7 @@ static int __dwc3_gadget_ep0_queue(struct dwc3_ep *dep,
 int dwc3_gadget_ep0_queue(struct usb_ep *ep, struct usb_request *request,
 		gfp_t gfp_flags)
 {
+	my_dbg(" [215]  shl_add\n");
 	struct dwc3_request		*req = to_dwc3_request(request);
 	struct dwc3_ep			*dep = to_dwc3_ep(ep);
 	struct dwc3			*dwc = dep->dwc;
@@ -249,6 +253,7 @@ out:
 
 static void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
 {
+	my_dbg(" [251]  shl_add\n");
 	struct dwc3_ep		*dep;
 
 	/* reinitialize physical ep1 */
@@ -274,6 +279,7 @@ static void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
 
 int __dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value)
 {
+	my_dbg(" [276]  shl_add\n");
 	struct dwc3_ep			*dep = to_dwc3_ep(ep);
 	struct dwc3			*dwc = dep->dwc;
 
@@ -284,6 +290,7 @@ int __dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value)
 
 int dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value)
 {
+	my_dbg(" [286]  shl_add\n");
 	unsigned long			flags = 0;
 	int				ret;
 
@@ -296,6 +303,7 @@ int dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value)
 
 void dwc3_ep0_out_start(struct dwc3 *dwc)
 {
+	my_dbg(" [298]  shl_add\n");
 	int				ret;
 
 	ret = dwc3_ep0_start_trans(dwc, 0, dwc->ctrl_req_addr, 8,
@@ -305,6 +313,7 @@ void dwc3_ep0_out_start(struct dwc3 *dwc)
 
 static struct dwc3_ep *dwc3_wIndex_to_dep(struct dwc3 *dwc, __le16 wIndex_le)
 {
+	my_dbg(" [307]  shl_add\n");
 	struct dwc3_ep		*dep;
 	u32			windex = le16_to_cpu(wIndex_le);
 	u32			epnum;
@@ -322,6 +331,7 @@ static struct dwc3_ep *dwc3_wIndex_to_dep(struct dwc3 *dwc, __le16 wIndex_le)
 
 static void dwc3_ep0_status_cmpl(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [324]  shl_add\n");
 }
 /*
  * ch 9.4.5
@@ -329,6 +339,7 @@ static void dwc3_ep0_status_cmpl(struct usb_ep *ep, struct usb_request *req)
 static int dwc3_ep0_handle_status(struct dwc3 *dwc,
 		struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [331]  shl_add\n");
 	struct dwc3_ep		*dep;
 	u32			recip;
 	u32			reg;
@@ -387,6 +398,7 @@ static int dwc3_ep0_handle_status(struct dwc3 *dwc,
 static int dwc3_ep0_handle_feature(struct dwc3 *dwc,
 		struct usb_ctrlrequest *ctrl, int set)
 {
+	my_dbg(" [389]  shl_add\n");
 	struct dwc3_ep		*dep;
 	u32			recip;
 	u32			wValue;
@@ -496,6 +508,7 @@ static int dwc3_ep0_handle_feature(struct dwc3 *dwc,
 
 static int dwc3_ep0_set_address(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [498]  shl_add\n");
 	enum usb_device_state state = dwc->gadget.state;
 	u32 addr;
 	u32 reg;
@@ -526,6 +539,7 @@ static int dwc3_ep0_set_address(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 
 static int dwc3_ep0_delegate_req(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [528]  shl_add\n");
 	int ret;
 
 	spin_unlock(&dwc->lock);
@@ -536,6 +550,7 @@ static int dwc3_ep0_delegate_req(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 
 static int dwc3_ep0_set_config(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [538]  shl_add\n");
 	enum usb_device_state state = dwc->gadget.state;
 	u32 cfg;
 	int ret;
@@ -593,6 +608,7 @@ static int dwc3_ep0_set_config(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 
 static void dwc3_ep0_set_sel_cmpl(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [595]  shl_add\n");
 	struct dwc3_ep	*dep = to_dwc3_ep(ep);
 	struct dwc3	*dwc = dep->dwc;
 
@@ -637,6 +653,7 @@ static void dwc3_ep0_set_sel_cmpl(struct usb_ep *ep, struct usb_request *req)
 
 static int dwc3_ep0_set_sel(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [639]  shl_add\n");
 	struct dwc3_ep	*dep;
 	enum usb_device_state state = dwc->gadget.state;
 	u16		wLength;
@@ -671,6 +688,7 @@ static int dwc3_ep0_set_sel(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 
 static int dwc3_ep0_set_isoch_delay(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [673]  shl_add\n");
 	u16		wLength;
 	u16		wValue;
 	u16		wIndex;
@@ -693,6 +711,7 @@ static int dwc3_ep0_set_isoch_delay(struct dwc3 *dwc, struct usb_ctrlrequest *ct
 
 static int dwc3_ep0_std_request(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [695]  shl_add\n");
 	int ret;
 
 	switch (ctrl->bRequest) {
@@ -736,6 +755,7 @@ static int dwc3_ep0_std_request(struct dwc3 *dwc, struct usb_ctrlrequest *ctrl)
 static void dwc3_ep0_inspect_setup(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [738]  shl_add\n");
 	struct usb_ctrlrequest *ctrl = dwc->ctrl_req;
 	int ret = -EINVAL;
 	u32 len;
@@ -770,6 +790,7 @@ out:
 static void dwc3_ep0_complete_data(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [772]  shl_add\n");
 	struct dwc3_request	*r = NULL;
 	struct usb_request	*ur;
 	struct dwc3_trb		*trb;
@@ -866,6 +887,7 @@ static void dwc3_ep0_complete_data(struct dwc3 *dwc,
 static void dwc3_ep0_complete_status(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [868]  shl_add\n");
 	struct dwc3_request	*r;
 	struct dwc3_ep		*dep;
 	struct dwc3_trb		*trb;
@@ -903,6 +925,7 @@ static void dwc3_ep0_complete_status(struct dwc3 *dwc,
 static void dwc3_ep0_xfer_complete(struct dwc3 *dwc,
 			const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [905]  shl_add\n");
 	struct dwc3_ep		*dep = dwc->eps[event->endpoint_number];
 
 	dep->flags &= ~DWC3_EP_BUSY;
@@ -932,6 +955,7 @@ static void dwc3_ep0_xfer_complete(struct dwc3 *dwc,
 static void __dwc3_ep0_do_control_data(struct dwc3 *dwc,
 		struct dwc3_ep *dep, struct dwc3_request *req)
 {
+	my_dbg(" [934]  shl_add\n");
 	int			ret;
 
 	req->direction = !!dep->number;
@@ -993,6 +1017,7 @@ static void __dwc3_ep0_do_control_data(struct dwc3 *dwc,
 
 static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
 {
+	my_dbg(" [995]  shl_add\n");
 	struct dwc3		*dwc = dep->dwc;
 	u32			type;
 
@@ -1005,6 +1030,7 @@ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
 
 static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
 {
+	my_dbg(" [1007]  shl_add\n");
 	if (dwc->resize_fifos) {
 		dev_dbg(dwc->dev, "Resizing FIFOs");
 		dwc3_gadget_resize_tx_fifos(dwc);
@@ -1017,6 +1043,7 @@ static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
 static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [1019]  shl_add\n");
 	struct dwc3_ep		*dep = dwc->eps[event->endpoint_number];
 
 	__dwc3_ep0_do_control_status(dwc, dep);
@@ -1024,6 +1051,7 @@ static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
 
 static void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
 {
+	my_dbg(" [1026]  shl_add\n");
 	struct dwc3_gadget_ep_cmd_params params;
 	u32			cmd;
 	int			ret;
@@ -1043,6 +1071,7 @@ static void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
 static void dwc3_ep0_xfernotready(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [1045]  shl_add\n");
 	dwc->setup_packet_pending = true;
 
 	switch (event->status) {
@@ -1090,6 +1119,7 @@ static void dwc3_ep0_xfernotready(struct dwc3 *dwc,
 void dwc3_ep0_interrupt(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
+	my_dbg(" [1092]  shl_add\n");
 	u8			epnum = event->endpoint_number;
 
 	dev_dbg(dwc->dev, "%s while ep%d%s in state '%s'",
@@ -1113,3 +1143,4 @@ void dwc3_ep0_interrupt(struct dwc3 *dwc,
 		break;
 	}
 }
+

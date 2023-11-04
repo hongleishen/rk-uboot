@@ -60,6 +60,7 @@
 static int ep0_get_status (struct usb_device_instance *device,
 			   struct urb *urb, int index, int requesttype)
 {
+	my_dbg(" [62]  shl_add\n");
 	char *cp;
 
 	urb->actual_length = 2;
@@ -96,6 +97,7 @@ static int ep0_get_status (struct usb_device_instance *device,
 static int ep0_get_one (struct usb_device_instance *device, struct urb *urb,
 			__u8 result)
 {
+	my_dbg(" [98]  shl_add\n");
 	urb->actual_length = 1;	/* XXX 2? */
 	((char *) urb->buffer)[0] = result;
 	return 0;
@@ -112,6 +114,7 @@ static int ep0_get_one (struct usb_device_instance *device, struct urb *urb,
 void copy_config (struct urb *urb, void *data, int max_length,
 			 int max_buf)
 {
+	my_dbg(" [114]  shl_add\n");
 	int available;
 	int length;
 
@@ -170,6 +173,7 @@ static int ep0_get_descriptor (struct usb_device_instance *device,
 			       struct urb *urb, int max, int descriptor_type,
 			       int index)
 {
+	my_dbg(" [172]  shl_add\n");
 	int port = 0;		/* XXX compound device */
 
 	/*dbg_ep0(3, "max: %x type: %x index: %x", max, descriptor_type, index); */
@@ -377,6 +381,7 @@ static int ep0_get_descriptor (struct usb_device_instance *device,
  */
 int ep0_recv_setup (struct urb *urb)
 {
+	my_dbg(" [379]  shl_add\n");
 	/*struct usb_device_request *request = urb->buffer; */
 	/*struct usb_device_instance *device = urb->device; */
 
@@ -595,3 +600,4 @@ int ep0_recv_setup (struct urb *urb)
 	}
 	return -1;
 }
+

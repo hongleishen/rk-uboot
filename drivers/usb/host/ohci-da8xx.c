@@ -23,6 +23,7 @@ struct da8xx_ohci {
 
 static int usb_phy_on(void)
 {
+	my_dbg(" [25]  shl_add\n");
 	unsigned long timeout;
 
 	clrsetbits_le32(&davinci_syscfg_regs->cfgchip2,
@@ -46,6 +47,7 @@ static int usb_phy_on(void)
 
 static void usb_phy_off(void)
 {
+	my_dbg(" [48]  shl_add\n");
 	/* Power down the on-chip PHY. */
 	clrsetbits_le32(&davinci_syscfg_regs->cfgchip2,
 			CFGCHIP2_PHY_PLLON | CFGCHIP2_USB1SUSPENDM,
@@ -55,6 +57,7 @@ static void usb_phy_off(void)
 
 int usb_cpu_init(void)
 {
+	my_dbg(" [57]  shl_add\n");
 	/* enable psc for usb2.0 */
 	lpsc_on(DAVINCI_LPSC_USB20);
 
@@ -70,6 +73,7 @@ int usb_cpu_init(void)
 
 int usb_cpu_stop(void)
 {
+	my_dbg(" [72]  shl_add\n");
 	usb_phy_off();
 
 	/* turn off the usb clock and assert the module reset */
@@ -81,12 +85,14 @@ int usb_cpu_stop(void)
 
 int usb_cpu_init_fail(void)
 {
+	my_dbg(" [83]  shl_add\n");
 	return usb_cpu_stop();
 }
 
 #if CONFIG_IS_ENABLED(DM_USB)
 static int ohci_da8xx_probe(struct udevice *dev)
 {
+	my_dbg(" [89]  shl_add\n");
 	struct ohci_regs *regs = (struct ohci_regs *)devfdt_get_addr(dev);
 	struct da8xx_ohci *priv = dev_get_priv(dev);
 	int i, err, ret, clock_nb;
@@ -145,6 +151,7 @@ clk_err:
 
 static int ohci_da8xx_remove(struct udevice *dev)
 {
+	my_dbg(" [147]  shl_add\n");
 	struct da8xx_ohci *priv = dev_get_priv(dev);
 	int ret;
 
@@ -175,3 +182,4 @@ U_BOOT_DRIVER(ohci_generic) = {
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA | DM_FLAG_OS_PREPARE,
 };
 #endif
+

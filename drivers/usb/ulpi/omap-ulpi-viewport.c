@@ -21,6 +21,7 @@
  */
 static int ulpi_wait(struct ulpi_viewport *ulpi_vp, u32 mask)
 {
+	my_dbg(" [23]  shl_add\n");
 	int timeout = CONFIG_USB_ULPI_TIMEOUT;
 
 	while (--timeout) {
@@ -38,6 +39,7 @@ static int ulpi_wait(struct ulpi_viewport *ulpi_vp, u32 mask)
  */
 static int ulpi_request(struct ulpi_viewport *ulpi_vp, u32 value)
 {
+	my_dbg(" [40]  shl_add\n");
 	int err;
 
 	writel(value, ulpi_vp->viewport_addr);
@@ -51,6 +53,7 @@ static int ulpi_request(struct ulpi_viewport *ulpi_vp, u32 value)
 
 int ulpi_write(struct ulpi_viewport *ulpi_vp, u8 *reg, u32 value)
 {
+	my_dbg(" [53]  shl_add\n");
 	u32 val = OMAP_ULPI_START | (((ulpi_vp->port_num + 1) & 0xf) << 24) |
 			OMAP_ULPI_WR_OPSEL | ((u32)reg << 16) | (value & 0xff);
 
@@ -59,6 +62,7 @@ int ulpi_write(struct ulpi_viewport *ulpi_vp, u8 *reg, u32 value)
 
 u32 ulpi_read(struct ulpi_viewport *ulpi_vp, u8 *reg)
 {
+	my_dbg(" [61]  shl_add\n");
 	int err;
 	u32 val = OMAP_ULPI_START | (((ulpi_vp->port_num + 1) & 0xf) << 24) |
 			 OMAP_ULPI_RD_OPSEL | ((u32)reg << 16);
@@ -69,3 +73,4 @@ u32 ulpi_read(struct ulpi_viewport *ulpi_vp, u8 *reg)
 
 	return readl(ulpi_vp->viewport_addr) & 0xff;
 }
+

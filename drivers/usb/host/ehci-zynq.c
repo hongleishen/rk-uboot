@@ -24,6 +24,7 @@ struct zynq_ehci_priv {
 
 static int ehci_zynq_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [26]  shl_add\n");
 	struct zynq_ehci_priv *priv = dev_get_priv(dev);
 
 	priv->ehci = (struct usb_ehci *)devfdt_get_addr_ptr(dev);
@@ -35,6 +36,7 @@ static int ehci_zynq_ofdata_to_platdata(struct udevice *dev)
 
 static int ehci_zynq_probe(struct udevice *dev)
 {
+	my_dbg(" [37]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct zynq_ehci_priv *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr;
@@ -90,3 +92,4 @@ U_BOOT_DRIVER(ehci_zynq) = {
 	.priv_auto_alloc_size = sizeof(struct zynq_ehci_priv),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

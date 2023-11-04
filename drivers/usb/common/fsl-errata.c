@@ -18,6 +18,7 @@
 #if defined(CONFIG_PPC) || defined(CONFIG_ARM)
 bool has_dual_phy(void)
 {
+	my_dbg(" [20]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -47,6 +48,7 @@ bool has_dual_phy(void)
 
 bool has_erratum_a006261(void)
 {
+	my_dbg(" [49]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -80,6 +82,7 @@ bool has_erratum_a006261(void)
 
 bool has_erratum_a007075(void)
 {
+	my_dbg(" [82]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -99,6 +102,7 @@ bool has_erratum_a007075(void)
 
 bool has_erratum_a007798(void)
 {
+	my_dbg(" [101]  shl_add\n");
 #ifdef CONFIG_PPC
 	return SVR_SOC_VER(get_svr()) == SVR_T4240 &&
 		IS_SVR_REV(get_svr(), 2, 0);
@@ -108,6 +112,7 @@ bool has_erratum_a007798(void)
 
 bool has_erratum_a007792(void)
 {
+	my_dbg(" [110]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -134,6 +139,7 @@ bool has_erratum_a007792(void)
 
 bool has_erratum_a005697(void)
 {
+	my_dbg(" [136]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -153,6 +159,7 @@ bool has_erratum_a005697(void)
 
 bool has_erratum_a004477(void)
 {
+	my_dbg(" [155]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -180,6 +187,7 @@ bool has_erratum_a004477(void)
 
 bool has_erratum_a008751(void)
 {
+	my_dbg(" [182]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -195,6 +203,7 @@ bool has_erratum_a008751(void)
 
 bool has_erratum_a010151(void)
 {
+	my_dbg(" [197]  shl_add\n");
 	u32 svr = get_svr();
 	u32 soc = SVR_SOC_VER(svr);
 
@@ -227,3 +236,4 @@ bool has_erratum_a010151(void)
 }
 
 #endif
+

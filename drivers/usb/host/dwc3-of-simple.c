@@ -26,6 +26,7 @@ struct dwc3_of_simple {
 static int dwc3_of_simple_reset_init(struct udevice *dev,
 				     struct dwc3_of_simple *simple)
 {
+	my_dbg(" [28]  shl_add\n");
 	int ret;
 
 	ret = reset_get_bulk(dev, &simple->resets);
@@ -46,6 +47,7 @@ static int dwc3_of_simple_reset_init(struct udevice *dev,
 static int dwc3_of_simple_clk_init(struct udevice *dev,
 				   struct dwc3_of_simple *simple)
 {
+	my_dbg(" [48]  shl_add\n");
 	int ret;
 
 	ret = clk_get_bulk(dev, &simple->clks);
@@ -67,6 +69,7 @@ static int dwc3_of_simple_clk_init(struct udevice *dev,
 
 static int dwc3_of_simple_probe(struct udevice *dev)
 {
+	my_dbg(" [69]  shl_add\n");
 	struct dwc3_of_simple *simple = dev_get_platdata(dev);
 	int ret;
 
@@ -83,6 +86,7 @@ static int dwc3_of_simple_probe(struct udevice *dev)
 
 static int dwc3_of_simple_remove(struct udevice *dev)
 {
+	my_dbg(" [85]  shl_add\n");
 	struct dwc3_of_simple *simple = dev_get_platdata(dev);
 
 	reset_release_bulk(&simple->resets);
@@ -107,3 +111,4 @@ U_BOOT_DRIVER(dwc3_of_simple) = {
 	.platdata_auto_alloc_size = sizeof(struct dwc3_of_simple),
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
+

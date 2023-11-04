@@ -115,6 +115,7 @@ static struct xhci_ctrl xhcic[CONFIG_USB_MAX_CONTROLLER_COUNT];
 
 struct xhci_ctrl *xhci_get_ctrl(struct usb_device *udev)
 {
+	my_dbg(" [117]  shl_add\n");
 #if CONFIG_IS_ENABLED(DM_USB)
 	struct udevice *dev;
 
@@ -142,6 +143,7 @@ struct xhci_ctrl *xhci_get_ctrl(struct usb_device *udev)
 static int handshake(uint32_t volatile *ptr, uint32_t mask,
 					uint32_t done, int usec)
 {
+	my_dbg(" [144]  shl_add\n");
 	uint32_t result;
 
 	do {
@@ -166,6 +168,7 @@ static int handshake(uint32_t volatile *ptr, uint32_t mask,
  */
 static int xhci_start(struct xhci_hcor *hcor)
 {
+	my_dbg(" [168]  shl_add\n");
 	u32 temp;
 	int ret;
 
@@ -194,6 +197,7 @@ static int xhci_start(struct xhci_hcor *hcor)
  */
 static int xhci_reset(struct xhci_hcor *hcor)
 {
+	my_dbg(" [196]  shl_add\n");
 	u32 cmd;
 	u32 state;
 	int ret;
@@ -246,6 +250,7 @@ static int xhci_reset(struct xhci_hcor *hcor)
  */
 static unsigned int xhci_get_ep_index(struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [248]  shl_add\n");
 	unsigned int index;
 
 	if (usb_endpoint_xfer_control(desc))
@@ -265,6 +270,7 @@ static unsigned int xhci_microframes_to_exponent(unsigned int desc_interval,
 						 unsigned int min_exponent,
 						 unsigned int max_exponent)
 {
+	my_dbg(" [267]  shl_add\n");
 	unsigned int interval;
 
 	interval = fls(desc_interval) - 1;
@@ -280,6 +286,7 @@ static unsigned int xhci_microframes_to_exponent(unsigned int desc_interval,
 static unsigned int xhci_parse_microframe_interval(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc)
 {
+	my_dbg(" [282]  shl_add\n");
 	if (endpt_desc->bInterval == 0)
 		return 0;
 
@@ -289,6 +296,7 @@ static unsigned int xhci_parse_microframe_interval(struct usb_device *udev,
 static unsigned int xhci_parse_frame_interval(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc)
 {
+	my_dbg(" [291]  shl_add\n");
 	return xhci_microframes_to_exponent(endpt_desc->bInterval * 8, 3, 10);
 }
 
@@ -299,6 +307,7 @@ static unsigned int xhci_parse_frame_interval(struct usb_device *udev,
 static unsigned int xhci_parse_exponent_interval(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc)
 {
+	my_dbg(" [301]  shl_add\n");
 	unsigned int interval;
 
 	interval = clamp_val(endpt_desc->bInterval, 1, 16) - 1;
@@ -331,6 +340,7 @@ static unsigned int xhci_parse_exponent_interval(struct usb_device *udev,
 static unsigned int xhci_get_endpoint_interval(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc)
 {
+	my_dbg(" [333]  shl_add\n");
 	unsigned int interval = 0;
 
 	switch (udev->speed) {
@@ -388,6 +398,7 @@ static u32 xhci_get_endpoint_mult(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc,
 	struct usb_ss_ep_comp_descriptor *ss_ep_comp_desc)
 {
+	my_dbg(" [390]  shl_add\n");
 	if (udev->speed < USB_SPEED_SUPER ||
 	    !usb_endpoint_xfer_isoc(endpt_desc))
 		return 0;
@@ -399,6 +410,7 @@ static u32 xhci_get_endpoint_max_burst(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc,
 	struct usb_ss_ep_comp_descriptor *ss_ep_comp_desc)
 {
+	my_dbg(" [401]  shl_add\n");
 	/* Super speed and Plus have max burst in ep companion desc */
 	if (udev->speed >= USB_SPEED_SUPER)
 		return ss_ep_comp_desc->bMaxBurst;
@@ -420,6 +432,7 @@ static u32 xhci_get_max_esit_payload(struct usb_device *udev,
 	struct usb_endpoint_descriptor *endpt_desc,
 	struct usb_ss_ep_comp_descriptor *ss_ep_comp_desc)
 {
+	my_dbg(" [422]  shl_add\n");
 	int max_burst;
 	int max_packet;
 
@@ -449,6 +462,7 @@ static u32 xhci_get_max_esit_payload(struct usb_device *udev,
  */
 static int xhci_configure_endpoints(struct usb_device *udev, bool ctx_change)
 {
+	my_dbg(" [451]  shl_add\n");
 	struct xhci_container_ctx *in_ctx;
 	struct xhci_virt_device *virt_dev;
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
@@ -489,6 +503,7 @@ static int xhci_configure_endpoints(struct usb_device *udev, bool ctx_change)
  */
 static int xhci_set_configuration(struct usb_device *udev)
 {
+	my_dbg(" [491]  shl_add\n");
 	struct xhci_container_ctx *in_ctx;
 	struct xhci_container_ctx *out_ctx;
 	struct xhci_input_control_ctx *ctrl_ctx;
@@ -624,6 +639,7 @@ static int xhci_set_configuration(struct usb_device *udev)
  */
 static int xhci_address_device(struct usb_device *udev, int root_portnr)
 {
+	my_dbg(" [626]  shl_add\n");
 	int ret = 0;
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 	struct xhci_slot_ctx *slot_ctx;
@@ -706,6 +722,7 @@ static int xhci_address_device(struct usb_device *udev, int root_portnr)
  */
 static int _xhci_alloc_device(struct usb_device *udev)
 {
+	my_dbg(" [708]  shl_add\n");
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 	union xhci_trb *event;
 	int ret;
@@ -745,6 +762,7 @@ static int _xhci_alloc_device(struct usb_device *udev)
 #if !CONFIG_IS_ENABLED(DM_USB)
 int usb_alloc_device(struct usb_device *udev)
 {
+	my_dbg(" [747]  shl_add\n");
 	return _xhci_alloc_device(udev);
 }
 #endif
@@ -760,6 +778,7 @@ int usb_alloc_device(struct usb_device *udev)
  */
 int xhci_check_maxpacket(struct usb_device *udev)
 {
+	my_dbg(" [762]  shl_add\n");
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 	unsigned int slot_id = udev->slot_id;
 	int ep_index = 0;	/* control endpoint */
@@ -818,6 +837,7 @@ int xhci_check_maxpacket(struct usb_device *udev)
 static void xhci_clear_port_change_bit(u16 wValue,
 		u16 wIndex, volatile uint32_t *addr, u32 port_status)
 {
+	my_dbg(" [820]  shl_add\n");
 	char *port_change_bit;
 	u32 status;
 
@@ -867,6 +887,7 @@ static void xhci_clear_port_change_bit(u16 wValue,
  */
 static u32 xhci_port_state_to_neutral(u32 state)
 {
+	my_dbg(" [869]  shl_add\n");
 	/* Save read-only status and port state */
 	return (state & XHCI_PORT_RO) | (state & XHCI_PORT_RWS);
 }
@@ -882,6 +903,7 @@ static u32 xhci_port_state_to_neutral(u32 state)
 static int xhci_submit_root(struct usb_device *udev, unsigned long pipe,
 			void *buffer, struct devrequest *req)
 {
+	my_dbg(" [884]  shl_add\n");
 	uint8_t tmpbuf[4];
 	u16 typeReq;
 	void *srcptr = NULL;
@@ -1113,6 +1135,7 @@ static int _xhci_submit_int_msg(struct usb_device *udev, unsigned long pipe,
 				void *buffer, int length, int interval,
 				bool nonblock)
 {
+	my_dbg(" [1115]  shl_add\n");
 	if (usb_pipetype(pipe) != PIPE_INTERRUPT) {
 		printf("non-interrupt pipe (type=%lu)", usb_pipetype(pipe));
 		return -EINVAL;
@@ -1139,6 +1162,7 @@ static int _xhci_submit_int_msg(struct usb_device *udev, unsigned long pipe,
 static int _xhci_submit_bulk_msg(struct usb_device *udev, unsigned long pipe,
 				 void *buffer, int length)
 {
+	my_dbg(" [1141]  shl_add\n");
 	if (usb_pipetype(pipe) != PIPE_BULK) {
 		printf("non-bulk pipe (type=%lu)", usb_pipetype(pipe));
 		return -EINVAL;
@@ -1162,6 +1186,7 @@ static int _xhci_submit_control_msg(struct usb_device *udev, unsigned long pipe,
 				    void *buffer, int length,
 				    struct devrequest *setup, int root_portnr)
 {
+	my_dbg(" [1164]  shl_add\n");
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 	int ret = 0;
 
@@ -1191,6 +1216,7 @@ static int _xhci_submit_control_msg(struct usb_device *udev, unsigned long pipe,
 
 static int xhci_lowlevel_init(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [1193]  shl_add\n");
 	struct xhci_hccr *hccr;
 	struct xhci_hcor *hcor;
 	uint32_t val;
@@ -1247,6 +1273,7 @@ static int xhci_lowlevel_init(struct xhci_ctrl *ctrl)
 
 static int xhci_lowlevel_stop(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [1249]  shl_add\n");
 	u32 temp;
 
 	xhci_reset(ctrl->hcor);
@@ -1264,6 +1291,7 @@ static int xhci_lowlevel_stop(struct xhci_ctrl *ctrl)
 int submit_control_msg(struct usb_device *udev, unsigned long pipe,
 		       void *buffer, int length, struct devrequest *setup)
 {
+	my_dbg(" [1266]  shl_add\n");
 	struct usb_device *hop = udev;
 
 	if (hop->parent)
@@ -1277,12 +1305,14 @@ int submit_control_msg(struct usb_device *udev, unsigned long pipe,
 int submit_bulk_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
 		    int length)
 {
+	my_dbg(" [1279]  shl_add\n");
 	return _xhci_submit_bulk_msg(udev, pipe, buffer, length);
 }
 
 int submit_int_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
 		   int length, int interval, bool nonblock)
 {
+	my_dbg(" [1285]  shl_add\n");
 	return _xhci_submit_int_msg(udev, pipe, buffer, length, interval,
 				    nonblock);
 }
@@ -1296,6 +1326,7 @@ int submit_int_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
  */
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [1298]  shl_add\n");
 	struct xhci_hccr *hccr;
 	struct xhci_hcor *hcor;
 	struct xhci_ctrl *ctrl;
@@ -1335,6 +1366,7 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
  */
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [1337]  shl_add\n");
 	struct xhci_ctrl *ctrl = (xhcic + index);
 
 	if (ctrl->hcor) {
@@ -1353,6 +1385,7 @@ static int xhci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 				   unsigned long pipe, void *buffer, int length,
 				   struct devrequest *setup)
 {
+	my_dbg(" [1355]  shl_add\n");
 	struct usb_device *uhop;
 	struct udevice *hub;
 	int root_portnr = 0;
@@ -1385,6 +1418,7 @@ static int xhci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 static int xhci_submit_bulk_msg(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [1387]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _xhci_submit_bulk_msg(udev, pipe, buffer, length);
 }
@@ -1393,6 +1427,7 @@ static int xhci_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length,
 			       int interval, bool nonblock)
 {
+	my_dbg(" [1395]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _xhci_submit_int_msg(udev, pipe, buffer, length, interval,
 				    nonblock);
@@ -1400,12 +1435,14 @@ static int xhci_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 
 static int xhci_alloc_device(struct udevice *dev, struct usb_device *udev)
 {
+	my_dbg(" [1402]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _xhci_alloc_device(udev);
 }
 
 static int xhci_update_hub_device(struct udevice *dev, struct usb_device *udev)
 {
+	my_dbg(" [1408]  shl_add\n");
 	struct xhci_ctrl *ctrl = dev_get_priv(dev);
 	struct usb_hub_device *hub = dev_get_uclass_priv(udev->dev);
 	struct xhci_virt_device *virt_dev;
@@ -1472,6 +1509,7 @@ static int xhci_update_hub_device(struct udevice *dev, struct usb_device *udev)
 
 static int xhci_get_max_xfer_size(struct udevice *dev, size_t *size)
 {
+	my_dbg(" [1474]  shl_add\n");
 	/*
 	 * xHCD allocates one segment which includes 64 TRBs for each endpoint
 	 * and the last TRB in this segment is configured as a link TRB to form
@@ -1487,6 +1525,7 @@ static int xhci_get_max_xfer_size(struct udevice *dev, size_t *size)
 int xhci_register(struct udevice *dev, struct xhci_hccr *hccr,
 		  struct xhci_hcor *hcor)
 {
+	my_dbg(" [1489]  shl_add\n");
 	struct xhci_ctrl *ctrl = dev_get_priv(dev);
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
 	int ret;
@@ -1523,6 +1562,7 @@ err:
 
 int xhci_deregister(struct udevice *dev)
 {
+	my_dbg(" [1525]  shl_add\n");
 	struct xhci_ctrl *ctrl = dev_get_priv(dev);
 
 	xhci_lowlevel_stop(ctrl);
@@ -1541,3 +1581,4 @@ struct dm_usb_ops xhci_usb_ops = {
 };
 
 #endif
+

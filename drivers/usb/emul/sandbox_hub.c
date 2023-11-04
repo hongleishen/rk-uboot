@@ -124,6 +124,7 @@ struct sandbox_hub_priv {
 static struct udevice *hub_find_device(struct udevice *hub, int port,
 				       enum usb_device_speed *speed)
 {
+	my_dbg(" [126]  shl_add\n");
 	struct udevice *dev;
 	struct usb_generic_descriptor **gen_desc;
 	struct usb_device_descriptor **dev_desc;
@@ -162,6 +163,7 @@ static struct udevice *hub_find_device(struct udevice *hub, int port,
 
 static int clrset_post_state(struct udevice *hub, int port, int clear, int set)
 {
+	my_dbg(" [164]  shl_add\n");
 	struct sandbox_hub_priv *priv = dev_get_priv(hub);
 	int *status = &priv->status[port];
 	int *change = &priv->change[port];
@@ -207,6 +209,7 @@ static int sandbox_hub_submit_control_msg(struct udevice *bus,
 					  void *buffer, int length,
 					  struct devrequest *setup)
 {
+	my_dbg(" [209]  shl_add\n");
 	struct sandbox_hub_priv *priv = dev_get_priv(bus);
 	int ret = 0;
 
@@ -301,11 +304,13 @@ static int sandbox_hub_submit_control_msg(struct udevice *bus,
 
 static int sandbox_hub_bind(struct udevice *dev)
 {
+	my_dbg(" [303]  shl_add\n");
 	return usb_emul_setup_device(dev, hub_strings, hub_desc_list);
 }
 
 static int sandbox_child_post_bind(struct udevice *dev)
 {
+	my_dbg(" [308]  shl_add\n");
 	struct sandbox_hub_platdata *plat = dev_get_parent_platdata(dev);
 	struct usb_emul_platdata *emul = dev_get_uclass_platdata(dev);
 
@@ -335,3 +340,4 @@ U_BOOT_DRIVER(usb_sandbox_hub) = {
 			sizeof(struct sandbox_hub_platdata),
 	.child_post_bind = sandbox_child_post_bind,
 };
+

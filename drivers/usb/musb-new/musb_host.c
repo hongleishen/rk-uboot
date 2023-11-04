@@ -89,6 +89,7 @@ static void musb_ep_program(struct musb *musb, u8 epnum,
  */
 static void musb_h_tx_flush_fifo(struct musb_hw_ep *ep)
 {
+	my_dbg(" [91]  shl_add\n");
 	struct musb	*musb = ep->musb;
 	void __iomem	*epio = ep->regs;
 	u16		csr;
@@ -113,6 +114,7 @@ static void musb_h_tx_flush_fifo(struct musb_hw_ep *ep)
 
 static void musb_h_ep0_flush_fifo(struct musb_hw_ep *ep)
 {
+	my_dbg(" [115]  shl_add\n");
 	void __iomem	*epio = ep->regs;
 	u16		csr;
 	int		retries = 5;
@@ -140,6 +142,7 @@ static void musb_h_ep0_flush_fifo(struct musb_hw_ep *ep)
  */
 static inline void musb_h_tx_start(struct musb_hw_ep *ep)
 {
+	my_dbg(" [142]  shl_add\n");
 	u16	txcsr;
 
 	/* NOTE: no locks here; caller should lock and select EP */
@@ -156,6 +159,7 @@ static inline void musb_h_tx_start(struct musb_hw_ep *ep)
 
 static inline void musb_h_tx_dma_start(struct musb_hw_ep *ep)
 {
+	my_dbg(" [158]  shl_add\n");
 	u16	txcsr;
 
 	/* NOTE: no locks here; caller should lock and select EP */
@@ -168,6 +172,7 @@ static inline void musb_h_tx_dma_start(struct musb_hw_ep *ep)
 
 static void musb_ep_set_qh(struct musb_hw_ep *ep, int is_in, struct musb_qh *qh)
 {
+	my_dbg(" [170]  shl_add\n");
 	if (is_in != 0 || ep->is_shared_fifo)
 		ep->in_qh  = qh;
 	if (is_in == 0 || ep->is_shared_fifo)
@@ -176,6 +181,7 @@ static void musb_ep_set_qh(struct musb_hw_ep *ep, int is_in, struct musb_qh *qh)
 
 static struct musb_qh *musb_ep_get_qh(struct musb_hw_ep *ep, int is_in)
 {
+	my_dbg(" [178]  shl_add\n");
 	return is_in ? ep->in_qh : ep->out_qh;
 }
 
@@ -188,6 +194,7 @@ static struct musb_qh *musb_ep_get_qh(struct musb_hw_ep *ep, int is_in)
 static void
 musb_start_urb(struct musb *musb, int is_in, struct musb_qh *qh)
 {
+	my_dbg(" [190]  shl_add\n");
 	u16			frame;
 	u32			len;
 	void __iomem		*mbase =  musb->mregs;
@@ -295,6 +302,7 @@ static void musb_giveback(struct musb *musb, struct urb *urb, int status)
 __releases(musb->lock)
 __acquires(musb->lock)
 {
+	my_dbg(" [297]  shl_add\n");
 	dev_dbg(musb->controller,
 			"complete %p %pF (%d), dev%d ep%d%s, %d/%d\n",
 			urb, urb->complete, status,
@@ -314,6 +322,7 @@ __acquires(musb->lock)
 static inline void musb_save_toggle(struct musb_qh *qh, int is_in,
 				    struct urb *urb)
 {
+	my_dbg(" [316]  shl_add\n");
 	void __iomem		*epio = qh->hw_ep->regs;
 	u16			csr;
 
@@ -340,6 +349,7 @@ static inline void musb_save_toggle(struct musb_qh *qh, int is_in,
 static void musb_advance_schedule(struct musb *musb, struct urb *urb,
 				  struct musb_hw_ep *hw_ep, int is_in)
 {
+	my_dbg(" [342]  shl_add\n");
 	struct musb_qh		*qh = musb_ep_get_qh(hw_ep, is_in);
 	struct musb_hw_ep	*ep = qh->hw_ep;
 	int			ready = qh->is_ready;
@@ -426,6 +436,7 @@ static void musb_advance_schedule(struct musb *musb, struct urb *urb,
 
 static u16 musb_h_flush_rxfifo(struct musb_hw_ep *hw_ep, u16 csr)
 {
+	my_dbg(" [428]  shl_add\n");
 	/* we don't want fifo to fill itself again;
 	 * ignore dma (various models),
 	 * leave toggle alone (may not have been saved yet)
@@ -449,6 +460,7 @@ static u16 musb_h_flush_rxfifo(struct musb_hw_ep *hw_ep, u16 csr)
 static bool
 musb_host_packet_rx(struct musb *musb, struct urb *urb, u8 epnum, u8 iso_err)
 {
+	my_dbg(" [451]  shl_add\n");
 	u16			rx_count;
 	u8			*buf;
 	u16			csr;
@@ -554,6 +566,7 @@ musb_host_packet_rx(struct musb *musb, struct urb *urb, u8 epnum, u8 iso_err)
 static void
 musb_rx_reinit(struct musb *musb, struct musb_qh *qh, struct musb_hw_ep *ep)
 {
+	my_dbg(" [556]  shl_add\n");
 	u16	csr;
 
 	/* NOTE:  we know the "rx" fifo reinit never triggers for ep0.
@@ -618,6 +631,7 @@ static bool musb_tx_dma_program(struct dma_controller *dma,
 		struct musb_hw_ep *hw_ep, struct musb_qh *qh,
 		struct urb *urb, u32 offset, u32 length)
 {
+	my_dbg(" [620]  shl_add\n");
 	struct dma_channel	*channel = hw_ep->tx_channel;
 	void __iomem		*epio = hw_ep->regs;
 	u16			pkt_size = qh->maxpacket;
@@ -684,6 +698,7 @@ static void musb_ep_program(struct musb *musb, u8 epnum,
 			struct urb *urb, int is_out,
 			u8 *buf, u32 offset, u32 len)
 {
+	my_dbg(" [686]  shl_add\n");
 	struct dma_controller	*dma_controller;
 	struct dma_channel	*dma_channel;
 	u8			dma_ok;
@@ -888,6 +903,7 @@ static void musb_ep_program(struct musb *musb, u8 epnum,
  */
 static bool musb_h_ep0_continue(struct musb *musb, u16 len, struct urb *urb)
 {
+	my_dbg(" [890]  shl_add\n");
 	bool			 more = false;
 	u8			*fifo_dest = NULL;
 	u16			fifo_count = 0;
@@ -964,6 +980,7 @@ static bool musb_h_ep0_continue(struct musb *musb, u16 len, struct urb *urb)
  */
 irqreturn_t musb_h_ep0_irq(struct musb *musb)
 {
+	my_dbg(" [966]  shl_add\n");
 	struct urb		*urb;
 	u16			csr, len;
 	int			status = 0;
@@ -1102,6 +1119,7 @@ done:
 /* Service a Tx-Available or dma completion irq for the endpoint */
 void musb_host_tx(struct musb *musb, u8 epnum)
 {
+	my_dbg(" [1104]  shl_add\n");
 	int			pipe;
 	bool			done = false;
 	u16			tx_csr;
@@ -1386,6 +1404,7 @@ void musb_host_tx(struct musb *musb, u8 epnum)
  */
 static void musb_bulk_rx_nak_timeout(struct musb *musb, struct musb_hw_ep *ep)
 {
+	my_dbg(" [1388]  shl_add\n");
 	struct dma_channel	*dma;
 	struct urb		*urb;
 	void __iomem		*mbase = musb->mregs;
@@ -1431,6 +1450,7 @@ static void musb_bulk_rx_nak_timeout(struct musb *musb, struct musb_hw_ep *ep)
  */
 void musb_host_rx(struct musb *musb, u8 epnum)
 {
+	my_dbg(" [1433]  shl_add\n");
 	struct urb		*urb;
 	struct musb_hw_ep	*hw_ep = musb->endpoints + epnum;
 	void __iomem		*epio = hw_ep->regs;
@@ -1785,6 +1805,7 @@ static int musb_schedule(
 	struct musb_qh		*qh,
 	int			is_in)
 {
+	my_dbg(" [1787]  shl_add\n");
 	int			idle;
 	int			best_diff;
 	int			best_end, epnum;
@@ -1900,6 +1921,7 @@ success:
 /* check if transaction translator is needed for device */
 static int tt_needed(struct musb *musb, struct usb_device *dev)
 {
+	my_dbg(" [1902]  shl_add\n");
 	if ((musb_readb(musb->mregs, MUSB_POWER) & MUSB_POWER_HSMODE) &&
 			(dev->speed < USB_SPEED_HIGH))
 		return 1;
@@ -1916,6 +1938,7 @@ int musb_urb_enqueue(
 	struct urb			*urb,
 	gfp_t				mem_flags)
 {
+	my_dbg(" [1918]  shl_add\n");
 	unsigned long			flags;
 	struct musb			*musb = hcd_to_musb(hcd);
 	struct usb_host_endpoint	*hep = urb->ep;
@@ -2121,6 +2144,7 @@ done:
  */
 static int musb_cleanup_urb(struct urb *urb, struct musb_qh *qh)
 {
+	my_dbg(" [2123]  shl_add\n");
 	struct musb_hw_ep	*ep = qh->hw_ep;
 	struct musb		*musb = ep->musb;
 	void __iomem		*epio = ep->regs;
@@ -2186,6 +2210,7 @@ int musb_urb_dequeue(
 	struct urb *urb,
 	int status)
 {
+	my_dbg(" [2188]  shl_add\n");
 	struct musb		*musb = hcd_to_musb(hcd);
 	struct musb_qh		*qh;
 	unsigned long		flags;
@@ -2247,6 +2272,7 @@ done:
 static void
 musb_h_disable(struct usb_hcd *hcd, struct usb_host_endpoint *hep)
 {
+	my_dbg(" [2249]  shl_add\n");
 	u8			is_in = hep->desc.bEndpointAddress & USB_DIR_IN;
 	unsigned long		flags;
 	struct musb		*musb = hcd_to_musb(hcd);
@@ -2299,6 +2325,7 @@ exit:
 
 static int musb_h_get_frame_number(struct usb_hcd *hcd)
 {
+	my_dbg(" [2301]  shl_add\n");
 	struct musb	*musb = hcd_to_musb(hcd);
 
 	return musb_readw(musb->mregs, MUSB_FRAME);
@@ -2306,6 +2333,7 @@ static int musb_h_get_frame_number(struct usb_hcd *hcd)
 
 static int musb_h_start(struct usb_hcd *hcd)
 {
+	my_dbg(" [2308]  shl_add\n");
 	struct musb	*musb = hcd_to_musb(hcd);
 
 	/* NOTE: musb_start() is called when the hub driver turns
@@ -2318,12 +2346,14 @@ static int musb_h_start(struct usb_hcd *hcd)
 
 static void musb_h_stop(struct usb_hcd *hcd)
 {
+	my_dbg(" [2320]  shl_add\n");
 	musb_stop(hcd_to_musb(hcd));
 	hcd->state = HC_STATE_HALT;
 }
 
 static int musb_bus_suspend(struct usb_hcd *hcd)
 {
+	my_dbg(" [2326]  shl_add\n");
 	struct musb	*musb = hcd_to_musb(hcd);
 	u8		devctl;
 
@@ -2356,6 +2386,7 @@ static int musb_bus_suspend(struct usb_hcd *hcd)
 
 static int musb_bus_resume(struct usb_hcd *hcd)
 {
+	my_dbg(" [2358]  shl_add\n");
 	/* resuming child port does the work */
 	return 0;
 }
@@ -2387,3 +2418,4 @@ const struct hc_driver musb_hc_driver = {
 	/* .hub_irq_enable	= NULL, */
 };
 #endif
+

@@ -71,6 +71,7 @@ static const struct r8152_version r8152_versions[] = {
 static
 int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
 {
+	my_dbg(" [73]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(void *, tmp, size);
 	int ret;
 
@@ -84,6 +85,7 @@ int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
 static
 int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
 {
+	my_dbg(" [86]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(void *, tmp, size);
 
 	memcpy(tmp, data, size);
@@ -95,6 +97,7 @@ int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
 int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
 		     void *data, u16 type)
 {
+	my_dbg(" [97]  shl_add\n");
 	u16 burst_size = 64;
 	int ret;
 	int txsize;
@@ -123,6 +126,7 @@ int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
 int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
 		      u16 size, void *data, u16 type)
 {
+	my_dbg(" [125]  shl_add\n");
 	int ret;
 	u16 byteen_start, byteen_end, byte_en_to_hw;
 	u16 burst_size = 512;
@@ -175,26 +179,31 @@ int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
 
 int pla_ocp_read(struct r8152 *tp, u16 index, u16 size, void *data)
 {
+	my_dbg(" [177]  shl_add\n");
 	return generic_ocp_read(tp, index, size, data, MCU_TYPE_PLA);
 }
 
 int pla_ocp_write(struct r8152 *tp, u16 index, u16 byteen, u16 size, void *data)
 {
+	my_dbg(" [182]  shl_add\n");
 	return generic_ocp_write(tp, index, byteen, size, data, MCU_TYPE_PLA);
 }
 
 int usb_ocp_read(struct r8152 *tp, u16 index, u16 size, void *data)
 {
+	my_dbg(" [187]  shl_add\n");
 	return generic_ocp_read(tp, index, size, data, MCU_TYPE_USB);
 }
 
 int usb_ocp_write(struct r8152 *tp, u16 index, u16 byteen, u16 size, void *data)
 {
+	my_dbg(" [192]  shl_add\n");
 	return generic_ocp_write(tp, index, byteen, size, data, MCU_TYPE_USB);
 }
 
 u32 ocp_read_dword(struct r8152 *tp, u16 type, u16 index)
 {
+	my_dbg(" [197]  shl_add\n");
 	__le32 data;
 
 	generic_ocp_read(tp, index, sizeof(data), &data, type);
@@ -204,6 +213,7 @@ u32 ocp_read_dword(struct r8152 *tp, u16 type, u16 index)
 
 void ocp_write_dword(struct r8152 *tp, u16 type, u16 index, u32 data)
 {
+	my_dbg(" [206]  shl_add\n");
 	__le32 tmp = __cpu_to_le32(data);
 
 	generic_ocp_write(tp, index, BYTE_EN_DWORD, sizeof(tmp), &tmp, type);
@@ -211,6 +221,7 @@ void ocp_write_dword(struct r8152 *tp, u16 type, u16 index, u32 data)
 
 u16 ocp_read_word(struct r8152 *tp, u16 type, u16 index)
 {
+	my_dbg(" [213]  shl_add\n");
 	u32 data;
 	__le32 tmp;
 	u8 shift = index & 2;
@@ -228,6 +239,7 @@ u16 ocp_read_word(struct r8152 *tp, u16 type, u16 index)
 
 void ocp_write_word(struct r8152 *tp, u16 type, u16 index, u32 data)
 {
+	my_dbg(" [230]  shl_add\n");
 	u32 mask = 0xffff;
 	__le32 tmp;
 	u16 byen = BYTE_EN_WORD;
@@ -249,6 +261,7 @@ void ocp_write_word(struct r8152 *tp, u16 type, u16 index, u32 data)
 
 u8 ocp_read_byte(struct r8152 *tp, u16 type, u16 index)
 {
+	my_dbg(" [251]  shl_add\n");
 	u32 data;
 	__le32 tmp;
 	u8 shift = index & 3;
@@ -266,6 +279,7 @@ u8 ocp_read_byte(struct r8152 *tp, u16 type, u16 index)
 
 void ocp_write_byte(struct r8152 *tp, u16 type, u16 index, u32 data)
 {
+	my_dbg(" [268]  shl_add\n");
 	u32 mask = 0xff;
 	__le32 tmp;
 	u16 byen = BYTE_EN_BYTE;
@@ -287,6 +301,7 @@ void ocp_write_byte(struct r8152 *tp, u16 type, u16 index, u32 data)
 
 u16 ocp_reg_read(struct r8152 *tp, u16 addr)
 {
+	my_dbg(" [289]  shl_add\n");
 	u16 ocp_base, ocp_index;
 
 	ocp_base = addr & 0xf000;
@@ -301,6 +316,7 @@ u16 ocp_reg_read(struct r8152 *tp, u16 addr)
 
 void ocp_reg_write(struct r8152 *tp, u16 addr, u16 data)
 {
+	my_dbg(" [303]  shl_add\n");
 	u16 ocp_base, ocp_index;
 
 	ocp_base = addr & 0xf000;
@@ -315,16 +331,19 @@ void ocp_reg_write(struct r8152 *tp, u16 addr, u16 data)
 
 static void r8152_mdio_write(struct r8152 *tp, u32 reg_addr, u32 value)
 {
+	my_dbg(" [317]  shl_add\n");
 	ocp_reg_write(tp, OCP_BASE_MII + reg_addr * 2, value);
 }
 
 static int r8152_mdio_read(struct r8152 *tp, u32 reg_addr)
 {
+	my_dbg(" [322]  shl_add\n");
 	return ocp_reg_read(tp, OCP_BASE_MII + reg_addr * 2);
 }
 
 void sram_write(struct r8152 *tp, u16 addr, u16 data)
 {
+	my_dbg(" [327]  shl_add\n");
 	ocp_reg_write(tp, OCP_SRAM_ADDR, addr);
 	ocp_reg_write(tp, OCP_SRAM_DATA, data);
 }
@@ -332,6 +351,7 @@ void sram_write(struct r8152 *tp, u16 addr, u16 data)
 int r8152_wait_for_bit(struct r8152 *tp, bool ocp_reg, u16 type, u16 index,
 		       const u32 mask, bool set, unsigned int timeout)
 {
+	my_dbg(" [334]  shl_add\n");
 	u32 val;
 
 	while (--timeout) {
@@ -357,6 +377,7 @@ int r8152_wait_for_bit(struct r8152 *tp, bool ocp_reg, u16 type, u16 index,
 
 static void r8152b_reset_packet_filter(struct r8152 *tp)
 {
+	my_dbg(" [359]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_FMC);
@@ -368,6 +389,7 @@ static void r8152b_reset_packet_filter(struct r8152 *tp)
 
 static void rtl8152_wait_fifo_empty(struct r8152 *tp)
 {
+	my_dbg(" [370]  shl_add\n");
 	int ret;
 
 	ret = r8152_wait_for_bit(tp, 0, MCU_TYPE_PLA, PLA_PHY_PWR,
@@ -383,6 +405,7 @@ static void rtl8152_wait_fifo_empty(struct r8152 *tp)
 
 static void rtl8152_nic_reset(struct r8152 *tp)
 {
+	my_dbg(" [385]  shl_add\n");
 	int ret;
 	u32 ocp_data;
 
@@ -398,11 +421,13 @@ static void rtl8152_nic_reset(struct r8152 *tp)
 
 static u8 rtl8152_get_speed(struct r8152 *tp)
 {
+	my_dbg(" [400]  shl_add\n");
 	return ocp_read_byte(tp, MCU_TYPE_PLA, PLA_PHYSTATUS);
 }
 
 static void rtl_set_eee_plus(struct r8152 *tp)
 {
+	my_dbg(" [405]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_EEEP_CR);
@@ -412,6 +437,7 @@ static void rtl_set_eee_plus(struct r8152 *tp)
 
 static void rxdy_gated_en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [414]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_MISC_1);
@@ -424,6 +450,7 @@ static void rxdy_gated_en(struct r8152 *tp, bool enable)
 
 static void rtl8152_set_rx_mode(struct r8152 *tp)
 {
+	my_dbg(" [426]  shl_add\n");
 	u32 ocp_data;
 	__le32 tmp[2];
 
@@ -439,6 +466,7 @@ static void rtl8152_set_rx_mode(struct r8152 *tp)
 
 static int rtl_enable(struct r8152 *tp)
 {
+	my_dbg(" [441]  shl_add\n");
 	u32 ocp_data;
 
 	r8152b_reset_packet_filter(tp);
@@ -456,6 +484,7 @@ static int rtl_enable(struct r8152 *tp)
 
 static int rtl8152_enable(struct r8152 *tp)
 {
+	my_dbg(" [458]  shl_add\n");
 	rtl_set_eee_plus(tp);
 
 	return rtl_enable(tp);
@@ -463,6 +492,7 @@ static int rtl8152_enable(struct r8152 *tp)
 
 static void r8153_set_rx_early_timeout(struct r8152 *tp)
 {
+	my_dbg(" [465]  shl_add\n");
 	u32 ocp_data = tp->coalesce / 8;
 
 	ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_TIMEOUT, ocp_data);
@@ -470,6 +500,7 @@ static void r8153_set_rx_early_timeout(struct r8152 *tp)
 
 static void r8153_set_rx_early_size(struct r8152 *tp)
 {
+	my_dbg(" [472]  shl_add\n");
 	u32 ocp_data = (RTL8152_AGG_BUF_SZ - RTL8153_RMS) / 4;
 
 	ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_SIZE, ocp_data);
@@ -477,6 +508,7 @@ static void r8153_set_rx_early_size(struct r8152 *tp)
 
 static int rtl8153_enable(struct r8152 *tp)
 {
+	my_dbg(" [479]  shl_add\n");
 	rtl_set_eee_plus(tp);
 	r8153_set_rx_early_timeout(tp);
 	r8153_set_rx_early_size(tp);
@@ -486,6 +518,7 @@ static int rtl8153_enable(struct r8152 *tp)
 
 static void rtl_disable(struct r8152 *tp)
 {
+	my_dbg(" [488]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_dword(tp, MCU_TYPE_PLA, PLA_RCR);
@@ -500,6 +533,7 @@ static void rtl_disable(struct r8152 *tp)
 
 static void r8152_power_cut_en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [502]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_UPS_CTRL);
@@ -516,6 +550,7 @@ static void r8152_power_cut_en(struct r8152 *tp, bool enable)
 
 static void rtl_rx_vlan_en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [518]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_CPCR);
@@ -528,6 +563,7 @@ static void rtl_rx_vlan_en(struct r8152 *tp, bool enable)
 
 static void r8153_u1u2en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [530]  shl_add\n");
 	u8 u1u2[8];
 
 	if (enable)
@@ -540,6 +576,7 @@ static void r8153_u1u2en(struct r8152 *tp, bool enable)
 
 static void r8153_u2p3en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [542]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_U2P3_CTRL);
@@ -552,6 +589,7 @@ static void r8153_u2p3en(struct r8152 *tp, bool enable)
 
 static void r8153_power_cut_en(struct r8152 *tp, bool enable)
 {
+	my_dbg(" [554]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_POWER_CUT);
@@ -568,6 +606,7 @@ static void r8153_power_cut_en(struct r8152 *tp, bool enable)
 
 static int r8152_read_mac(struct r8152 *tp, unsigned char *macaddr)
 {
+	my_dbg(" [570]  shl_add\n");
 	int ret;
 	unsigned char enetaddr[8] = {0};
 
@@ -581,18 +620,21 @@ static int r8152_read_mac(struct r8152 *tp, unsigned char *macaddr)
 
 static void r8152b_disable_aldps(struct r8152 *tp)
 {
+	my_dbg(" [583]  shl_add\n");
 	ocp_reg_write(tp, OCP_ALDPS_CONFIG, ENPDNPS | LINKENA | DIS_SDSAVE);
 	mdelay(20);
 }
 
 static void r8152b_enable_aldps(struct r8152 *tp)
 {
+	my_dbg(" [589]  shl_add\n");
 	ocp_reg_write(tp, OCP_ALDPS_CONFIG, ENPWRSAVE | ENPDNPS |
 		LINKENA | DIS_SDSAVE);
 }
 
 static void rtl8152_disable(struct r8152 *tp)
 {
+	my_dbg(" [595]  shl_add\n");
 	r8152b_disable_aldps(tp);
 	rtl_disable(tp);
 	r8152b_enable_aldps(tp);
@@ -600,6 +642,7 @@ static void rtl8152_disable(struct r8152 *tp)
 
 static void r8152b_hw_phy_cfg(struct r8152 *tp)
 {
+	my_dbg(" [602]  shl_add\n");
 	u16 data;
 
 	data = r8152_mdio_read(tp, MII_BMCR);
@@ -613,6 +656,7 @@ static void r8152b_hw_phy_cfg(struct r8152 *tp)
 
 static void rtl8152_reinit_ll(struct r8152 *tp)
 {
+	my_dbg(" [615]  shl_add\n");
 	u32 ocp_data;
 	int ret;
 
@@ -633,6 +677,7 @@ static void rtl8152_reinit_ll(struct r8152 *tp)
 
 static void r8152b_exit_oob(struct r8152 *tp)
 {
+	my_dbg(" [635]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_dword(tp, MCU_TYPE_PLA, PLA_RCR);
@@ -691,6 +736,7 @@ static void r8152b_exit_oob(struct r8152 *tp)
 
 static void r8152b_enter_oob(struct r8152 *tp)
 {
+	my_dbg(" [693]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
@@ -726,6 +772,7 @@ static void r8152b_enter_oob(struct r8152 *tp)
 
 static void r8153_hw_phy_cfg(struct r8152 *tp)
 {
+	my_dbg(" [728]  shl_add\n");
 	u32 ocp_data;
 	u16 data;
 
@@ -773,6 +820,7 @@ static void r8153_hw_phy_cfg(struct r8152 *tp)
 
 static void r8153_first_init(struct r8152 *tp)
 {
+	my_dbg(" [775]  shl_add\n");
 	u32 ocp_data;
 
 	rxdy_gated_en(tp, true);
@@ -823,6 +871,7 @@ static void r8153_first_init(struct r8152 *tp)
 
 static void r8153_enter_oob(struct r8152 *tp)
 {
+	my_dbg(" [825]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
@@ -859,6 +908,7 @@ static void r8153_enter_oob(struct r8152 *tp)
 
 static void r8153_disable_aldps(struct r8152 *tp)
 {
+	my_dbg(" [861]  shl_add\n");
 	u16 data;
 
 	data = ocp_reg_read(tp, OCP_POWER_CFG);
@@ -869,12 +919,14 @@ static void r8153_disable_aldps(struct r8152 *tp)
 
 static void rtl8153_disable(struct r8152 *tp)
 {
+	my_dbg(" [871]  shl_add\n");
 	r8153_disable_aldps(tp);
 	rtl_disable(tp);
 }
 
 static int rtl8152_set_speed(struct r8152 *tp, u8 autoneg, u16 speed, u8 duplex)
 {
+	my_dbg(" [877]  shl_add\n");
 	u16 bmcr, anar, gbcr;
 
 	anar = r8152_mdio_read(tp, MII_ADVERTISE);
@@ -945,6 +997,7 @@ static int rtl8152_set_speed(struct r8152 *tp, u8 autoneg, u16 speed, u8 duplex)
 
 static void rtl8152_up(struct r8152 *tp)
 {
+	my_dbg(" [947]  shl_add\n");
 	r8152b_disable_aldps(tp);
 	r8152b_exit_oob(tp);
 	r8152b_enable_aldps(tp);
@@ -952,6 +1005,7 @@ static void rtl8152_up(struct r8152 *tp)
 
 static void rtl8152_down(struct r8152 *tp)
 {
+	my_dbg(" [954]  shl_add\n");
 	r8152_power_cut_en(tp, false);
 	r8152b_disable_aldps(tp);
 	r8152b_enter_oob(tp);
@@ -960,6 +1014,7 @@ static void rtl8152_down(struct r8152 *tp)
 
 static void rtl8153_up(struct r8152 *tp)
 {
+	my_dbg(" [962]  shl_add\n");
 	r8153_u1u2en(tp, false);
 	r8153_disable_aldps(tp);
 	r8153_first_init(tp);
@@ -968,6 +1023,7 @@ static void rtl8153_up(struct r8152 *tp)
 
 static void rtl8153_down(struct r8152 *tp)
 {
+	my_dbg(" [970]  shl_add\n");
 	r8153_u1u2en(tp, false);
 	r8153_u2p3en(tp, false);
 	r8153_power_cut_en(tp, false);
@@ -977,6 +1033,7 @@ static void rtl8153_down(struct r8152 *tp)
 
 static void r8152b_get_version(struct r8152 *tp)
 {
+	my_dbg(" [979]  shl_add\n");
 	u32 ocp_data;
 	u16 tcr;
 	int i;
@@ -999,6 +1056,7 @@ static void r8152b_get_version(struct r8152 *tp)
 
 static void r8152b_enable_fc(struct r8152 *tp)
 {
+	my_dbg(" [1001]  shl_add\n");
 	u16 anar;
 	anar = r8152_mdio_read(tp, MII_ADVERTISE);
 	anar |= ADVERTISE_PAUSE_CAP | ADVERTISE_PAUSE_ASYM;
@@ -1007,6 +1065,7 @@ static void r8152b_enable_fc(struct r8152 *tp)
 
 static void rtl_tally_reset(struct r8152 *tp)
 {
+	my_dbg(" [1009]  shl_add\n");
 	u32 ocp_data;
 
 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_RSTTALLY);
@@ -1016,6 +1075,7 @@ static void rtl_tally_reset(struct r8152 *tp)
 
 static void r8152b_init(struct r8152 *tp)
 {
+	my_dbg(" [1018]  shl_add\n");
 	u32 ocp_data;
 
 	r8152b_disable_aldps(tp);
@@ -1058,6 +1118,7 @@ static void r8152b_init(struct r8152 *tp)
 
 static void r8153_init(struct r8152 *tp)
 {
+	my_dbg(" [1060]  shl_add\n");
 	int i;
 	u32 ocp_data;
 
@@ -1140,17 +1201,20 @@ static void r8153_init(struct r8152 *tp)
 
 static void rtl8152_unload(struct r8152 *tp)
 {
+	my_dbg(" [1142]  shl_add\n");
 	if (tp->version != RTL_VER_01)
 		r8152_power_cut_en(tp, true);
 }
 
 static void rtl8153_unload(struct r8152 *tp)
 {
+	my_dbg(" [1148]  shl_add\n");
 	r8153_power_cut_en(tp, false);
 }
 
 static int rtl_ops_init(struct r8152 *tp)
 {
+	my_dbg(" [1153]  shl_add\n");
 	struct rtl_ops *ops = &tp->rtl_ops;
 	int ret = 0;
 
@@ -1189,6 +1253,7 @@ static int rtl_ops_init(struct r8152 *tp)
 
 static int r8152_init_common(struct r8152 *tp)
 {
+	my_dbg(" [1191]  shl_add\n");
 	u8 speed;
 	int timeout = 0;
 	int link_detected;
@@ -1220,6 +1285,7 @@ static int r8152_init_common(struct r8152 *tp)
 
 static int r8152_send_common(struct ueth_data *ueth, void *packet, int length)
 {
+	my_dbg(" [1222]  shl_add\n");
 	struct usb_device *udev = ueth->pusb_dev;
 	u32 opts1, opts2 = 0;
 	int err;
@@ -1249,6 +1315,7 @@ static int r8152_send_common(struct ueth_data *ueth, void *packet, int length)
 #ifndef CONFIG_DM_ETH
 static int r8152_init(struct eth_device *eth, bd_t *bd)
 {
+	my_dbg(" [1251]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct r8152 *tp = (struct r8152 *)dev->dev_priv;
 
@@ -1257,6 +1324,7 @@ static int r8152_init(struct eth_device *eth, bd_t *bd)
 
 static int r8152_send(struct eth_device *eth, void *packet, int length)
 {
+	my_dbg(" [1259]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return r8152_send_common(dev, packet, length);
@@ -1264,6 +1332,7 @@ static int r8152_send(struct eth_device *eth, void *packet, int length)
 
 static int r8152_recv(struct eth_device *eth)
 {
+	my_dbg(" [1266]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	ALLOC_CACHE_ALIGN_BUFFER(uint8_t, recv_buf, RTL8152_AGG_BUF_SZ);
@@ -1315,6 +1384,7 @@ static int r8152_recv(struct eth_device *eth)
 
 static void r8152_halt(struct eth_device *eth)
 {
+	my_dbg(" [1317]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct r8152 *tp = (struct r8152 *)dev->dev_priv;
 
@@ -1325,6 +1395,7 @@ static void r8152_halt(struct eth_device *eth)
 
 static int r8152_write_hwaddr(struct eth_device *eth)
 {
+	my_dbg(" [1327]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	struct r8152 *tp = (struct r8152 *)dev->dev_priv;
 
@@ -1342,6 +1413,7 @@ static int r8152_write_hwaddr(struct eth_device *eth)
 
 void r8152_eth_before_probe(void)
 {
+	my_dbg(" [1344]  shl_add\n");
 	curr_eth_dev = 0;
 }
 
@@ -1349,6 +1421,7 @@ void r8152_eth_before_probe(void)
 int r8152_eth_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct ueth_data *ss)
 {
+	my_dbg(" [1351]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_interface_descriptor *iface_desc;
 	int ep_in_found = 0, ep_out_found = 0;
@@ -1453,6 +1526,7 @@ int r8152_eth_probe(struct usb_device *dev, unsigned int ifnum,
 int r8152_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 				struct eth_device *eth)
 {
+	my_dbg(" [1455]  shl_add\n");
 	if (!eth) {
 		debug("%s: missing parameter.\n", __func__);
 		return 0;
@@ -1478,6 +1552,7 @@ int r8152_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 #ifdef CONFIG_DM_ETH
 static int r8152_eth_start(struct udevice *dev)
 {
+	my_dbg(" [1480]  shl_add\n");
 	struct r8152 *tp = dev_get_priv(dev);
 
 	debug("** %s (%d)\n", __func__, __LINE__);
@@ -1487,6 +1562,7 @@ static int r8152_eth_start(struct udevice *dev)
 
 void r8152_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [1489]  shl_add\n");
 	struct r8152 *tp = dev_get_priv(dev);
 
 	debug("** %s (%d)\n", __func__, __LINE__);
@@ -1496,6 +1572,7 @@ void r8152_eth_stop(struct udevice *dev)
 
 int r8152_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [1498]  shl_add\n");
 	struct r8152 *tp = dev_get_priv(dev);
 
 	return r8152_send_common(&tp->ueth, packet, length);
@@ -1503,6 +1580,7 @@ int r8152_eth_send(struct udevice *dev, void *packet, int length)
 
 int r8152_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [1505]  shl_add\n");
 	struct r8152 *tp = dev_get_priv(dev);
 	struct ueth_data *ueth = &tp->ueth;
 	uint8_t *ptr;
@@ -1542,6 +1620,7 @@ err:
 
 static int r8152_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [1544]  shl_add\n");
 	struct r8152 *tp = dev_get_priv(dev);
 
 	packet_len += sizeof(struct rx_desc) + CRC_SIZE;
@@ -1553,6 +1632,7 @@ static int r8152_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 static int r8152_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [1555]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct r8152 *tp = dev_get_priv(dev);
 
@@ -1571,6 +1651,7 @@ static int r8152_write_hwaddr(struct udevice *dev)
 
 int r8152_read_rom_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [1573]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct r8152 *tp = dev_get_priv(dev);
 
@@ -1581,6 +1662,7 @@ int r8152_read_rom_hwaddr(struct udevice *dev)
 
 static int r8152_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [1583]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct r8152 *tp = dev_get_priv(dev);
@@ -1655,4 +1737,5 @@ static const struct usb_device_id r8152_eth_id_table[] = {
 
 U_BOOT_USB_DEVICE(r8152_eth, r8152_eth_id_table);
 #endif /* CONFIG_DM_ETH */
+
 

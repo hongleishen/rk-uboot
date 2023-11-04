@@ -34,6 +34,7 @@ struct ehci_sunxi_priv {
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [36]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct ehci_sunxi_priv *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr = (struct ehci_hccr *)devfdt_get_addr(dev);
@@ -75,6 +76,7 @@ static int ehci_usb_probe(struct udevice *dev)
 
 static int ehci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [77]  shl_add\n");
 	struct ehci_sunxi_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -116,3 +118,4 @@ U_BOOT_DRIVER(ehci_sunxi) = {
 	.priv_auto_alloc_size = sizeof(struct ehci_sunxi_priv),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

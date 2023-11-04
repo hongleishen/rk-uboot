@@ -36,6 +36,7 @@ static const char * const compat_usb_fsl[] = {
 static int fdt_usb_get_node_type(void *blob, int start_offset,
 				 int *node_offset, const char **node_type)
 {
+	my_dbg(" [38]  shl_add\n");
 	int i;
 	int ret = -ENOENT;
 
@@ -56,6 +57,7 @@ static int fdt_usb_get_node_type(void *blob, int start_offset,
 static int fdt_fixup_usb_mode_phy_type(void *blob, const char *mode,
 				       const char *phy_type, int start_offset)
 {
+	my_dbg(" [58]  shl_add\n");
 	const char *prop_mode = "dr_mode";
 	const char *prop_type = "phy_type";
 	const char *node_type = NULL;
@@ -90,6 +92,7 @@ static int fsl_fdt_fixup_usb_erratum(void *blob, const char *prop_erratum,
 				     const char *controller_type,
 				     int start_offset)
 {
+	my_dbg(" [92]  shl_add\n");
 	int node_offset, err;
 	const char *node_type = NULL;
 	const char *node_name = NULL;
@@ -119,6 +122,7 @@ static int fsl_fdt_fixup_erratum(int *usb_erratum_off, void *blob,
 				 const char *controller_type, char *str,
 				 bool (*has_erratum)(void))
 {
+	my_dbg(" [121]  shl_add\n");
 	char buf[32] = {0};
 
 	snprintf(buf, sizeof(buf), "fsl,usb-erratum-%s", str);
@@ -134,6 +138,7 @@ static int fsl_fdt_fixup_erratum(int *usb_erratum_off, void *blob,
 
 void fsl_fdt_fixup_dr_usb(void *blob, bd_t *bd)
 {
+	my_dbg(" [136]  shl_add\n");
 	static const char * const modes[] = { "host", "peripheral", "otg" };
 	static const char * const phys[] = { "ulpi", "utmi", "utmi_dual" };
 	int usb_erratum_a006261_off = -1;
@@ -227,3 +232,4 @@ void fsl_fdt_fixup_dr_usb(void *blob, bd_t *bd)
 
 	}
 }
+

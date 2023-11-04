@@ -25,6 +25,7 @@
 
 static inline void omap2430_low_level_exit(struct musb *musb)
 {
+	my_dbg(" [27]  shl_add\n");
 	u32 l;
 
 	/* in any role */
@@ -35,6 +36,7 @@ static inline void omap2430_low_level_exit(struct musb *musb)
 
 static inline void omap2430_low_level_init(struct musb *musb)
 {
+	my_dbg(" [37]  shl_add\n");
 	u32 l;
 
 	l = musb_readl(musb->mregs, OTG_FORCESTDBY);
@@ -45,6 +47,7 @@ static inline void omap2430_low_level_init(struct musb *musb)
 
 static int omap2430_musb_init(struct musb *musb)
 {
+	my_dbg(" [47]  shl_add\n");
 	u32 l;
 	int status = 0;
 	unsigned long int start;
@@ -95,6 +98,7 @@ err1:
 
 static int omap2430_musb_enable(struct musb *musb)
 {
+	my_dbg(" [97]  shl_add\n");
 #ifdef CONFIG_TWL4030_USB
 	if (twl4030_usb_ulpi_init()) {
 		serial_printf("ERROR: %s Could not initialize PHY\n",
@@ -117,11 +121,13 @@ static int omap2430_musb_enable(struct musb *musb)
 
 static void omap2430_musb_disable(struct musb *musb)
 {
+	my_dbg(" [119]  shl_add\n");
 
 }
 
 static int omap2430_musb_exit(struct musb *musb)
 {
+	my_dbg(" [124]  shl_add\n");
 	del_timer_sync(&musb_idle_timer);
 
 	omap2430_low_level_exit(musb);
@@ -148,6 +154,7 @@ struct omap2430_musb_platdata {
 
 static int omap2430_musb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [150]  shl_add\n");
 	struct omap2430_musb_platdata *platdata = dev_get_platdata(dev);
 	const void *fdt = gd->fdt_blob;
 	int node = dev_of_offset(dev);
@@ -214,6 +221,7 @@ static int omap2430_musb_ofdata_to_platdata(struct udevice *dev)
 
 static int omap2430_musb_probe(struct udevice *dev)
 {
+	my_dbg(" [216]  shl_add\n");
 #ifdef CONFIG_USB_MUSB_HOST
 	struct musb_host_data *host = dev_get_priv(dev);
 #endif
@@ -246,6 +254,7 @@ static int omap2430_musb_probe(struct udevice *dev)
 
 static int omap2430_musb_remove(struct udevice *dev)
 {
+	my_dbg(" [248]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 
 	musb_stop(host->host);
@@ -278,3 +287,4 @@ U_BOOT_DRIVER(omap2430_musb) = {
 };
 
 #endif /* CONFIG_IS_ENABLED(DM_USB) */
+

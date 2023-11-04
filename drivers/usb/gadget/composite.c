@@ -20,6 +20,7 @@ static struct usb_composite_driver *composite;
 
 static inline void le16_add_cpu_packed(__le16_packed *var, u16 val)
 {
+	my_dbg(" [22]  shl_add\n");
 	var->val = cpu_to_le16(le16_to_cpu(var->val) + val);
 }
 
@@ -40,6 +41,7 @@ static inline void le16_add_cpu_packed(__le16_packed *var, u16 val)
 int usb_add_function(struct usb_configuration *config,
 		struct usb_function *function)
 {
+	my_dbg(" [42]  shl_add\n");
 	int	value = -EINVAL;
 
 	debug("adding '%s'/%p to config '%s'/%p\n",
@@ -96,6 +98,7 @@ done:
  */
 int usb_function_deactivate(struct usb_function *function)
 {
+	my_dbg(" [98]  shl_add\n");
 	struct usb_composite_dev	*cdev = function->config->cdev;
 	int				status = 0;
 
@@ -119,6 +122,7 @@ int usb_function_deactivate(struct usb_function *function)
  */
 int usb_function_activate(struct usb_function *function)
 {
+	my_dbg(" [121]  shl_add\n");
 	struct usb_composite_dev	*cdev = function->config->cdev;
 	int				status = 0;
 
@@ -159,6 +163,7 @@ int usb_function_activate(struct usb_function *function)
 int usb_interface_id(struct usb_configuration *config,
 		struct usb_function *function)
 {
+	my_dbg(" [161]  shl_add\n");
 	unsigned char id = config->next_interface_id;
 
 	if (id < MAX_CONFIG_INTERFACES) {
@@ -172,6 +177,7 @@ int usb_interface_id(struct usb_configuration *config,
 static int config_buf(struct usb_configuration *config,
 		enum usb_device_speed speed, void *buf, u8 type)
 {
+	my_dbg(" [174]  shl_add\n");
 	int				len = USB_BUFSIZ - USB_DT_CONFIG_SIZE;
 	void				*next = buf + USB_DT_CONFIG_SIZE;
 	struct usb_descriptor_header    **descriptors;
@@ -230,6 +236,7 @@ static int config_buf(struct usb_configuration *config,
 
 static int config_desc(struct usb_composite_dev *cdev, unsigned w_value)
 {
+	my_dbg(" [232]  shl_add\n");
 	enum usb_device_speed		speed = USB_SPEED_UNKNOWN;
 	struct usb_gadget		*gadget = cdev->gadget;
 	u8				type = w_value >> 8;
@@ -272,6 +279,7 @@ static int config_desc(struct usb_composite_dev *cdev, unsigned w_value)
 
 static int count_configs(struct usb_composite_dev *cdev, unsigned type)
 {
+	my_dbg(" [274]  shl_add\n");
 	struct usb_gadget		*gadget = cdev->gadget;
 	unsigned			count = 0;
 	int				hs = 0;
@@ -299,6 +307,7 @@ static int count_configs(struct usb_composite_dev *cdev, unsigned type)
 
 static void device_qual(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [301]  shl_add\n");
 	struct usb_qualifier_descriptor	*qual = cdev->req->buf;
 
 	qual->bLength = sizeof(*qual);
@@ -316,6 +325,7 @@ static void device_qual(struct usb_composite_dev *cdev)
 
 static void reset_config(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [318]  shl_add\n");
 	struct usb_function		*f;
 
 	debug("%s:\n", __func__);
@@ -332,6 +342,7 @@ static void reset_config(struct usb_composite_dev *cdev)
 static int set_config(struct usb_composite_dev *cdev,
 		const struct usb_ctrlrequest *ctrl, unsigned number)
 {
+	my_dbg(" [334]  shl_add\n");
 	struct usb_gadget	*gadget = cdev->gadget;
 	unsigned		power = gadget_is_otg(gadget) ? 8 : 100;
 	struct usb_descriptor_header **descriptors;
@@ -451,6 +462,7 @@ done:
 int usb_add_config(struct usb_composite_dev *cdev,
 		struct usb_configuration *config)
 {
+	my_dbg(" [453]  shl_add\n");
 	int				status = -EINVAL;
 	struct usb_configuration	*c;
 	struct usb_function		*f;
@@ -517,6 +529,7 @@ done:
 
 static void collect_langs(struct usb_gadget_strings **sp, void *buf)
 {
+	my_dbg(" [519]  shl_add\n");
 	const struct usb_gadget_strings	*s;
 	u16				language;
 	__le16_packed			*tmp;
@@ -542,6 +555,7 @@ static int lookup_string(
 	int				id
 )
 {
+	my_dbg(" [544]  shl_add\n");
 	int				value;
 	struct usb_gadget_strings	*s;
 
@@ -559,6 +573,7 @@ static int lookup_string(
 static int get_string(struct usb_composite_dev *cdev,
 		void *buf, u16 language, int id)
 {
+	my_dbg(" [561]  shl_add\n");
 	struct usb_string_descriptor	*s = buf;
 	struct usb_gadget_strings	**sp;
 	int				len;
@@ -644,6 +659,7 @@ static int get_string(struct usb_composite_dev *cdev,
  */
 int usb_string_id(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [646]  shl_add\n");
 	if (cdev->next_string_id < 254) {
 		/*
 		 * string id 0 is reserved by USB spec for list of
@@ -674,6 +690,7 @@ int usb_string_id(struct usb_composite_dev *cdev)
  */
 int usb_string_ids_tab(struct usb_composite_dev *cdev, struct usb_string *str)
 {
+	my_dbg(" [676]  shl_add\n");
 	u8 next = cdev->next_string_id;
 
 	for (; str->s; ++str) {
@@ -708,6 +725,7 @@ int usb_string_ids_tab(struct usb_composite_dev *cdev, struct usb_string *str)
  */
 int usb_string_ids_n(struct usb_composite_dev *c, unsigned n)
 {
+	my_dbg(" [710]  shl_add\n");
 	u8 next = c->next_string_id;
 
 	if (n > 254 || next + n > 254)
@@ -719,6 +737,7 @@ int usb_string_ids_n(struct usb_composite_dev *c, unsigned n)
 
 static void composite_setup_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [721]  shl_add\n");
 	if (req->status || req->actual != req->length)
 		debug("%s: setup complete --> %d, %d/%d\n", __func__,
 				req->status, req->actual, req->length);
@@ -726,6 +745,7 @@ static void composite_setup_complete(struct usb_ep *ep, struct usb_request *req)
 
 static int bos_desc(struct usb_composite_dev *cdev)
 {
+	my_dbg(" [728]  shl_add\n");
 	struct usb_dev_cap_header	*cap;
 	struct usb_ext_cap_descriptor	*usb_ext;
 	struct usb_ss_cap_descriptor	*ss_cap;
@@ -793,6 +813,7 @@ static int bos_desc(struct usb_composite_dev *cdev)
 static int
 composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [795]  shl_add\n");
 	u16				w_length = le16_to_cpu(ctrl->wLength);
 	u16				w_index = le16_to_cpu(ctrl->wIndex);
 	u16				w_value = le16_to_cpu(ctrl->wValue);
@@ -1041,6 +1062,7 @@ done:
 
 static void composite_disconnect(struct usb_gadget *gadget)
 {
+	my_dbg(" [1043]  shl_add\n");
 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
 
 	if (cdev->config)
@@ -1051,6 +1073,7 @@ static void composite_disconnect(struct usb_gadget *gadget)
 
 static void composite_unbind(struct usb_gadget *gadget)
 {
+	my_dbg(" [1053]  shl_add\n");
 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
 	struct usb_configuration	*c;
 	struct usb_function		*f;
@@ -1098,6 +1121,7 @@ static void composite_unbind(struct usb_gadget *gadget)
 
 static int composite_bind(struct usb_gadget *gadget)
 {
+	my_dbg(" [1100]  shl_add\n");
 	int				status = -ENOMEM;
 	struct usb_composite_dev	*cdev;
 
@@ -1144,6 +1168,7 @@ fail:
 static void
 composite_suspend(struct usb_gadget *gadget)
 {
+	my_dbg(" [1146]  shl_add\n");
 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
 	struct usb_function		*f;
 
@@ -1163,6 +1188,7 @@ composite_suspend(struct usb_gadget *gadget)
 static void
 composite_resume(struct usb_gadget *gadget)
 {
+	my_dbg(" [1165]  shl_add\n");
 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
 	struct usb_function		*f;
 
@@ -1210,6 +1236,7 @@ static struct usb_gadget_driver composite_driver = {
  */
 int usb_composite_register(struct usb_composite_driver *driver)
 {
+	my_dbg(" [1212]  shl_add\n");
 	int res;
 
 	if (!driver || !driver->dev || !driver->bind || composite)
@@ -1235,8 +1262,10 @@ int usb_composite_register(struct usb_composite_driver *driver)
  */
 void usb_composite_unregister(struct usb_composite_driver *driver)
 {
+	my_dbg(" [1237]  shl_add\n");
 	if (composite != driver)
 		return;
 	usb_gadget_unregister_driver(&composite_driver);
 	composite = NULL;
 }
+

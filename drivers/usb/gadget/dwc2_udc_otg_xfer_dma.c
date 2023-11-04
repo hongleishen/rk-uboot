@@ -27,6 +27,7 @@ int clear_feature_flag;
 
 static inline void dwc2_udc_ep0_zlp(struct dwc2_udc *dev)
 {
+	my_dbg(" [29]  shl_add\n");
 	u32 ep_ctrl;
 
 	writel(usb_ctrl_dma_addr, &reg->in_endp[EP0_CON].diepdma);
@@ -43,6 +44,7 @@ static inline void dwc2_udc_ep0_zlp(struct dwc2_udc *dev)
 
 static void dwc2_udc_pre_setup(void)
 {
+	my_dbg(" [45]  shl_add\n");
 	u32 ep_ctrl;
 
 	debug_cond(DEBUG_IN_EP,
@@ -64,6 +66,7 @@ static void dwc2_udc_pre_setup(void)
 
 static inline void dwc2_ep0_complete_out(void)
 {
+	my_dbg(" [66]  shl_add\n");
 	u32 ep_ctrl;
 
 	debug_cond(DEBUG_EP0 != 0, "%s:EP0 ZLP DIEPCTL0 = 0x%x\n",
@@ -92,6 +95,7 @@ static inline void dwc2_ep0_complete_out(void)
 
 static int setdma_rx(struct dwc2_ep *ep, struct dwc2_request *req)
 {
+	my_dbg(" [94]  shl_add\n");
 	u32 *buf, ctrl;
 	u32 length, pktcnt;
 	u32 ep_num = ep_index(ep);
@@ -134,6 +138,7 @@ static int setdma_rx(struct dwc2_ep *ep, struct dwc2_request *req)
 
 static int setdma_tx(struct dwc2_ep *ep, struct dwc2_request *req)
 {
+	my_dbg(" [136]  shl_add\n");
 	u32 *buf, ctrl = 0;
 	u32 length, pktcnt;
 	u32 ep_num = ep_index(ep);
@@ -192,6 +197,7 @@ static int setdma_tx(struct dwc2_ep *ep, struct dwc2_request *req)
 
 static void complete_rx(struct dwc2_udc *dev, u8 ep_num)
 {
+	my_dbg(" [194]  shl_add\n");
 	struct dwc2_ep *ep = &dev->ep[ep_num];
 	struct dwc2_request *req = NULL;
 	u32 ep_tsr = 0, xfer_size = 0, is_short = 0;
@@ -265,6 +271,7 @@ static void complete_rx(struct dwc2_udc *dev, u8 ep_num)
 
 static void complete_tx(struct dwc2_udc *dev, u8 ep_num)
 {
+	my_dbg(" [267]  shl_add\n");
 	struct dwc2_ep *ep = &dev->ep[ep_num];
 	struct dwc2_request *req;
 	u32 ep_tsr = 0, xfer_size = 0, is_short = 0;
@@ -341,6 +348,7 @@ static void complete_tx(struct dwc2_udc *dev, u8 ep_num)
 
 static inline void dwc2_udc_check_tx_queue(struct dwc2_udc *dev, u8 ep_num)
 {
+	my_dbg(" [343]  shl_add\n");
 	struct dwc2_ep *ep = &dev->ep[ep_num];
 	struct dwc2_request *req;
 
@@ -368,6 +376,7 @@ static inline void dwc2_udc_check_tx_queue(struct dwc2_udc *dev, u8 ep_num)
 
 static void process_ep_in_intr(struct dwc2_udc *dev)
 {
+	my_dbg(" [370]  shl_add\n");
 	u32 ep_intr, ep_intr_status;
 	u8 ep_num = 0;
 
@@ -415,6 +424,7 @@ static void process_ep_in_intr(struct dwc2_udc *dev)
 
 static void process_ep_out_intr(struct dwc2_udc *dev)
 {
+	my_dbg(" [417]  shl_add\n");
 	u32 ep_intr, ep_intr_status;
 	u8 ep_num = 0;
 
@@ -467,6 +477,7 @@ static void process_ep_out_intr(struct dwc2_udc *dev)
  */
 static int dwc2_udc_irq(int irq, void *_dev)
 {
+	my_dbg(" [469]  shl_add\n");
 	struct dwc2_udc *dev = _dev;
 	u32 intr_status, gotgint;
 	u32 usb_status, gintmsk;
@@ -607,6 +618,7 @@ static int dwc2_udc_irq(int irq, void *_dev)
 static int dwc2_queue(struct usb_ep *_ep, struct usb_request *_req,
 			 gfp_t gfp_flags)
 {
+	my_dbg(" [609]  shl_add\n");
 	struct dwc2_request *req;
 	struct dwc2_ep *ep;
 	struct dwc2_udc *dev;
@@ -707,6 +719,7 @@ static int dwc2_queue(struct usb_ep *_ep, struct usb_request *_req,
 /* return:  0 = still running, 1 = completed, negative = errno */
 static int write_fifo_ep0(struct dwc2_ep *ep, struct dwc2_request *req)
 {
+	my_dbg(" [709]  shl_add\n");
 	u32 max;
 	unsigned count;
 	int is_last;
@@ -745,6 +758,7 @@ static int write_fifo_ep0(struct dwc2_ep *ep, struct dwc2_request *req)
 
 static int dwc2_fifo_read(struct dwc2_ep *ep, void *cp, int max)
 {
+	my_dbg(" [747]  shl_add\n");
 	invalidate_dcache_range((unsigned long)cp, (unsigned long)cp +
 				ROUND(max, CONFIG_SYS_CACHELINE_SIZE));
 
@@ -764,6 +778,7 @@ static int dwc2_fifo_read(struct dwc2_ep *ep, void *cp, int max)
  */
 static void udc_set_address(struct dwc2_udc *dev, unsigned char address)
 {
+	my_dbg(" [766]  shl_add\n");
 	u32 ctrl = readl(&reg->dcfg);
 	writel(DEVICE_ADDRESS(address) | ctrl, &reg->dcfg);
 
@@ -778,6 +793,7 @@ static void udc_set_address(struct dwc2_udc *dev, unsigned char address)
 
 static inline void dwc2_udc_ep0_set_stall(struct dwc2_ep *ep)
 {
+	my_dbg(" [780]  shl_add\n");
 	struct dwc2_udc *dev;
 	u32		ep_ctrl = 0;
 
@@ -806,6 +822,7 @@ static inline void dwc2_udc_ep0_set_stall(struct dwc2_ep *ep)
 
 static void dwc2_ep0_read(struct dwc2_udc *dev)
 {
+	my_dbg(" [808]  shl_add\n");
 	struct dwc2_request *req;
 	struct dwc2_ep *ep = &dev->ep[0];
 
@@ -843,6 +860,7 @@ static void dwc2_ep0_read(struct dwc2_udc *dev)
  */
 static int dwc2_ep0_write(struct dwc2_udc *dev)
 {
+	my_dbg(" [845]  shl_add\n");
 	struct dwc2_request *req;
 	struct dwc2_ep *ep = &dev->ep[0];
 	int ret, need_zlp = 0;
@@ -887,6 +905,7 @@ static int dwc2_ep0_write(struct dwc2_udc *dev)
 static int dwc2_udc_get_status(struct dwc2_udc *dev,
 		struct usb_ctrlrequest *crq)
 {
+	my_dbg(" [889]  shl_add\n");
 	u8 ep_num = crq->wIndex & 0x7F;
 	u16 g_status = 0;
 	u32 ep_ctrl;
@@ -947,6 +966,7 @@ static int dwc2_udc_get_status(struct dwc2_udc *dev,
 
 static void dwc2_udc_set_nak(struct dwc2_ep *ep)
 {
+	my_dbg(" [949]  shl_add\n");
 	u8		ep_num;
 	u32		ep_ctrl = 0;
 
@@ -973,6 +993,7 @@ static void dwc2_udc_set_nak(struct dwc2_ep *ep)
 
 static void dwc2_udc_ep_set_stall(struct dwc2_ep *ep)
 {
+	my_dbg(" [975]  shl_add\n");
 	u8		ep_num;
 	u32		ep_ctrl = 0;
 
@@ -1008,6 +1029,7 @@ static void dwc2_udc_ep_set_stall(struct dwc2_ep *ep)
 
 static void dwc2_udc_ep_clear_stall(struct dwc2_ep *ep)
 {
+	my_dbg(" [1010]  shl_add\n");
 	u8		ep_num;
 	u32		ep_ctrl = 0;
 
@@ -1056,6 +1078,7 @@ static void dwc2_udc_ep_clear_stall(struct dwc2_ep *ep)
 
 static int dwc2_udc_set_halt(struct usb_ep *_ep, int value)
 {
+	my_dbg(" [1058]  shl_add\n");
 	struct dwc2_ep	*ep;
 	struct dwc2_udc	*dev;
 	unsigned long	flags = 0;
@@ -1103,6 +1126,7 @@ static int dwc2_udc_set_halt(struct usb_ep *_ep, int value)
 
 static void dwc2_udc_ep_activate(struct dwc2_ep *ep)
 {
+	my_dbg(" [1105]  shl_add\n");
 	u8 ep_num;
 	u32 ep_ctrl = 0, daintmsk = 0;
 
@@ -1150,6 +1174,7 @@ static void dwc2_udc_ep_activate(struct dwc2_ep *ep)
 
 static int dwc2_udc_clear_feature(struct usb_ep *_ep)
 {
+	my_dbg(" [1152]  shl_add\n");
 	struct dwc2_udc	*dev;
 	struct dwc2_ep	*ep;
 	u8		ep_num;
@@ -1214,6 +1239,7 @@ static int dwc2_udc_clear_feature(struct usb_ep *_ep)
 
 static int dwc2_udc_set_feature(struct usb_ep *_ep)
 {
+	my_dbg(" [1216]  shl_add\n");
 	struct dwc2_udc	*dev;
 	struct dwc2_ep	*ep;
 	u8		ep_num;
@@ -1289,6 +1315,7 @@ static int dwc2_udc_set_feature(struct usb_ep *_ep)
  */
 static void dwc2_ep0_setup(struct dwc2_udc *dev)
 {
+	my_dbg(" [1291]  shl_add\n");
 	struct dwc2_ep *ep = &dev->ep[0];
 	int i;
 	u8 ep_num;
@@ -1478,6 +1505,7 @@ static void dwc2_ep0_setup(struct dwc2_udc *dev)
  */
 static void dwc2_handle_ep0(struct dwc2_udc *dev)
 {
+	my_dbg(" [1480]  shl_add\n");
 	if (dev->ep0state == WAIT_FOR_SETUP) {
 		debug_cond(DEBUG_OUT_EP != 0,
 			   "%s: WAIT_FOR_SETUP\n", __func__);
@@ -1492,6 +1520,7 @@ static void dwc2_handle_ep0(struct dwc2_udc *dev)
 
 static void dwc2_ep0_kick(struct dwc2_udc *dev, struct dwc2_ep *ep)
 {
+	my_dbg(" [1494]  shl_add\n");
 	debug_cond(DEBUG_EP0 != 0,
 		   "%s: ep_is_in = %d\n", __func__, ep_is_in(ep));
 	if (ep_is_in(ep)) {
@@ -1503,3 +1532,4 @@ static void dwc2_ep0_kick(struct dwc2_udc *dev, struct dwc2_ep *ep)
 		dwc2_ep0_read(dev);
 	}
 }
+

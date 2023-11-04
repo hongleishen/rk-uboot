@@ -43,6 +43,7 @@ struct sti_dwc3_glue_platdata {
 
 static int sti_dwc3_glue_drd_init(struct sti_dwc3_glue_platdata *plat)
 {
+	my_dbg(" [45]  shl_add\n");
 	unsigned long val;
 
 	val = readl(plat->syscfg_base + plat->syscfg_offset);
@@ -79,6 +80,7 @@ static int sti_dwc3_glue_drd_init(struct sti_dwc3_glue_platdata *plat)
 
 static void sti_dwc3_glue_init(struct sti_dwc3_glue_platdata *plat)
 {
+	my_dbg(" [81]  shl_add\n");
 	unsigned long reg;
 
 	reg = readl(plat->glue_base + CLKRST_CTRL);
@@ -102,6 +104,7 @@ static void sti_dwc3_glue_init(struct sti_dwc3_glue_platdata *plat)
 
 static int sti_dwc3_glue_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [104]  shl_add\n");
 	struct sti_dwc3_glue_platdata *plat = dev_get_platdata(dev);
 	struct udevice *syscon;
 	struct regmap *regmap;
@@ -150,6 +153,7 @@ static int sti_dwc3_glue_ofdata_to_platdata(struct udevice *dev)
 
 static int sti_dwc3_glue_bind(struct udevice *dev)
 {
+	my_dbg(" [152]  shl_add\n");
 	struct sti_dwc3_glue_platdata *plat = dev_get_platdata(dev);
 	ofnode node, dwc3_node;
 
@@ -175,6 +179,7 @@ static int sti_dwc3_glue_bind(struct udevice *dev)
 
 static int sti_dwc3_glue_probe(struct udevice *dev)
 {
+	my_dbg(" [177]  shl_add\n");
 	struct sti_dwc3_glue_platdata *plat = dev_get_platdata(dev);
 	int ret;
 
@@ -216,6 +221,7 @@ softreset_err:
 
 static int sti_dwc3_glue_remove(struct udevice *dev)
 {
+	my_dbg(" [218]  shl_add\n");
 	struct sti_dwc3_glue_platdata *plat = dev_get_platdata(dev);
 	int ret;
 
@@ -249,3 +255,4 @@ U_BOOT_DRIVER(dwc3_sti_glue) = {
 	.platdata_auto_alloc_size = sizeof(struct sti_dwc3_glue_platdata),
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
+

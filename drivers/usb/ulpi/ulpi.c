@@ -31,6 +31,7 @@ static struct ulpi_regs *ulpi = (struct ulpi_regs *)0;
 
 static int ulpi_integrity_check(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [33]  shl_add\n");
 	u32 val, tval = ULPI_TEST_VALUE;
 	int err, i;
 
@@ -52,6 +53,7 @@ static int ulpi_integrity_check(struct ulpi_viewport *ulpi_vp)
 
 int ulpi_init(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [54]  shl_add\n");
 	u32 val, id = 0;
 	u8 *reg = &ulpi->product_id_high;
 	int i;
@@ -73,6 +75,7 @@ int ulpi_init(struct ulpi_viewport *ulpi_vp)
 
 int ulpi_select_transceiver(struct ulpi_viewport *ulpi_vp, unsigned speed)
 {
+	my_dbg(" [75]  shl_add\n");
 	u32 tspeed = ULPI_FC_FULL_SPEED;
 	u32 val;
 
@@ -100,6 +103,7 @@ int ulpi_select_transceiver(struct ulpi_viewport *ulpi_vp, unsigned speed)
 
 int ulpi_set_vbus(struct ulpi_viewport *ulpi_vp, int on, int ext_power)
 {
+	my_dbg(" [102]  shl_add\n");
 	u32 flags = ULPI_OTG_DRVVBUS;
 	u8 *reg = on ? &ulpi->otg_ctrl_set : &ulpi->otg_ctrl_clear;
 
@@ -112,6 +116,7 @@ int ulpi_set_vbus(struct ulpi_viewport *ulpi_vp, int on, int ext_power)
 int ulpi_set_vbus_indicator(struct ulpi_viewport *ulpi_vp, int external,
 			int passthu, int complement)
 {
+	my_dbg(" [114]  shl_add\n");
 	u32 flags, val;
 	u8 *reg;
 
@@ -138,6 +143,7 @@ int ulpi_set_vbus_indicator(struct ulpi_viewport *ulpi_vp, int external,
 
 int ulpi_set_pd(struct ulpi_viewport *ulpi_vp, int enable)
 {
+	my_dbg(" [140]  shl_add\n");
 	u32 val = ULPI_OTG_DP_PULLDOWN | ULPI_OTG_DM_PULLDOWN;
 	u8 *reg = enable ? &ulpi->otg_ctrl_set : &ulpi->otg_ctrl_clear;
 
@@ -146,6 +152,7 @@ int ulpi_set_pd(struct ulpi_viewport *ulpi_vp, int enable)
 
 int ulpi_opmode_sel(struct ulpi_viewport *ulpi_vp, unsigned opmode)
 {
+	my_dbg(" [148]  shl_add\n");
 	u32 topmode = ULPI_FC_OPMODE_NORMAL;
 	u32 val;
 
@@ -173,6 +180,7 @@ int ulpi_opmode_sel(struct ulpi_viewport *ulpi_vp, unsigned opmode)
 
 int ulpi_serial_mode_enable(struct ulpi_viewport *ulpi_vp, unsigned smode)
 {
+	my_dbg(" [175]  shl_add\n");
 	switch (smode) {
 	case ULPI_IFACE_6_PIN_SERIAL_MODE:
 	case ULPI_IFACE_3_PIN_SERIAL_MODE:
@@ -188,6 +196,7 @@ int ulpi_serial_mode_enable(struct ulpi_viewport *ulpi_vp, unsigned smode)
 
 int ulpi_suspend(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [190]  shl_add\n");
 	int err;
 
 	err = ulpi_write(ulpi_vp, &ulpi->function_ctrl_clear,
@@ -205,6 +214,7 @@ int ulpi_suspend(struct ulpi_viewport *ulpi_vp)
  */
 static int __ulpi_reset_wait(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [207]  shl_add\n");
 	u32 val;
 	int timeout = CONFIG_USB_ULPI_TIMEOUT;
 
@@ -232,6 +242,7 @@ int ulpi_reset_wait(struct ulpi_viewport *ulpi_vp)
 
 int ulpi_reset(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [234]  shl_add\n");
 	int err;
 
 	err = ulpi_write(ulpi_vp,
@@ -243,3 +254,4 @@ int ulpi_reset(struct ulpi_viewport *ulpi_vp)
 
 	return ulpi_reset_wait(ulpi_vp);
 }
+

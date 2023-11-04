@@ -53,6 +53,7 @@ struct ehci_mvebu_priv {
  */
 static void usb_brg_adrdec_setup(void *base)
 {
+	my_dbg(" [55]  shl_add\n");
 	const struct mbus_dram_target_info *dram;
 	int i;
 
@@ -79,6 +80,7 @@ static void usb_brg_adrdec_setup(void *base)
 static void marvell_ehci_powerup_fixup(struct ehci_ctrl *ctrl,
 				       uint32_t *status_reg, uint32_t *reg)
 {
+	my_dbg(" [81]  shl_add\n");
 	struct ehci_mvebu_priv *priv = ctrl->priv;
 
 	/*
@@ -101,6 +103,7 @@ static struct ehci_ops marvell_ehci_ops = {
 
 static int ehci_mvebu_probe(struct udevice *dev)
 {
+	my_dbg(" [103]  shl_add\n");
 	struct ehci_mvebu_priv *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
@@ -161,6 +164,7 @@ U_BOOT_DRIVER(ehci_mvebu) = {
 
 static void usb_brg_adrdec_setup(int index)
 {
+	my_dbg(" [163]  shl_add\n");
 	int i;
 	u32 size, base, attrib;
 
@@ -207,6 +211,7 @@ static void usb_brg_adrdec_setup(int index)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [209]  shl_add\n");
 	usb_brg_adrdec_setup(index);
 
 	*hccr = (struct ehci_hccr *)(MVUSB_BASE(index) + 0x100);
@@ -226,7 +231,9 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [228]  shl_add\n");
 	return 0;
 }
 
 #endif /* CONFIG_IS_ENABLED(DM_USB) */
+

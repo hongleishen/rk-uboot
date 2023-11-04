@@ -34,6 +34,7 @@ struct generic_ehci {
 #ifdef CONFIG_DM_REGULATOR
 static int ehci_enable_vbus_supply(struct udevice *dev)
 {
+	my_dbg(" [36]  shl_add\n");
 	struct generic_ehci *priv = dev_get_priv(dev);
 	int ret;
 
@@ -57,6 +58,7 @@ static int ehci_enable_vbus_supply(struct udevice *dev)
 
 static int ehci_disable_vbus_supply(struct generic_ehci *priv)
 {
+	my_dbg(" [59]  shl_add\n");
 	if (priv->vbus_supply)
 		return regulator_set_enable(priv->vbus_supply, false);
 	else
@@ -65,17 +67,20 @@ static int ehci_disable_vbus_supply(struct generic_ehci *priv)
 #else
 static int ehci_enable_vbus_supply(struct udevice *dev)
 {
+	my_dbg(" [67]  shl_add\n");
 	return 0;
 }
 
 static int ehci_disable_vbus_supply(struct generic_ehci *priv)
 {
+	my_dbg(" [72]  shl_add\n");
 	return 0;
 }
 #endif
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [78]  shl_add\n");
 	struct generic_ehci *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
@@ -185,6 +190,7 @@ clk_err:
 
 static int ehci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [187]  shl_add\n");
 	struct generic_ehci *priv = dev_get_priv(dev);
 	int ret;
 
@@ -222,3 +228,4 @@ U_BOOT_DRIVER(ehci_generic) = {
 	.priv_auto_alloc_size = sizeof(struct generic_ehci),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

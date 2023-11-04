@@ -39,11 +39,13 @@ struct msm_ehci_priv {
 
 int __weak board_prepare_usb(enum usb_init_type type)
 {
+	my_dbg(" [41]  shl_add\n");
 	return 0;
 }
 
 static void setup_usb_phy(struct msm_ehci_priv *priv)
 {
+	my_dbg(" [46]  shl_add\n");
 	/* Select and enable external configuration with USB PHY */
 	ulpi_write(&priv->ulpi_vp, (u8 *)ULPI_MISC_A_SET,
 		   ULPI_MISC_A_VBUSVLDEXTSEL | ULPI_MISC_A_VBUSVLDEXT);
@@ -51,6 +53,7 @@ static void setup_usb_phy(struct msm_ehci_priv *priv)
 
 static void reset_usb_phy(struct msm_ehci_priv *priv)
 {
+	my_dbg(" [53]  shl_add\n");
 	/* Disable VBUS mimicing in the controller. */
 	ulpi_write(&priv->ulpi_vp, (u8 *)ULPI_MISC_A_CLEAR,
 		   ULPI_MISC_A_VBUSVLDEXTSEL | ULPI_MISC_A_VBUSVLDEXT);
@@ -59,6 +62,7 @@ static void reset_usb_phy(struct msm_ehci_priv *priv)
 
 static int msm_init_after_reset(struct ehci_ctrl *dev)
 {
+	my_dbg(" [61]  shl_add\n");
 	struct msm_ehci_priv *p = container_of(dev, struct msm_ehci_priv, ctrl);
 	struct usb_ehci *ehci = p->ehci;
 
@@ -91,6 +95,7 @@ static const struct ehci_ops msm_ehci_ops = {
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [93]  shl_add\n");
 	struct msm_ehci_priv *p = dev_get_priv(dev);
 	struct usb_ehci *ehci = p->ehci;
 	struct ehci_hccr *hccr;
@@ -110,6 +115,7 @@ static int ehci_usb_probe(struct udevice *dev)
 
 static int ehci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [112]  shl_add\n");
 	struct msm_ehci_priv *p = dev_get_priv(dev);
 	struct usb_ehci *ehci = p->ehci;
 	int ret;
@@ -141,6 +147,7 @@ static int ehci_usb_remove(struct udevice *dev)
 
 static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [143]  shl_add\n");
 	struct msm_ehci_priv *priv = dev_get_priv(dev);
 
 	priv->ulpi_vp.port_num = 0;
@@ -174,3 +181,4 @@ U_BOOT_DRIVER(usb_ehci) = {
 	.platdata_auto_alloc_size = sizeof(struct usb_platdata),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

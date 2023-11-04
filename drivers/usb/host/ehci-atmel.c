@@ -20,6 +20,7 @@
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [22]  shl_add\n");
 	/* Enable UTMI PLL */
 	if (at91_upll_clk_enable())
 		return -1;
@@ -36,6 +37,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [38]  shl_add\n");
 	/* Disable USB Host Clock */
 	at91_periph_clk_disable(ATMEL_ID_UHPHS);
 
@@ -54,6 +56,7 @@ struct ehci_atmel_priv {
 
 static int ehci_atmel_enable_clk(struct udevice *dev)
 {
+	my_dbg(" [56]  shl_add\n");
 	struct clk clk;
 	int ret;
 
@@ -80,6 +83,7 @@ static int ehci_atmel_enable_clk(struct udevice *dev)
 
 static int ehci_atmel_probe(struct udevice *dev)
 {
+	my_dbg(" [82]  shl_add\n");
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	fdt_addr_t hcd_base;
@@ -129,3 +133,4 @@ U_BOOT_DRIVER(ehci_atmel) = {
 };
 
 #endif
+

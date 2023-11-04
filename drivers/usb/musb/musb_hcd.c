@@ -37,6 +37,7 @@ static u32 port_status;
  */
 static void write_toggle(struct usb_device *dev, u8 ep, u8 dir_out)
 {
+	my_dbg(" [39]  shl_add\n");
 	u16 toggle = usb_gettoggle(dev, ep, dir_out);
 	u16 csr;
 
@@ -79,6 +80,7 @@ static void write_toggle(struct usb_device *dev, u8 ep, u8 dir_out)
  */
 static u8 check_stall(u8 ep, u8 dir_out)
 {
+	my_dbg(" [81]  shl_add\n");
 	u16 csr;
 
 	/* For endpoint 0 */
@@ -115,6 +117,7 @@ static u8 check_stall(u8 ep, u8 dir_out)
  */
 static int wait_until_ep0_ready(struct usb_device *dev, u32 bit_mask)
 {
+	my_dbg(" [117]  shl_add\n");
 	u16 csr;
 	int result = 1;
 	int timeout = CONFIG_USB_MUSB_TIMEOUT;
@@ -178,6 +181,7 @@ static int wait_until_ep0_ready(struct usb_device *dev, u32 bit_mask)
  */
 static int wait_until_txep_ready(struct usb_device *dev, u8 ep)
 {
+	my_dbg(" [180]  shl_add\n");
 	u16 csr;
 	int timeout = CONFIG_USB_MUSB_TIMEOUT;
 
@@ -210,6 +214,7 @@ static int wait_until_txep_ready(struct usb_device *dev, u8 ep)
  */
 static int wait_until_rxep_ready(struct usb_device *dev, u8 ep)
 {
+	my_dbg(" [212]  shl_add\n");
 	u16 csr;
 	int timeout = CONFIG_USB_MUSB_TIMEOUT;
 
@@ -242,6 +247,7 @@ static int wait_until_rxep_ready(struct usb_device *dev, u8 ep)
  */
 static int ctrlreq_setup_phase(struct usb_device *dev, struct devrequest *setup)
 {
+	my_dbg(" [244]  shl_add\n");
 	int result;
 	u16 csr;
 
@@ -264,6 +270,7 @@ static int ctrlreq_setup_phase(struct usb_device *dev, struct devrequest *setup)
  */
 static int ctrlreq_in_data_phase(struct usb_device *dev, u32 len, void *buffer)
 {
+	my_dbg(" [266]  shl_add\n");
 	u16 csr;
 	u32 rxlen = 0;
 	u32 nextlen = 0;
@@ -310,6 +317,7 @@ static int ctrlreq_in_data_phase(struct usb_device *dev, u32 len, void *buffer)
  */
 static int ctrlreq_out_data_phase(struct usb_device *dev, u32 len, void *buffer)
 {
+	my_dbg(" [312]  shl_add\n");
 	u16 csr;
 	u32 txlen = 0;
 	u32 nextlen = 0;
@@ -347,6 +355,7 @@ static int ctrlreq_out_data_phase(struct usb_device *dev, u32 len, void *buffer)
  */
 static int ctrlreq_out_status_phase(struct usb_device *dev)
 {
+	my_dbg(" [349]  shl_add\n");
 	u16 csr;
 	int result;
 
@@ -368,6 +377,7 @@ static int ctrlreq_out_status_phase(struct usb_device *dev)
  */
 static int ctrlreq_in_status_phase(struct usb_device *dev)
 {
+	my_dbg(" [370]  shl_add\n");
 	u16 csr;
 	int result;
 
@@ -391,6 +401,7 @@ static int ctrlreq_in_status_phase(struct usb_device *dev)
  */
 static u8 get_dev_speed(struct usb_device *dev)
 {
+	my_dbg(" [393]  shl_add\n");
 	return (dev->speed == USB_SPEED_HIGH) ? MUSB_TYPE_SPEED_HIGH :
 		((dev->speed == USB_SPEED_LOW) ? MUSB_TYPE_SPEED_LOW :
 						MUSB_TYPE_SPEED_FULL);
@@ -401,6 +412,7 @@ static u8 get_dev_speed(struct usb_device *dev)
  */
 static void config_hub_port(struct usb_device *dev, u8 ep)
 {
+	my_dbg(" [403]  shl_add\n");
 	u8 chid;
 	u8 hub;
 
@@ -430,6 +442,7 @@ static void config_hub_port(struct usb_device *dev, u8 ep)
 
 static void musb_port_reset(int do_reset)
 {
+	my_dbg(" [432]  shl_add\n");
 	u8 power = readb(&musbr->power);
 
 	if (do_reset) {
@@ -459,6 +472,7 @@ static int musb_submit_rh_msg(struct usb_device *dev, unsigned long pipe,
 			      void *buffer, int transfer_len,
 			      struct devrequest *cmd)
 {
+	my_dbg(" [461]  shl_add\n");
 	int leni = transfer_len;
 	int len = 0;
 	int stat = 0;
@@ -737,6 +751,7 @@ static int musb_submit_rh_msg(struct usb_device *dev, unsigned long pipe,
 
 static void musb_rh_init(void)
 {
+	my_dbg(" [739]  shl_add\n");
 	rh_devnum = 0;
 	port_status = 0;
 }
@@ -753,6 +768,7 @@ static void musb_rh_init(void) {}
 int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 			int len, struct devrequest *setup)
 {
+	my_dbg(" [755]  shl_add\n");
 	int devnum = usb_pipedevice(pipe);
 	u8  devspeed;
 
@@ -852,6 +868,7 @@ int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
 					void *buffer, int len)
 {
+	my_dbg(" [854]  shl_add\n");
 	int dir_out = usb_pipeout(pipe);
 	int ep = usb_pipeendpoint(pipe);
 #ifndef MUSB_NO_MULTIPOINT
@@ -995,6 +1012,7 @@ int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
  */
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [997]  shl_add\n");
 	u8  power;
 	u32 timeout;
 
@@ -1046,6 +1064,7 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
  */
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [1048]  shl_add\n");
 	/* Reset the USB module */
 	musb_platform_deinit();
 	writeb(0, &musbr->devctl);
@@ -1059,6 +1078,7 @@ int usb_lowlevel_stop(int index)
 int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		   int len, int interval, bool nonblock)
 {
+	my_dbg(" [1061]  shl_add\n");
 	int dir_out = usb_pipeout(pipe);
 	int ep = usb_pipeendpoint(pipe);
 #ifndef MUSB_NO_MULTIPOINT
@@ -1165,3 +1185,4 @@ int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 	dev->act_len = len;
 	return 0;
 }
+

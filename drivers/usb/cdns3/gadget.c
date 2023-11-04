@@ -84,6 +84,7 @@ static int __cdns3_gadget_ep_queue(struct usb_ep *ep,
  */
 void cdns3_set_register_bit(void __iomem *ptr, u32 mask)
 {
+	my_dbg(" [86]  shl_add\n");
 	mask = readl(ptr) | mask;
 	writel(mask, ptr);
 }
@@ -96,12 +97,14 @@ void cdns3_set_register_bit(void __iomem *ptr, u32 mask)
  */
 u8 cdns3_ep_addr_to_index(u8 ep_addr)
 {
+	my_dbg(" [98]  shl_add\n");
 	return (((ep_addr & 0x7F)) + ((ep_addr & USB_DIR_IN) ? 16 : 0));
 }
 
 static int cdns3_get_dma_pos(struct cdns3_device *priv_dev,
 			     struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [104]  shl_add\n");
 	int dma_index;
 
 	dma_index = readl(&priv_dev->regs->ep_traddr) - priv_ep->trb_pool_dma;
@@ -117,6 +120,7 @@ static int cdns3_get_dma_pos(struct cdns3_device *priv_dev,
  */
 struct usb_request *cdns3_next_request(struct list_head *list)
 {
+	my_dbg(" [119]  shl_add\n");
 	return list_first_entry_or_null(list, struct usb_request, list);
 }
 
@@ -128,6 +132,7 @@ struct usb_request *cdns3_next_request(struct list_head *list)
  */
 struct cdns3_aligned_buf *cdns3_next_align_buf(struct list_head *list)
 {
+	my_dbg(" [130]  shl_add\n");
 	return list_first_entry_or_null(list, struct cdns3_aligned_buf, list);
 }
 
@@ -139,6 +144,7 @@ struct cdns3_aligned_buf *cdns3_next_align_buf(struct list_head *list)
  */
 struct cdns3_request *cdns3_next_priv_request(struct list_head *list)
 {
+	my_dbg(" [141]  shl_add\n");
 	return list_first_entry_or_null(list, struct cdns3_request, list);
 }
 
@@ -149,6 +155,7 @@ struct cdns3_request *cdns3_next_priv_request(struct list_head *list)
  */
 void cdns3_select_ep(struct cdns3_device *priv_dev, u32 ep)
 {
+	my_dbg(" [151]  shl_add\n");
 	if (priv_dev->selected_ep == ep)
 		return;
 
@@ -159,6 +166,7 @@ void cdns3_select_ep(struct cdns3_device *priv_dev, u32 ep)
 dma_addr_t cdns3_trb_virt_to_dma(struct cdns3_endpoint *priv_ep,
 				 struct cdns3_trb *trb)
 {
+	my_dbg(" [161]  shl_add\n");
 	u32 offset = (char *)trb - (char *)priv_ep->trb_pool;
 
 	return priv_ep->trb_pool_dma + offset;
@@ -166,6 +174,7 @@ dma_addr_t cdns3_trb_virt_to_dma(struct cdns3_endpoint *priv_ep,
 
 int cdns3_ring_size(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [168]  shl_add\n");
 	switch (priv_ep->type) {
 	case USB_ENDPOINT_XFER_ISOC:
 		return TRB_ISO_RING_SIZE;
@@ -184,6 +193,7 @@ int cdns3_ring_size(struct cdns3_endpoint *priv_ep)
  */
 int cdns3_allocate_trb_pool(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [186]  shl_add\n");
 	int ring_size = cdns3_ring_size(priv_ep);
 	struct cdns3_trb *link_trb;
 
@@ -211,6 +221,7 @@ int cdns3_allocate_trb_pool(struct cdns3_endpoint *priv_ep)
 
 static void cdns3_free_trb_pool(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [213]  shl_add\n");
 	if (priv_ep->trb_pool) {
 		dma_free_coherent(priv_ep->trb_pool);
 		priv_ep->trb_pool = NULL;
@@ -225,6 +236,7 @@ static void cdns3_free_trb_pool(struct cdns3_endpoint *priv_ep)
  */
 static void cdns3_ep_stall_flush(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [227]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	int val;
 
@@ -246,6 +258,7 @@ static void cdns3_ep_stall_flush(struct cdns3_endpoint *priv_ep)
  */
 void cdns3_hw_reset_eps_config(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [248]  shl_add\n");
 	writel(USB_CONF_CFGRST, &priv_dev->regs->usb_conf);
 
 	cdns3_allow_enable_l1(priv_dev, 0);
@@ -268,6 +281,7 @@ void cdns3_hw_reset_eps_config(struct cdns3_device *priv_dev)
  */
 static void cdns3_ep_inc_trb(int *index, u8 *cs, int trb_in_seg)
 {
+	my_dbg(" [270]  shl_add\n");
 	(*index)++;
 	if (*index == (trb_in_seg - 1)) {
 		*index = 0;
@@ -281,6 +295,7 @@ static void cdns3_ep_inc_trb(int *index, u8 *cs, int trb_in_seg)
  */
 static void cdns3_ep_inc_enq(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [283]  shl_add\n");
 	priv_ep->free_trbs--;
 	cdns3_ep_inc_trb(&priv_ep->enqueue, &priv_ep->pcs, priv_ep->num_trbs);
 }
@@ -291,12 +306,14 @@ static void cdns3_ep_inc_enq(struct cdns3_endpoint *priv_ep)
  */
 static void cdns3_ep_inc_deq(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [293]  shl_add\n");
 	priv_ep->free_trbs++;
 	cdns3_ep_inc_trb(&priv_ep->dequeue, &priv_ep->ccs, priv_ep->num_trbs);
 }
 
 void cdns3_move_deq_to_next_trb(struct cdns3_request *priv_req)
 {
+	my_dbg(" [299]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = priv_req->priv_ep;
 	int current_trb = priv_req->start_trb;
 
@@ -320,6 +337,7 @@ void cdns3_move_deq_to_next_trb(struct cdns3_request *priv_req)
  */
 void cdns3_allow_enable_l1(struct cdns3_device *priv_dev, int enable)
 {
+	my_dbg(" [322]  shl_add\n");
 	if (enable)
 		writel(USB_CONF_L1EN, &priv_dev->regs->usb_conf);
 	else
@@ -328,6 +346,7 @@ void cdns3_allow_enable_l1(struct cdns3_device *priv_dev, int enable)
 
 enum usb_device_speed cdns3_get_speed(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [330]  shl_add\n");
 	u32 reg;
 
 	reg = readl(&priv_dev->regs->usb_sts);
@@ -354,6 +373,7 @@ enum usb_device_speed cdns3_get_speed(struct cdns3_device *priv_dev)
 static int cdns3_start_all_request(struct cdns3_device *priv_dev,
 				   struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [356]  shl_add\n");
 	struct usb_request *request;
 	int ret = 0;
 
@@ -394,6 +414,7 @@ static int cdns3_start_all_request(struct cdns3_device *priv_dev,
 static void cdns3_wa2_descmiss_copy_data(struct cdns3_endpoint *priv_ep,
 					 struct usb_request *request)
 {
+	my_dbg(" [396]  shl_add\n");
 	struct usb_request *descmiss_req;
 	struct cdns3_request *descmiss_priv_req;
 
@@ -439,6 +460,7 @@ struct usb_request *cdns3_wa2_gadget_giveback(struct cdns3_device *priv_dev,
 					      struct cdns3_endpoint *priv_ep,
 					      struct cdns3_request *priv_req)
 {
+	my_dbg(" [441]  shl_add\n");
 	if (priv_ep->flags & EP_QUIRK_EXTRA_BUF_EN &&
 	    priv_req->flags & REQUEST_INTERNAL) {
 		struct usb_request *req;
@@ -472,6 +494,7 @@ int cdns3_wa2_gadget_ep_queue(struct cdns3_device *priv_dev,
 			      struct cdns3_endpoint *priv_ep,
 			      struct cdns3_request *priv_req)
 {
+	my_dbg(" [474]  shl_add\n");
 	int deferred = 0;
 
 	/*
@@ -538,6 +561,7 @@ int cdns3_wa2_gadget_ep_queue(struct cdns3_device *priv_dev,
 
 static void cdns3_wa2_remove_old_request(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [540]  shl_add\n");
 	struct cdns3_request *priv_req;
 
 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
@@ -568,6 +592,7 @@ static void cdns3_wa2_remove_old_request(struct cdns3_endpoint *priv_ep)
  */
 static void cdns3_wa2_descmissing_packet(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [570]  shl_add\n");
 	struct cdns3_request *priv_req;
 	struct usb_request *request;
 
@@ -635,6 +660,7 @@ void cdns3_gadget_giveback(struct cdns3_endpoint *priv_ep,
 			   struct cdns3_request *priv_req,
 			   int status)
 {
+	my_dbg(" [637]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct usb_request *request = &priv_req->request;
 
@@ -674,6 +700,7 @@ void cdns3_gadget_giveback(struct cdns3_endpoint *priv_ep,
 
 void cdns3_wa1_restore_cycle_bit(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [676]  shl_add\n");
 	/* Work around for stale data address in TRB*/
 	if (priv_ep->wa1_set) {
 		trace_cdns3_wa1(priv_ep, "restore cycle bit");
@@ -692,6 +719,7 @@ void cdns3_wa1_restore_cycle_bit(struct cdns3_endpoint *priv_ep)
 
 static void cdns3_free_aligned_request_buf(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [694]  shl_add\n");
 	struct cdns3_aligned_buf *buf, *tmp;
 	unsigned long flags;
 
@@ -718,6 +746,7 @@ static void cdns3_free_aligned_request_buf(struct cdns3_device *priv_dev)
 
 static int cdns3_prepare_aligned_request_buf(struct cdns3_request *priv_req)
 {
+	my_dbg(" [720]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = priv_req->priv_ep;
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct cdns3_aligned_buf *buf;
@@ -774,6 +803,7 @@ static int cdns3_prepare_aligned_request_buf(struct cdns3_request *priv_req)
 static int cdns3_wa1_update_guard(struct cdns3_endpoint *priv_ep,
 				  struct cdns3_trb *trb)
 {
+	my_dbg(" [776]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 
 	if (!priv_ep->wa1_set) {
@@ -796,6 +826,7 @@ static int cdns3_wa1_update_guard(struct cdns3_endpoint *priv_ep,
 static void cdns3_wa1_tray_restore_cycle_bit(struct cdns3_device *priv_dev,
 					     struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [798]  shl_add\n");
 	int dma_index;
 	u32 doorbell;
 
@@ -815,6 +846,7 @@ static void cdns3_wa1_tray_restore_cycle_bit(struct cdns3_device *priv_dev,
 int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
 			  struct usb_request *request)
 {
+	my_dbg(" [817]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct cdns3_request *priv_req;
 	struct cdns3_trb *trb;
@@ -1005,6 +1037,7 @@ int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
 
 void cdns3_set_hw_configuration(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [1007]  shl_add\n");
 	struct cdns3_endpoint *priv_ep;
 	struct usb_ep *ep;
 	int val;
@@ -1077,6 +1110,7 @@ void cdns3_set_hw_configuration(struct cdns3_device *priv_dev)
 static bool cdns3_request_handled(struct cdns3_endpoint *priv_ep,
 				  struct cdns3_request *priv_req)
 {
+	my_dbg(" [1079]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct cdns3_trb *trb = priv_req->trb;
 	int current_index = 0;
@@ -1126,6 +1160,7 @@ finish:
 static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
 				     struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [1128]  shl_add\n");
 	struct cdns3_request *priv_req;
 	struct usb_request *request;
 	struct cdns3_trb *trb;
@@ -1173,6 +1208,7 @@ prepare_next_td:
 
 void cdns3_rearm_transfer(struct cdns3_endpoint *priv_ep, u8 rearm)
 {
+	my_dbg(" [1175]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 
 	cdns3_wa1_restore_cycle_bit(priv_ep);
@@ -1199,6 +1235,7 @@ void cdns3_rearm_transfer(struct cdns3_endpoint *priv_ep, u8 rearm)
  */
 static int cdns3_check_ep_interrupt_proceed(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [1201]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	u32 ep_sts_reg;
 
@@ -1275,6 +1312,7 @@ static int cdns3_check_ep_interrupt_proceed(struct cdns3_endpoint *priv_ep)
 
 static void cdns3_disconnect_gadget(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [1277]  shl_add\n");
 	if (priv_dev->gadget_driver && priv_dev->gadget_driver->disconnect) {
 		spin_unlock(&priv_dev->lock);
 		priv_dev->gadget_driver->disconnect(&priv_dev->gadget);
@@ -1291,6 +1329,7 @@ static void cdns3_disconnect_gadget(struct cdns3_device *priv_dev)
 static void cdns3_check_usb_interrupt_proceed(struct cdns3_device *priv_dev,
 					      u32 usb_ists)
 {
+	my_dbg(" [1293]  shl_add\n");
 	int speed = 0;
 
 	trace_cdns3_usb_irq(priv_dev, usb_ists);
@@ -1365,6 +1404,7 @@ static void cdns3_check_usb_interrupt_proceed(struct cdns3_device *priv_dev,
  */
 static irqreturn_t cdns3_device_irq_handler(int irq, void *data)
 {
+	my_dbg(" [1367]  shl_add\n");
 	struct cdns3_device *priv_dev;
 	struct cdns3 *cdns = data;
 	irqreturn_t ret = IRQ_NONE;
@@ -1409,6 +1449,7 @@ static irqreturn_t cdns3_device_irq_handler(int irq, void *data)
  */
 static irqreturn_t cdns3_device_thread_irq_handler(int irq, void *data)
 {
+	my_dbg(" [1411]  shl_add\n");
 	struct cdns3_device *priv_dev;
 	struct cdns3 *cdns = data;
 	irqreturn_t ret = IRQ_NONE;
@@ -1474,6 +1515,7 @@ irqend:
 static int cdns3_ep_onchip_buffer_reserve(struct cdns3_device *priv_dev,
 					  int size, int is_in)
 {
+	my_dbg(" [1476]  shl_add\n");
 	int remained;
 
 	/* 2KB are reserved for EP0*/
@@ -1509,6 +1551,7 @@ static int cdns3_ep_onchip_buffer_reserve(struct cdns3_device *priv_dev,
 void cdns3_configure_dmult(struct cdns3_device *priv_dev,
 			   struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [1511]  shl_add\n");
 	struct cdns3_usb_regs __iomem *regs = priv_dev->regs;
 
 	/* For dev_ver > DEV_VER_V2 DMULT is configured per endpoint */
@@ -1546,6 +1589,7 @@ void cdns3_configure_dmult(struct cdns3_device *priv_dev,
  */
 void cdns3_ep_config(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [1548]  shl_add\n");
 	bool is_iso_ep = (priv_ep->type == USB_ENDPOINT_XFER_ISOC);
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	u32 bEndpointAddress = priv_ep->num | priv_ep->dir;
@@ -1638,6 +1682,7 @@ void cdns3_ep_config(struct cdns3_endpoint *priv_ep)
 static int cdns3_ep_dir_is_correct(struct usb_endpoint_descriptor *desc,
 				   struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [1640]  shl_add\n");
 	return (priv_ep->endpoint.caps.dir_in && usb_endpoint_dir_in(desc)) ||
 	       (priv_ep->endpoint.caps.dir_out && usb_endpoint_dir_out(desc));
 }
@@ -1646,6 +1691,7 @@ static struct
 cdns3_endpoint *cdns3_find_available_ep(struct cdns3_device *priv_dev,
 					struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [1648]  shl_add\n");
 	struct usb_ep *ep;
 	struct cdns3_endpoint *priv_ep;
 
@@ -1689,6 +1735,7 @@ usb_ep *cdns3_gadget_match_ep(struct usb_gadget *gadget,
 			      struct usb_endpoint_descriptor *desc,
 			      struct usb_ss_ep_comp_descriptor *comp_desc)
 {
+	my_dbg(" [1691]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 	struct cdns3_endpoint *priv_ep;
 	unsigned long flags;
@@ -1722,6 +1769,7 @@ usb_ep *cdns3_gadget_match_ep(struct usb_gadget *gadget,
 struct usb_request *cdns3_gadget_ep_alloc_request(struct usb_ep *ep,
 						  gfp_t gfp_flags)
 {
+	my_dbg(" [1724]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 	struct cdns3_request *priv_req;
 
@@ -1743,6 +1791,7 @@ struct usb_request *cdns3_gadget_ep_alloc_request(struct usb_ep *ep,
 void cdns3_gadget_ep_free_request(struct usb_ep *ep,
 				  struct usb_request *request)
 {
+	my_dbg(" [1745]  shl_add\n");
 	struct cdns3_request *priv_req = to_cdns3_request(request);
 
 	if (priv_req->aligned_buf)
@@ -1762,6 +1811,7 @@ void cdns3_gadget_ep_free_request(struct usb_ep *ep,
 static int cdns3_gadget_ep_enable(struct usb_ep *ep,
 				  const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [1764]  shl_add\n");
 	struct cdns3_endpoint *priv_ep;
 	struct cdns3_device *priv_dev;
 	u32 reg = EP_STS_EN_TRBERREN;
@@ -1873,6 +1923,7 @@ exit:
  */
 static int cdns3_gadget_ep_disable(struct usb_ep *ep)
 {
+	my_dbg(" [1875]  shl_add\n");
 	struct cdns3_endpoint *priv_ep;
 	struct cdns3_request *priv_req;
 	struct cdns3_device *priv_dev;
@@ -1965,6 +2016,7 @@ static int __cdns3_gadget_ep_queue(struct usb_ep *ep,
 				   struct usb_request *request,
 				   gfp_t gfp_flags)
 {
+	my_dbg(" [1967]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct cdns3_request *priv_req;
@@ -2009,6 +2061,7 @@ static int __cdns3_gadget_ep_queue(struct usb_ep *ep,
 static int cdns3_gadget_ep_queue(struct usb_ep *ep, struct usb_request *request,
 				 gfp_t gfp_flags)
 {
+	my_dbg(" [2011]  shl_add\n");
 	struct usb_request *zlp_request;
 	struct cdns3_endpoint *priv_ep;
 	struct cdns3_device *priv_dev;
@@ -2055,6 +2108,7 @@ static int cdns3_gadget_ep_queue(struct usb_ep *ep, struct usb_request *request,
 int cdns3_gadget_ep_dequeue(struct usb_ep *ep,
 			    struct usb_request *request)
 {
+	my_dbg(" [2057]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct usb_request *req, *req_temp;
@@ -2122,6 +2176,7 @@ not_found:
  */
 void __cdns3_gadget_ep_set_halt(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [2124]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 
 	trace_cdns3_halt(priv_ep, 1, 0);
@@ -2143,6 +2198,7 @@ void __cdns3_gadget_ep_set_halt(struct cdns3_endpoint *priv_ep)
  */
 int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [2145]  shl_add\n");
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	struct usb_request *request;
 	int ret = 0;
@@ -2178,6 +2234,7 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
  */
 int cdns3_gadget_ep_set_halt(struct usb_ep *ep, int value)
 {
+	my_dbg(" [2180]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	unsigned long flags;
@@ -2223,6 +2280,7 @@ static const struct usb_ep_ops cdns3_gadget_ep_ops = {
  */
 static int cdns3_gadget_get_frame(struct usb_gadget *gadget)
 {
+	my_dbg(" [2225]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 
 	return readl(&priv_dev->regs->usb_itpn);
@@ -2230,6 +2288,7 @@ static int cdns3_gadget_get_frame(struct usb_gadget *gadget)
 
 int __cdns3_gadget_wakeup(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [2232]  shl_add\n");
 	enum usb_device_speed speed;
 
 	speed = cdns3_get_speed(priv_dev);
@@ -2245,6 +2304,7 @@ int __cdns3_gadget_wakeup(struct cdns3_device *priv_dev)
 
 static int cdns3_gadget_wakeup(struct usb_gadget *gadget)
 {
+	my_dbg(" [2247]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 	unsigned long flags;
 	int ret = 0;
@@ -2258,6 +2318,7 @@ static int cdns3_gadget_wakeup(struct usb_gadget *gadget)
 static int cdns3_gadget_set_selfpowered(struct usb_gadget *gadget,
 					int is_selfpowered)
 {
+	my_dbg(" [2260]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 	unsigned long flags;
 
@@ -2269,6 +2330,7 @@ static int cdns3_gadget_set_selfpowered(struct usb_gadget *gadget,
 
 static int cdns3_gadget_pullup(struct usb_gadget *gadget, int is_on)
 {
+	my_dbg(" [2271]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 
 	if (is_on)
@@ -2281,6 +2343,7 @@ static int cdns3_gadget_pullup(struct usb_gadget *gadget, int is_on)
 
 static void cdns3_gadget_config(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [2283]  shl_add\n");
 	struct cdns3_usb_regs __iomem *regs = priv_dev->regs;
 	u32 reg;
 
@@ -2331,6 +2394,7 @@ static void cdns3_gadget_config(struct cdns3_device *priv_dev)
 static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
 				  struct usb_gadget_driver *driver)
 {
+	my_dbg(" [2333]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 	unsigned long flags;
 
@@ -2349,6 +2413,7 @@ static int cdns3_gadget_udc_start(struct usb_gadget *gadget,
  */
 static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
 {
+	my_dbg(" [2351]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 	struct cdns3_endpoint *priv_ep;
 	u32 bEndpointAddress;
@@ -2381,6 +2446,7 @@ static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
 static void cdns3_gadget_udc_set_speed(struct usb_gadget *gadget,
 				       enum usb_device_speed speed)
 {
+	my_dbg(" [2383]  shl_add\n");
 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
 
 	switch (speed) {
@@ -2414,6 +2480,7 @@ static const struct usb_gadget_ops cdns3_gadget_ops = {
 
 static void cdns3_free_all_eps(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [2416]  shl_add\n");
 	int i;
 
 	/* ep0 OUT point to ep0 IN. */
@@ -2434,6 +2501,7 @@ static void cdns3_free_all_eps(struct cdns3_device *priv_dev)
  */
 static int cdns3_init_eps(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [2436]  shl_add\n");
 	u32 ep_enabled_reg, iso_ep_reg;
 	struct cdns3_endpoint *priv_ep;
 	int ep_dir, ep_number;
@@ -2523,6 +2591,7 @@ err:
 
 void cdns3_gadget_exit(struct cdns3 *cdns)
 {
+	my_dbg(" [2525]  shl_add\n");
 	struct cdns3_device *priv_dev;
 
 	priv_dev = cdns->gadget_dev;
@@ -2551,6 +2620,7 @@ void cdns3_gadget_exit(struct cdns3 *cdns)
 
 static int cdns3_gadget_start(struct cdns3 *cdns)
 {
+	my_dbg(" [2553]  shl_add\n");
 	struct cdns3_device *priv_dev;
 	u32 max_speed;
 	int ret;
@@ -2669,6 +2739,7 @@ err1:
 
 static int __cdns3_gadget_init(struct cdns3 *cdns)
 {
+	my_dbg(" [2671]  shl_add\n");
 	int ret = 0;
 
 	cdns3_drd_switch_gadget(cdns, 1);
@@ -2682,6 +2753,7 @@ static int __cdns3_gadget_init(struct cdns3 *cdns)
 
 static int cdns3_gadget_suspend(struct cdns3 *cdns, bool do_wakeup)
 {
+	my_dbg(" [2684]  shl_add\n");
 	struct cdns3_device *priv_dev = cdns->gadget_dev;
 
 	cdns3_disconnect_gadget(priv_dev);
@@ -2700,6 +2772,7 @@ static int cdns3_gadget_suspend(struct cdns3 *cdns, bool do_wakeup)
 
 static int cdns3_gadget_resume(struct cdns3 *cdns, bool hibernated)
 {
+	my_dbg(" [2702]  shl_add\n");
 	struct cdns3_device *priv_dev = cdns->gadget_dev;
 
 	if (!priv_dev->gadget_driver)
@@ -2719,6 +2792,7 @@ static int cdns3_gadget_resume(struct cdns3 *cdns, bool hibernated)
  */
 int cdns3_gadget_init(struct cdns3 *cdns)
 {
+	my_dbg(" [2721]  shl_add\n");
 	struct cdns3_role_driver *rdrv;
 
 	rdrv = devm_kzalloc(cdns->dev, sizeof(*rdrv), GFP_KERNEL);
@@ -2744,6 +2818,7 @@ int cdns3_gadget_init(struct cdns3 *cdns)
  */
 static void cdns3_gadget_uboot_handle_interrupt(struct cdns3 *cdns)
 {
+	my_dbg(" [2746]  shl_add\n");
 	int ret = cdns3_device_irq_handler(0, cdns);
 
 	if (ret == IRQ_WAKE_THREAD)
@@ -2752,9 +2827,11 @@ static void cdns3_gadget_uboot_handle_interrupt(struct cdns3 *cdns)
 
 int dm_usb_gadget_handle_interrupts(struct udevice *dev)
 {
+	my_dbg(" [2754]  shl_add\n");
 	struct cdns3 *cdns = dev_get_priv(dev);
 
 	cdns3_gadget_uboot_handle_interrupt(cdns);
 
 	return 0;
 }
+

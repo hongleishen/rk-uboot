@@ -103,6 +103,7 @@ struct mcs7830_private {
 static int mcs7830_read_reg(struct usb_device *udev, uint8_t idx,
 			    uint16_t size, void *data)
 {
+	my_dbg(" [105]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(uint8_t, buf, size);
 
@@ -133,6 +134,7 @@ static int mcs7830_read_reg(struct usb_device *udev, uint8_t idx,
 static int mcs7830_write_reg(struct usb_device *udev, uint8_t idx,
 			     uint16_t size, void *data)
 {
+	my_dbg(" [135]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(uint8_t, buf, size);
 
@@ -162,6 +164,7 @@ static int mcs7830_write_reg(struct usb_device *udev, uint8_t idx,
 static int mcs7830_phy_emit_wait(struct usb_device *udev,
 				 uint8_t rwflag, uint8_t index)
 {
+	my_dbg(" [164]  shl_add\n");
 	int rc;
 	int retry;
 	uint8_t cmd[2];
@@ -196,6 +199,7 @@ static int mcs7830_phy_emit_wait(struct usb_device *udev,
  */
 static int mcs7830_read_phy(struct usb_device *udev, uint8_t index)
 {
+	my_dbg(" [198]  shl_add\n");
 	int rc;
 	uint16_t val;
 
@@ -223,6 +227,7 @@ static int mcs7830_read_phy(struct usb_device *udev, uint8_t index)
 static int mcs7830_write_phy(struct usb_device *udev, uint8_t index,
 			     uint16_t val)
 {
+	my_dbg(" [225]  shl_add\n");
 	int rc;
 
 	debug("%s(%d, 0x%04X)\n", __func__, index, val);
@@ -253,6 +258,7 @@ static int mcs7830_write_phy(struct usb_device *udev, uint8_t index,
 static int mcs7830_write_config(struct usb_device *udev,
 				struct mcs7830_private *priv)
 {
+	my_dbg(" [255]  shl_add\n");
 	int rc;
 
 	debug("%s()\n", __func__);
@@ -279,6 +285,7 @@ static int mcs7830_write_config(struct usb_device *udev,
 static int mcs7830_write_mchash(struct usb_device *udev,
 				struct mcs7830_private *priv)
 {
+	my_dbg(" [281]  shl_add\n");
 	int rc;
 
 	debug("%s()\n", __func__);
@@ -302,6 +309,7 @@ static int mcs7830_write_mchash(struct usb_device *udev,
  */
 static int mcs7830_set_autoneg(struct usb_device *udev)
 {
+	my_dbg(" [304]  shl_add\n");
 	int adv, flg;
 	int rc;
 
@@ -343,6 +351,7 @@ static int mcs7830_set_autoneg(struct usb_device *udev)
  */
 static int mcs7830_get_rev(struct usb_device *udev)
 {
+	my_dbg(" [345]  shl_add\n");
 	uint8_t buf[2];
 	int rc;
 	int rev;
@@ -367,6 +376,7 @@ static int mcs7830_get_rev(struct usb_device *udev)
  */
 static int mcs7830_apply_fixup(struct usb_device *udev)
 {
+	my_dbg(" [369]  shl_add\n");
 	int rev;
 	int i;
 	uint8_t thr;
@@ -404,6 +414,7 @@ static int mcs7830_apply_fixup(struct usb_device *udev)
 static int mcs7830_basic_reset(struct usb_device *udev,
 			       struct mcs7830_private *priv)
 {
+	my_dbg(" [406]  shl_add\n");
 	int rc;
 
 	debug("%s()\n", __func__);
@@ -454,6 +465,7 @@ static int mcs7830_basic_reset(struct usb_device *udev,
  */
 static int mcs7830_read_mac(struct usb_device *udev, unsigned char enetaddr[])
 {
+	my_dbg(" [456]  shl_add\n");
 	int rc;
 	uint8_t buf[ETH_ALEN];
 
@@ -472,6 +484,7 @@ static int mcs7830_read_mac(struct usb_device *udev, unsigned char enetaddr[])
 static int mcs7830_write_mac_common(struct usb_device *udev,
 				    unsigned char enetaddr[])
 {
+	my_dbg(" [474]  shl_add\n");
 	int rc;
 
 	debug("%s()\n", __func__);
@@ -486,6 +499,7 @@ static int mcs7830_write_mac_common(struct usb_device *udev,
 
 static int mcs7830_init_common(struct usb_device *udev)
 {
+	my_dbg(" [488]  shl_add\n");
 	int timeout;
 	int have_link;
 
@@ -509,6 +523,7 @@ static int mcs7830_init_common(struct usb_device *udev)
 static int mcs7830_send_common(struct ueth_data *ueth, void *packet,
 			       int length)
 {
+	my_dbg(" [511]  shl_add\n");
 	struct usb_device *udev = ueth->pusb_dev;
 	int rc;
 	int gotlen;
@@ -527,6 +542,7 @@ static int mcs7830_send_common(struct ueth_data *ueth, void *packet,
 
 static int mcs7830_recv_common(struct ueth_data *ueth, uint8_t *buf)
 {
+	my_dbg(" [529]  shl_add\n");
 	int rc, wantlen, gotlen;
 	uint8_t sts;
 
@@ -586,6 +602,7 @@ static int mcs7830_recv_common(struct ueth_data *ueth, uint8_t *buf)
  */
 static int mcs7830_init(struct eth_device *eth, bd_t *bd)
 {
+	my_dbg(" [588]  shl_add\n");
 	struct ueth_data *dev = eth->priv;
 
 	return mcs7830_init_common(dev->pusb_dev);
@@ -602,6 +619,7 @@ static int mcs7830_init(struct eth_device *eth, bd_t *bd)
  */
 static int mcs7830_send(struct eth_device *eth, void *packet, int length)
 {
+	my_dbg(" [604]  shl_add\n");
 	struct ueth_data *dev = eth->priv;
 
 	return mcs7830_send_common(dev, packet, length);
@@ -617,6 +635,7 @@ static int mcs7830_send(struct eth_device *eth, void *packet, int length)
  */
 static int mcs7830_recv(struct eth_device *eth)
 {
+	my_dbg(" [619]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(uint8_t, buf, MCS7830_RX_URB_SIZE);
 	struct ueth_data *ueth = eth->priv;
 	int len;
@@ -640,6 +659,7 @@ static int mcs7830_recv(struct eth_device *eth)
  */
 static void mcs7830_halt(struct eth_device *eth)
 {
+	my_dbg(" [642]  shl_add\n");
 	debug("%s()\n", __func__);
 }
 
@@ -654,6 +674,7 @@ static void mcs7830_halt(struct eth_device *eth)
  */
 static int mcs7830_write_mac(struct eth_device *eth)
 {
+	my_dbg(" [656]  shl_add\n");
 	struct ueth_data *ueth = eth->priv;
 
 	return mcs7830_write_mac_common(ueth->pusb_dev, eth->enetaddr);
@@ -676,6 +697,7 @@ static int mcs7830_iface_idx;
  */
 void mcs7830_eth_before_probe(void)
 {
+	my_dbg(" [678]  shl_add\n");
 	mcs7830_iface_idx = 0;
 }
 
@@ -719,6 +741,7 @@ static const struct mcs7830_dongle mcs7830_dongles[] = {
 int mcs7830_eth_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct ueth_data *ss)
 {
+	my_dbg(" [721]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_interface_descriptor *iface_desc;
 	int i;
@@ -818,6 +841,7 @@ int mcs7830_eth_probe(struct usb_device *dev, unsigned int ifnum,
 int mcs7830_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 			 struct eth_device *eth)
 {
+	my_dbg(" [820]  shl_add\n");
 	debug("%s()\n", __func__);
 	if (!eth) {
 		debug("%s: missing parameter.\n", __func__);
@@ -848,6 +872,7 @@ int mcs7830_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 #ifdef CONFIG_DM_ETH
 static int mcs7830_eth_start(struct udevice *dev)
 {
+	my_dbg(" [850]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 
 	return mcs7830_init_common(udev);
@@ -855,11 +880,13 @@ static int mcs7830_eth_start(struct udevice *dev)
 
 void mcs7830_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [857]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 int mcs7830_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [862]  shl_add\n");
 	struct mcs7830_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 
@@ -868,6 +895,7 @@ int mcs7830_eth_send(struct udevice *dev, void *packet, int length)
 
 int mcs7830_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [870]  shl_add\n");
 	struct mcs7830_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	int len;
@@ -880,6 +908,7 @@ int mcs7830_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 
 static int mcs7830_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [882]  shl_add\n");
 	struct mcs7830_private *priv = dev_get_priv(dev);
 
 	packet_len = ALIGN(packet_len, 4);
@@ -890,6 +919,7 @@ static int mcs7830_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 int mcs7830_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [892]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 
@@ -898,6 +928,7 @@ int mcs7830_write_hwaddr(struct udevice *dev)
 
 static int mcs7830_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [900]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct mcs7830_private *priv = dev_get_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
@@ -941,3 +972,4 @@ static const struct usb_device_id mcs7830_eth_id_table[] = {
 
 U_BOOT_USB_DEVICE(mcs7830_eth, mcs7830_eth_id_table);
 #endif
+

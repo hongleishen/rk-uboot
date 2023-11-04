@@ -36,6 +36,7 @@
 static int last_trb(struct xhci_ctrl *ctrl, struct xhci_ring *ring,
 			struct xhci_segment *seg, union xhci_trb *trb)
 {
+	my_dbg(" [38]  shl_add\n");
 	if (ring == ctrl->event_ring)
 		return trb == &seg->trbs[TRBS_PER_SEGMENT];
 	else
@@ -57,6 +58,7 @@ static bool last_trb_on_last_seg(struct xhci_ctrl *ctrl,
 				 struct xhci_segment *seg,
 				 union xhci_trb *trb)
 {
+	my_dbg(" [59]  shl_add\n");
 	if (ring == ctrl->event_ring)
 		return ((trb == &seg->trbs[TRBS_PER_SEGMENT]) &&
 			(seg->next == ring->first_seg));
@@ -89,6 +91,7 @@ static bool last_trb_on_last_seg(struct xhci_ctrl *ctrl,
 static void inc_enq(struct xhci_ctrl *ctrl, struct xhci_ring *ring,
 						bool more_trbs_coming)
 {
+	my_dbg(" [91]  shl_add\n");
 	u32 chain;
 	union xhci_trb *next;
 
@@ -146,6 +149,7 @@ static void inc_enq(struct xhci_ctrl *ctrl, struct xhci_ring *ring,
  */
 static void inc_deq(struct xhci_ctrl *ctrl, struct xhci_ring *ring)
 {
+	my_dbg(" [148]  shl_add\n");
 	do {
 		/*
 		 * Update the dequeue pointer further if that was a link TRB or
@@ -183,6 +187,7 @@ static struct xhci_generic_trb *queue_trb(struct xhci_ctrl *ctrl,
 					  bool more_trbs_coming,
 					  unsigned int *trb_fields)
 {
+	my_dbg(" [185]  shl_add\n");
 	struct xhci_generic_trb *trb;
 	int i;
 
@@ -210,6 +215,7 @@ static struct xhci_generic_trb *queue_trb(struct xhci_ctrl *ctrl,
 static int prepare_ring(struct xhci_ctrl *ctrl, struct xhci_ring *ep_ring,
 							u32 ep_state)
 {
+	my_dbg(" [212]  shl_add\n");
 	union xhci_trb *next = ep_ring->enqueue;
 
 	/* Make sure the endpoint has been added to xHC schedule */
@@ -272,6 +278,7 @@ static int prepare_ring(struct xhci_ctrl *ctrl, struct xhci_ring *ep_ring,
 void xhci_queue_command(struct xhci_ctrl *ctrl, u8 *ptr, u32 slot_id,
 			u32 ep_index, trb_type cmd)
 {
+	my_dbg(" [274]  shl_add\n");
 	u32 fields[4];
 	u64 val_64 = (uintptr_t)ptr;
 
@@ -306,6 +313,7 @@ void xhci_queue_command(struct xhci_ctrl *ctrl, u8 *ptr, u32 slot_id,
  */
 static u32 xhci_td_remainder(unsigned int remainder)
 {
+	my_dbg(" [308]  shl_add\n");
 	u32 max = (1 << (21 - 17 + 1)) - 1;
 
 	if ((remainder >> 10) >= max)
@@ -330,6 +338,7 @@ static u32 xhci_v1_0_td_remainder(int running_total,
 				int maxpacketsize,
 				unsigned int num_trbs_left)
 {
+	my_dbg(" [332]  shl_add\n");
 	int packets_transferred;
 
 	/* One TRB with a zero-length data packet. */
@@ -360,6 +369,7 @@ static void giveback_first_trb(struct usb_device *udev, int ep_index,
 				int start_cycle,
 				struct xhci_generic_trb *start_trb)
 {
+	my_dbg(" [362]  shl_add\n");
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 
 	/*
@@ -392,6 +402,7 @@ static void giveback_first_trb(struct usb_device *udev, int ep_index,
  */
 void xhci_acknowledge_event(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [394]  shl_add\n");
 	/* Advance our dequeue pointer to the next event */
 	inc_deq(ctrl, ctrl->event_ring);
 
@@ -408,6 +419,7 @@ void xhci_acknowledge_event(struct xhci_ctrl *ctrl)
  */
 static int event_ready(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [410]  shl_add\n");
 	union xhci_trb *event;
 
 	xhci_inval_cache((uintptr_t)ctrl->event_ring->dequeue,
@@ -434,6 +446,7 @@ static int event_ready(struct xhci_ctrl *ctrl)
  */
 union xhci_trb *xhci_wait_for_event(struct xhci_ctrl *ctrl, trb_type expected)
 {
+	my_dbg(" [436]  shl_add\n");
 	trb_type type;
 	unsigned long ts = get_timer(0);
 
@@ -484,6 +497,7 @@ union xhci_trb *xhci_wait_for_event(struct xhci_ctrl *ctrl, trb_type expected)
  */
 static void abort_td(struct usb_device *udev, int ep_index)
 {
+	my_dbg(" [486]  shl_add\n");
 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
 	struct xhci_ring *ring =  ctrl->devs[udev->slot_id]->eps[ep_index].ring;
 	union xhci_trb *event;
@@ -517,6 +531,7 @@ static void abort_td(struct usb_device *udev, int ep_index)
 static void record_transfer_result(struct usb_device *udev,
 				   union xhci_trb *event, int length)
 {
+	my_dbg(" [519]  shl_add\n");
 	udev->act_len = min(length, length -
 		(int)EVENT_TRB_LEN(le32_to_cpu(event->trans_event.transfer_len)));
 
@@ -555,6 +570,7 @@ static void record_transfer_result(struct usb_device *udev,
 int xhci_bulk_tx(struct usb_device *udev, unsigned long pipe,
 			int length, void *buffer)
 {
+	my_dbg(" [557]  shl_add\n");
 	int num_trbs = 0;
 	struct xhci_generic_trb *start_trb;
 	bool first_trb = false;
@@ -748,6 +764,7 @@ int xhci_ctrl_tx(struct usb_device *udev, unsigned long pipe,
 			struct devrequest *req,	int length,
 			void *buffer)
 {
+	my_dbg(" [750]  shl_add\n");
 	int ret;
 	int start_cycle;
 	int num_trbs;
@@ -944,3 +961,4 @@ abort:
 	udev->act_len = 0;
 	return -ETIMEDOUT;
 }
+

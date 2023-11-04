@@ -15,6 +15,7 @@
 
 void otg_phy_init(struct dwc2_udc *dev)
 {
+	my_dbg(" [17]  shl_add\n");
 	/* turn on the USB OTG clocks */
 	clk_usb_otg_enable((void *)HSOTG_BASE_ADDR);
 
@@ -43,6 +44,7 @@ void otg_phy_init(struct dwc2_udc *dev)
 
 void otg_phy_off(struct dwc2_udc *dev)
 {
+	my_dbg(" [45]  shl_add\n");
 	/* Soft Disconnect */
 	wfld_set(HSOTG_BASE_ADDR + HSOTG_DCTL_OFFSET,
 		 HSOTG_DCTL_SFTDISCON_MASK,
@@ -53,3 +55,4 @@ void otg_phy_off(struct dwc2_udc *dev)
 		 HSOTG_CTRL_PHY_P1CTL_NON_DRIVING_MASK,
 		 HSOTG_CTRL_PHY_P1CTL_NON_DRIVING_MASK);
 }
+

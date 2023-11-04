@@ -70,6 +70,7 @@ struct zynqmp_xhci_platdata {
 
 static int zynqmp_xhci_core_init(struct zynqmp_xhci *zynqmp_xhci)
 {
+	my_dbg(" [72]  shl_add\n");
 	int ret = 0;
 
 	ret = dwc3_core_init(zynqmp_xhci->dwc3_reg);
@@ -86,6 +87,7 @@ static int zynqmp_xhci_core_init(struct zynqmp_xhci *zynqmp_xhci)
 
 void xhci_hcd_stop(int index)
 {
+	my_dbg(" [88]  shl_add\n");
 	/*
 	 * Currently zynqmp socs do not support PHY shutdown from
 	 * sw. But this support may be added in future socs.
@@ -96,6 +98,7 @@ void xhci_hcd_stop(int index)
 
 static int xhci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [98]  shl_add\n");
 	struct zynqmp_xhci_platdata *plat = dev_get_platdata(dev);
 	struct zynqmp_xhci *ctx = dev_get_priv(dev);
 	struct xhci_hcor *hcor;
@@ -118,11 +121,13 @@ static int xhci_usb_probe(struct udevice *dev)
 
 static int xhci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [120]  shl_add\n");
 	return xhci_deregister(dev);
 }
 
 static int xhci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [125]  shl_add\n");
 	struct zynqmp_xhci_platdata *plat = dev_get_platdata(dev);
 	const void *blob = gd->fdt_blob;
 
@@ -147,3 +152,4 @@ U_BOOT_DRIVER(dwc3_generic_host) = {
 	.priv_auto_alloc_size = sizeof(struct zynqmp_xhci),
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
+

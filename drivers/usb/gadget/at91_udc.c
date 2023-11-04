@@ -70,6 +70,7 @@ static struct at91_udc *controller;
 
 static void done(struct at91_ep *ep, struct at91_request *req, int status)
 {
+	my_dbg(" [72]  shl_add\n");
 	unsigned	stopped = ep->stopped;
 	struct at91_udc	*udc = ep->udc;
 
@@ -121,6 +122,7 @@ static void done(struct at91_ep *ep, struct at91_request *req, int status)
 /* pull OUT packet data from the endpoint's fifo */
 static int read_fifo (struct at91_ep *ep, struct at91_request *req)
 {
+	my_dbg(" [123]  shl_add\n");
 	u32 __iomem	*creg = ep->creg;
 	u8 __iomem	*dreg = ep->creg + (AT91_UDP_FDR(0) - AT91_UDP_CSR(0));
 	u32		csr;
@@ -196,6 +198,7 @@ rescan:
 /* load fifo for an IN packet */
 static int write_fifo(struct at91_ep *ep, struct at91_request *req)
 {
+	my_dbg(" [198]  shl_add\n");
 	u32 __iomem	*creg = ep->creg;
 	u32		csr = __raw_readl(creg);
 	u8 __iomem	*dreg = ep->creg + (AT91_UDP_FDR(0) - AT91_UDP_CSR(0));
@@ -264,6 +267,7 @@ static int write_fifo(struct at91_ep *ep, struct at91_request *req)
 
 static void nuke(struct at91_ep *ep, int status)
 {
+	my_dbg(" [266]  shl_add\n");
 	struct at91_request *req;
 
 	/* terminate any request in the queue */
@@ -283,6 +287,7 @@ static void nuke(struct at91_ep *ep, int status)
 static int at91_ep_enable(struct usb_ep *_ep,
 				const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [285]  shl_add\n");
 	struct at91_ep	*ep = container_of(_ep, struct at91_ep, ep);
 	struct at91_udc *udc;
 	u16		maxpacket;
@@ -360,6 +365,7 @@ ok:
 
 static int at91_ep_disable (struct usb_ep * _ep)
 {
+	my_dbg(" [362]  shl_add\n");
 	struct at91_ep	*ep = container_of(_ep, struct at91_ep, ep);
 	struct at91_udc	*udc = ep->udc;
 	unsigned long	flags;
@@ -394,6 +400,7 @@ static int at91_ep_disable (struct usb_ep * _ep)
 static struct usb_request *
 at91_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 {
+	my_dbg(" [396]  shl_add\n");
 	struct at91_request *req;
 
 	req = kzalloc(sizeof (struct at91_request), gfp_flags);
@@ -406,6 +413,7 @@ at91_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 
 static void at91_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [408]  shl_add\n");
 	struct at91_request *req;
 
 	req = container_of(_req, struct at91_request, req);
@@ -416,6 +424,7 @@ static void at91_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
 static int at91_ep_queue(struct usb_ep *_ep,
 			struct usb_request *_req, gfp_t gfp_flags)
 {
+	my_dbg(" [418]  shl_add\n");
 	struct at91_request	*req;
 	struct at91_ep		*ep;
 	struct at91_udc		*udc;
@@ -515,6 +524,7 @@ done:
 
 static int at91_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [517]  shl_add\n");
 	struct at91_ep		*ep;
 	struct at91_request	*req;
 	unsigned long		flags;
@@ -542,6 +552,7 @@ static int at91_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 
 static int at91_ep_set_halt(struct usb_ep *_ep, int value)
 {
+	my_dbg(" [544]  shl_add\n");
 	struct at91_ep	*ep = container_of(_ep, struct at91_ep, ep);
 	struct at91_udc	*udc = ep->udc;
 	u32 __iomem	*creg;
@@ -597,6 +608,7 @@ static const struct usb_ep_ops at91_ep_ops = {
 
 static int at91_get_frame(struct usb_gadget *gadget)
 {
+	my_dbg(" [599]  shl_add\n");
 	struct at91_udc *udc = to_udc(gadget);
 
 	if (!to_udc(gadget)->clocked)
@@ -606,6 +618,7 @@ static int at91_get_frame(struct usb_gadget *gadget)
 
 static int at91_wakeup(struct usb_gadget *gadget)
 {
+	my_dbg(" [608]  shl_add\n");
 	struct at91_udc	*udc = to_udc(gadget);
 	u32		glbstate;
 	int		status = -EINVAL;
@@ -633,6 +646,7 @@ done:
 /* reinit == restore initial software state */
 static void udc_reinit(struct at91_udc *udc)
 {
+	my_dbg(" [635]  shl_add\n");
 	u32 i;
 
 	INIT_LIST_HEAD(&udc->gadget.ep_list);
@@ -655,6 +669,7 @@ static void udc_reinit(struct at91_udc *udc)
 
 static void reset_gadget(struct at91_udc *udc)
 {
+	my_dbg(" [657]  shl_add\n");
 	struct usb_gadget_driver *driver = udc->driver;
 	int i;
 
@@ -680,6 +695,7 @@ static void reset_gadget(struct at91_udc *udc)
 
 static void stop_activity(struct at91_udc *udc)
 {
+	my_dbg(" [682]  shl_add\n");
 	struct usb_gadget_driver *driver = udc->driver;
 	int i;
 
@@ -704,6 +720,7 @@ static void stop_activity(struct at91_udc *udc)
 
 static void clk_on(struct at91_udc *udc)
 {
+	my_dbg(" [706]  shl_add\n");
 	if (udc->clocked)
 		return;
 	udc->clocked = 1;
@@ -711,6 +728,7 @@ static void clk_on(struct at91_udc *udc)
 
 static void clk_off(struct at91_udc *udc)
 {
+	my_dbg(" [713]  shl_add\n");
 	if (!udc->clocked)
 		return;
 	udc->clocked = 0;
@@ -723,6 +741,7 @@ static void clk_off(struct at91_udc *udc)
  */
 static void pullup(struct at91_udc *udc, int is_on)
 {
+	my_dbg(" [725]  shl_add\n");
 	if (!udc->enabled || !udc->vbus)
 		is_on = 0;
 	DBG("%sactive\n", is_on ? "" : "in");
@@ -745,6 +764,7 @@ static void pullup(struct at91_udc *udc, int is_on)
 /* vbus is here!  turn everything on that's ready */
 static int at91_vbus_session(struct usb_gadget *gadget, int is_active)
 {
+	my_dbg(" [747]  shl_add\n");
 	struct at91_udc	*udc = to_udc(gadget);
 	unsigned long	flags;
 
@@ -761,6 +781,7 @@ static int at91_vbus_session(struct usb_gadget *gadget, int is_active)
 
 static int at91_pullup(struct usb_gadget *gadget, int is_on)
 {
+	my_dbg(" [763]  shl_add\n");
 	struct at91_udc	*udc = to_udc(gadget);
 	unsigned long	flags;
 
@@ -773,6 +794,7 @@ static int at91_pullup(struct usb_gadget *gadget, int is_on)
 
 static int at91_set_selfpowered(struct usb_gadget *gadget, int is_on)
 {
+	my_dbg(" [775]  shl_add\n");
 	struct at91_udc	*udc = to_udc(gadget);
 	unsigned long	flags;
 
@@ -806,6 +828,7 @@ static const struct usb_gadget_ops at91_udc_ops = {
 
 static int handle_ep(struct at91_ep *ep)
 {
+	my_dbg(" [808]  shl_add\n");
 	struct at91_request	*req;
 	u32 __iomem		*creg = ep->creg;
 	u32			csr = __raw_readl(creg);
@@ -848,6 +871,7 @@ union setup {
 
 static void handle_setup(struct at91_udc *udc, struct at91_ep *ep, u32 csr)
 {
+	my_dbg(" [850]  shl_add\n");
 	u32 __iomem	*creg = ep->creg;
 	u8 __iomem	*dreg = ep->creg + (AT91_UDP_FDR(0) - AT91_UDP_CSR(0));
 	unsigned	rxcount, i = 0;
@@ -1074,6 +1098,7 @@ write_in:
 
 static void handle_ep0(struct at91_udc *udc)
 {
+	my_dbg(" [1076]  shl_add\n");
 	struct at91_ep		*ep0 = &udc->ep[0];
 	u32 __iomem		*creg = ep0->creg;
 	u32			csr = __raw_readl(creg);
@@ -1197,6 +1222,7 @@ static void handle_ep0(struct at91_udc *udc)
 
 static irqreturn_t at91_udc_irq(struct at91_udc *udc)
 {
+	my_dbg(" [1199]  shl_add\n");
 	u32			rescans = 5;
 	int			disable_clock = 0;
 	unsigned long		flags;
@@ -1314,6 +1340,7 @@ static irqreturn_t at91_udc_irq(struct at91_udc *udc)
 static int at91_start(struct usb_gadget *gadget,
 		struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1316]  shl_add\n");
 	struct at91_udc *udc = controller;
 
 	udc->driver = driver;
@@ -1325,6 +1352,7 @@ static int at91_start(struct usb_gadget *gadget,
 
 static int at91_stop(struct usb_gadget *gadget)
 {
+	my_dbg(" [1327]  shl_add\n");
 	struct at91_udc *udc = controller;
 	unsigned long	flags;
 
@@ -1343,6 +1371,7 @@ static int at91_stop(struct usb_gadget *gadget)
 #if defined(CONFIG_AT91SAM9260) || defined(CONFIG_AT91SAM9G20)
 static int at91sam9260_udc_init(struct at91_udc *udc)
 {
+	my_dbg(" [1345]  shl_add\n");
 	struct at91_ep *ep;
 	int i;
 
@@ -1364,6 +1393,7 @@ static int at91sam9260_udc_init(struct at91_udc *udc)
 
 static void at91sam9260_udc_pullup(struct at91_udc *udc, int is_on)
 {
+	my_dbg(" [1366]  shl_add\n");
 	u32 txvc = at91_udp_read(udc, AT91_UDP_TXVC);
 
 	if (is_on)
@@ -1383,6 +1413,7 @@ static const struct at91_udc_caps at91sam9260_udc_caps = {
 #if defined(CONFIG_AT91SAM9261)
 static int at91sam9261_udc_init(struct at91_udc *udc)
 {
+	my_dbg(" [1385]  shl_add\n");
 	struct at91_ep *ep;
 	int i;
 
@@ -1412,6 +1443,7 @@ static int at91sam9261_udc_init(struct at91_udc *udc)
 
 static void at91sam9261_udc_pullup(struct at91_udc *udc, int is_on)
 {
+	my_dbg(" [1414]  shl_add\n");
 	u32 usbpucr = 0;
 
 	usbpucr = readl(&udc->matrix->pucr);
@@ -1429,6 +1461,7 @@ static const struct at91_udc_caps at91sam9261_udc_caps = {
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [1431]  shl_add\n");
 	struct at91_udc *udc = controller;
 
 	return at91_udc_irq(udc);
@@ -1436,6 +1469,7 @@ int usb_gadget_handle_interrupts(int index)
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1438]  shl_add\n");
 	struct at91_udc *udc = controller;
 	int ret;
 
@@ -1464,6 +1498,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1466]  shl_add\n");
 	struct at91_udc *udc = controller;
 
 	if (!driver || !driver->unbind || !driver->disconnect) {
@@ -1482,6 +1517,7 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 
 int at91_udc_probe(struct at91_udc_data *pdata)
 {
+	my_dbg(" [1484]  shl_add\n");
 	struct at91_udc	*udc;
 	int		retval;
 	struct at91_ep	*ep;
@@ -1542,3 +1578,4 @@ int at91_udc_probe(struct at91_udc_data *pdata)
 	INFO("%s version %s\n", driver_name, DRIVER_VERSION);
 	return 0;
 }
+

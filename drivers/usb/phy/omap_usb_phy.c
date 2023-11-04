@@ -49,6 +49,7 @@ static struct usb3_dpll_map dpll_map_usb[] = {
 
 static struct usb3_dpll_params *omap_usb3_get_dpll_params(void)
 {
+	my_dbg(" [51]  shl_add\n");
 	unsigned long rate;
 	struct usb3_dpll_map *dpll_map = dpll_map_usb;
 
@@ -66,6 +67,7 @@ static struct usb3_dpll_params *omap_usb3_get_dpll_params(void)
 
 static void omap_usb_dpll_relock(struct omap_usb3_phy *phy_regs)
 {
+	my_dbg(" [68]  shl_add\n");
 	u32 val;
 
 	writel(SET_PLL_GO, &phy_regs->pll_go);
@@ -78,6 +80,7 @@ static void omap_usb_dpll_relock(struct omap_usb3_phy *phy_regs)
 
 static void omap_usb_dpll_lock(struct omap_usb3_phy *phy_regs)
 {
+	my_dbg(" [80]  shl_add\n");
 	struct usb3_dpll_params	*dpll_params;
 	u32 val;
 
@@ -115,6 +118,7 @@ static void omap_usb_dpll_lock(struct omap_usb3_phy *phy_regs)
 
 static void usb3_phy_partial_powerup(struct omap_usb3_phy *phy_regs)
 {
+	my_dbg(" [117]  shl_add\n");
 	u32 rate = get_sys_clk_freq()/1000000;
 	u32 val;
 
@@ -128,6 +132,7 @@ static void usb3_phy_partial_powerup(struct omap_usb3_phy *phy_regs)
 
 void usb_phy_power(int on)
 {
+	my_dbg(" [130]  shl_add\n");
 	u32 val;
 
 	val = readl((*ctrl)->control_phy_power_usb);
@@ -143,6 +148,7 @@ void usb_phy_power(int on)
 
 void omap_usb3_phy_init(struct omap_usb3_phy *phy_regs)
 {
+	my_dbg(" [145]  shl_add\n");
 	omap_usb_dpll_lock(phy_regs);
 	usb3_phy_partial_powerup(phy_regs);
 	/*
@@ -155,6 +161,7 @@ void omap_usb3_phy_init(struct omap_usb3_phy *phy_regs)
 
 static void omap_enable_usb3_phy(struct omap_xhci *omap)
 {
+	my_dbg(" [157]  shl_add\n");
 	u32	val;
 
 	val = (USBOTGSS_DMADISABLE |
@@ -190,6 +197,7 @@ static void omap_enable_usb3_phy(struct omap_xhci *omap)
 #ifdef CONFIG_OMAP_USB2PHY2_HOST
 static void omap_enable_usb2_phy2(struct omap_xhci *omap)
 {
+	my_dbg(" [192]  shl_add\n");
 	u32 reg, val;
 
 	val = (~USB2PHY_AUTORESUME_EN & USB2PHY_DISCHGDET);
@@ -211,6 +219,7 @@ static void omap_enable_usb2_phy2(struct omap_xhci *omap)
 
 void usb_phy_power(int on)
 {
+	my_dbg(" [213]  shl_add\n");
 	return;
 }
 #endif /* CONFIG_OMAP_USB2PHY2_HOST */
@@ -218,6 +227,7 @@ void usb_phy_power(int on)
 #ifdef CONFIG_AM437X_USB2PHY2_HOST
 static void am437x_enable_usb2_phy2(struct omap_xhci *omap)
 {
+	my_dbg(" [220]  shl_add\n");
 	const u32 usb_otg_ss_clk_val = (USBOTGSSX_CLKCTRL_MODULE_EN |
 				USBOTGSSX_CLKCTRL_OPTFCLKEN_REFCLK960);
 
@@ -230,6 +240,7 @@ static void am437x_enable_usb2_phy2(struct omap_xhci *omap)
 
 void usb_phy_power(int on)
 {
+	my_dbg(" [232]  shl_add\n");
 	u32 val;
 
 	/* USB1_CTRL */
@@ -251,6 +262,7 @@ void usb_phy_power(int on)
 
 void omap_enable_phy(struct omap_xhci *omap)
 {
+	my_dbg(" [253]  shl_add\n");
 #ifdef CONFIG_OMAP_USB2PHY2_HOST
 	omap_enable_usb2_phy2(omap);
 #endif
@@ -264,3 +276,4 @@ void omap_enable_phy(struct omap_xhci *omap)
 	omap_usb3_phy_init(omap->usb3_phy);
 #endif
 }
+

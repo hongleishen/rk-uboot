@@ -150,6 +150,7 @@ static const u32 oid_supported_list[] = {
 static int gen_ndis_query_resp(int configNr, u32 OID, u8 *buf,
 				unsigned buf_len, rndis_resp_t *r)
 {
+	my_dbg(" [152]  shl_add\n");
 	int				retval = -ENOTSUPP;
 	u32				length = 4;	/* usually */
 	__le32				*outbuf;
@@ -652,6 +653,7 @@ static int gen_ndis_query_resp(int configNr, u32 OID, u8 *buf,
 static int gen_ndis_set_resp(u8 configNr, u32 OID, u8 *buf, u32 buf_len,
 				rndis_resp_t *r)
 {
+	my_dbg(" [654]  shl_add\n");
 	rndis_set_cmplt_type		*resp;
 	int				retval = -ENOTSUPP;
 	struct rndis_params		*params;
@@ -774,6 +776,7 @@ update_linkstate:
 
 static int rndis_init_response(int configNr, rndis_init_msg_type *buf)
 {
+	my_dbg(" [776]  shl_add\n");
 	rndis_init_cmplt_type	*resp;
 	rndis_resp_t            *r;
 
@@ -813,6 +816,7 @@ static int rndis_init_response(int configNr, rndis_init_msg_type *buf)
 
 static int rndis_query_response(int configNr, rndis_query_msg_type *buf)
 {
+	my_dbg(" [815]  shl_add\n");
 	rndis_query_cmplt_type *resp;
 	rndis_resp_t            *r;
 
@@ -857,6 +861,7 @@ static int rndis_query_response(int configNr, rndis_query_msg_type *buf)
 
 static int rndis_set_response(int configNr, rndis_set_msg_type *buf)
 {
+	my_dbg(" [859]  shl_add\n");
 	u32			BufLength, BufOffset;
 	rndis_set_cmplt_type	*resp;
 	rndis_resp_t		*r;
@@ -899,6 +904,7 @@ static int rndis_set_response(int configNr, rndis_set_msg_type *buf)
 
 static int rndis_reset_response(int configNr, rndis_reset_msg_type *buf)
 {
+	my_dbg(" [901]  shl_add\n");
 	rndis_reset_cmplt_type	*resp;
 	rndis_resp_t		*r;
 
@@ -923,6 +929,7 @@ static int rndis_reset_response(int configNr, rndis_reset_msg_type *buf)
 static int rndis_keepalive_response(int configNr,
 					rndis_keepalive_msg_type *buf)
 {
+	my_dbg(" [925]  shl_add\n");
 	rndis_keepalive_cmplt_type	*resp;
 	rndis_resp_t			*r;
 
@@ -952,6 +959,7 @@ static int rndis_keepalive_response(int configNr,
  */
 static int rndis_indicate_status_msg(int configNr, u32 status)
 {
+	my_dbg(" [954]  shl_add\n");
 	rndis_indicate_status_msg_type	*resp;
 	rndis_resp_t			*r;
 
@@ -979,6 +987,7 @@ static int rndis_indicate_status_msg(int configNr, u32 status)
 
 int rndis_signal_connect(int configNr)
 {
+	my_dbg(" [981]  shl_add\n");
 	rndis_per_dev_params[configNr].media_state
 			= NDIS_MEDIA_STATE_CONNECTED;
 	return rndis_indicate_status_msg(configNr,
@@ -987,6 +996,7 @@ int rndis_signal_connect(int configNr)
 
 int rndis_signal_disconnect(int configNr)
 {
+	my_dbg(" [989]  shl_add\n");
 	rndis_per_dev_params[configNr].media_state
 			= NDIS_MEDIA_STATE_DISCONNECTED;
 
@@ -1000,6 +1010,7 @@ int rndis_signal_disconnect(int configNr)
 
 void rndis_uninit(int configNr)
 {
+	my_dbg(" [1002]  shl_add\n");
 	u8 *buf;
 	u32 length;
 
@@ -1015,11 +1026,13 @@ void rndis_uninit(int configNr)
 
 void rndis_set_host_mac(int configNr, const u8 *addr)
 {
+	my_dbg(" [1017]  shl_add\n");
 	rndis_per_dev_params[configNr].host_mac = addr;
 }
 
 enum rndis_state rndis_get_state(int configNr)
 {
+	my_dbg(" [1022]  shl_add\n");
 	if (configNr >= RNDIS_MAX_CONFIGS || configNr < 0)
 		return -ENOTSUPP;
 	return rndis_per_dev_params[configNr].state;
@@ -1030,6 +1043,7 @@ enum rndis_state rndis_get_state(int configNr)
  */
 int rndis_msg_parser(u8 configNr, u8 *buf)
 {
+	my_dbg(" [1032]  shl_add\n");
 	u32				MsgType, MsgLength;
 	__le32				*tmp;
 	struct rndis_params		*params;
@@ -1127,6 +1141,7 @@ int rndis_register(int (*rndis_control_ack)(struct eth_device *))
 int rndis_register(int (*rndis_control_ack)(struct udevice *))
 #endif
 {
+	my_dbg(" [1129]  shl_add\n");
 	u8 i;
 
 	for (i = 0; i < RNDIS_MAX_CONFIGS; i++) {
@@ -1144,6 +1159,7 @@ int rndis_register(int (*rndis_control_ack)(struct udevice *))
 
 void rndis_deregister(int configNr)
 {
+	my_dbg(" [1146]  shl_add\n");
 	debug("%s: configNr = %d\n", __func__, configNr);
 
 	if (configNr >= RNDIS_MAX_CONFIGS)
@@ -1161,6 +1177,7 @@ int  rndis_set_param_dev(u8 configNr, struct udevice *dev, int mtu,
 			 struct net_device_stats *stats, u16 *cdc_filter)
 #endif
 {
+	my_dbg(" [1163]  shl_add\n");
 	debug("%s: configNr = %d\n", __func__, configNr);
 	if (!dev || !stats)
 		return -1;
@@ -1177,6 +1194,7 @@ int  rndis_set_param_dev(u8 configNr, struct udevice *dev, int mtu,
 
 int rndis_set_param_vendor(u8 configNr, u32 vendorID, const char *vendorDescr)
 {
+	my_dbg(" [1179]  shl_add\n");
 	debug("%s: configNr = %d\n", __func__, configNr);
 	if (!vendorDescr)
 		return -1;
@@ -1191,6 +1209,7 @@ int rndis_set_param_vendor(u8 configNr, u32 vendorID, const char *vendorDescr)
 
 int rndis_set_param_medium(u8 configNr, u32 medium, u32 speed)
 {
+	my_dbg(" [1193]  shl_add\n");
 	debug("%s: configNr = %d, %u %u\n", __func__, configNr, medium, speed);
 	if (configNr >= RNDIS_MAX_CONFIGS)
 		return -1;
@@ -1203,6 +1222,7 @@ int rndis_set_param_medium(u8 configNr, u32 medium, u32 speed)
 
 void rndis_add_hdr(void *buf, int length)
 {
+	my_dbg(" [1205]  shl_add\n");
 	struct rndis_packet_msg_type	*header;
 
 	header = buf;
@@ -1215,6 +1235,7 @@ void rndis_add_hdr(void *buf, int length)
 
 void rndis_free_response(int configNr, u8 *buf)
 {
+	my_dbg(" [1217]  shl_add\n");
 	rndis_resp_t		*r;
 	struct list_head	*act, *tmp;
 
@@ -1231,6 +1252,7 @@ void rndis_free_response(int configNr, u8 *buf)
 
 u8 *rndis_get_next_response(int configNr, u32 *length)
 {
+	my_dbg(" [1233]  shl_add\n");
 	rndis_resp_t		*r;
 	struct list_head	*act, *tmp;
 
@@ -1253,6 +1275,7 @@ u8 *rndis_get_next_response(int configNr, u32 *length)
 
 static rndis_resp_t *rndis_add_response(int configNr, u32 length)
 {
+	my_dbg(" [1255]  shl_add\n");
 	rndis_resp_t	*r;
 
 	/* NOTE:  this gets copied into ether.c USB_BUFSIZ bytes ... */
@@ -1271,6 +1294,7 @@ static rndis_resp_t *rndis_add_response(int configNr, u32 length)
 
 int rndis_rm_hdr(void *buf, int length)
 {
+	my_dbg(" [1273]  shl_add\n");
 	/* tmp points to a struct rndis_packet_msg_type */
 	__le32		*tmp = buf;
 	int		offs, len;
@@ -1300,6 +1324,7 @@ int rndis_rm_hdr(void *buf, int length)
 
 int rndis_init(void)
 {
+	my_dbg(" [1302]  shl_add\n");
 	u8 i;
 
 	for (i = 0; i < RNDIS_MAX_CONFIGS; i++) {
@@ -1316,5 +1341,7 @@ int rndis_init(void)
 
 void rndis_exit(void)
 {
+	my_dbg(" [1318]  shl_add\n");
 	/* Nothing to do */
 }
+

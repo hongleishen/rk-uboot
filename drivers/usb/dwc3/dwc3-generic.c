@@ -50,6 +50,7 @@ struct dwc3_generic_host_priv {
 static int dwc3_generic_probe(struct udevice *dev,
 			      struct dwc3_generic_priv *priv)
 {
+	my_dbg(" [52]  shl_add\n");
 	int rc;
 	struct dwc3_generic_plat *plat = dev_get_platdata(dev);
 	struct dwc3 *dwc3 = &priv->dwc3;
@@ -94,6 +95,7 @@ static int dwc3_generic_probe(struct udevice *dev,
 static int dwc3_generic_remove(struct udevice *dev,
 			       struct dwc3_generic_priv *priv)
 {
+	my_dbg(" [96]  shl_add\n");
 	struct dwc3 *dwc3 = &priv->dwc3;
 
 	dwc3_remove(dwc3);
@@ -105,6 +107,7 @@ static int dwc3_generic_remove(struct udevice *dev,
 
 static int dwc3_generic_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [107]  shl_add\n");
 	struct dwc3_generic_plat *plat = dev_get_platdata(dev);
 	ofnode node = dev->node;
 
@@ -132,6 +135,7 @@ static int dwc3_generic_ofdata_to_platdata(struct udevice *dev)
 #if CONFIG_IS_ENABLED(DM_USB_GADGET)
 int dm_usb_gadget_handle_interrupts(struct udevice *dev)
 {
+	my_dbg(" [134]  shl_add\n");
 	struct dwc3_generic_priv *priv = dev_get_priv(dev);
 	struct dwc3 *dwc3 = &priv->dwc3;
 
@@ -142,6 +146,7 @@ int dm_usb_gadget_handle_interrupts(struct udevice *dev)
 
 static int dwc3_generic_peripheral_probe(struct udevice *dev)
 {
+	my_dbg(" [144]  shl_add\n");
 	struct dwc3_generic_priv *priv = dev_get_priv(dev);
 
 	return dwc3_generic_probe(dev, priv);
@@ -149,6 +154,7 @@ static int dwc3_generic_peripheral_probe(struct udevice *dev)
 
 static int dwc3_generic_peripheral_remove(struct udevice *dev)
 {
+	my_dbg(" [151]  shl_add\n");
 	struct dwc3_generic_priv *priv = dev_get_priv(dev);
 
 	return dwc3_generic_remove(dev, priv);
@@ -168,6 +174,7 @@ U_BOOT_DRIVER(dwc3_generic_peripheral) = {
 #if defined(CONFIG_SPL_USB_HOST_SUPPORT) || !defined(CONFIG_SPL_BUILD)
 static int dwc3_generic_host_probe(struct udevice *dev)
 {
+	my_dbg(" [170]  shl_add\n");
 	struct xhci_hcor *hcor;
 	struct xhci_hccr *hccr;
 	struct dwc3_generic_host_priv *priv = dev_get_priv(dev);
@@ -186,6 +193,7 @@ static int dwc3_generic_host_probe(struct udevice *dev)
 
 static int dwc3_generic_host_remove(struct udevice *dev)
 {
+	my_dbg(" [188]  shl_add\n");
 	struct dwc3_generic_host_priv *priv = dev_get_priv(dev);
 	int rc;
 
@@ -217,6 +225,7 @@ struct dwc3_glue_ops {
 void dwc3_ti_select_dr_mode(struct udevice *dev, int index,
 			    enum usb_dr_mode mode)
 {
+	my_dbg(" [219]  shl_add\n");
 #define USBOTGSS_UTMI_OTG_STATUS		0x0084
 #define USBOTGSS_UTMI_OTG_OFFSET		0x0480
 
@@ -300,6 +309,7 @@ struct dwc3_glue_ops ti_ops = {
 
 static int dwc3_glue_bind(struct udevice *parent)
 {
+	my_dbg(" [302]  shl_add\n");
 	ofnode node;
 	int ret;
 
@@ -355,6 +365,7 @@ static int dwc3_glue_bind(struct udevice *parent)
 static int dwc3_glue_reset_init(struct udevice *dev,
 				struct dwc3_glue_data *glue)
 {
+	my_dbg(" [357]  shl_add\n");
 	int ret;
 
 	ret = reset_get_bulk(dev, &glue->resets);
@@ -375,6 +386,7 @@ static int dwc3_glue_reset_init(struct udevice *dev,
 static int dwc3_glue_clk_init(struct udevice *dev,
 			      struct dwc3_glue_data *glue)
 {
+	my_dbg(" [377]  shl_add\n");
 	int ret;
 
 	ret = clk_get_bulk(dev, &glue->clks);
@@ -396,6 +408,7 @@ static int dwc3_glue_clk_init(struct udevice *dev,
 
 static int dwc3_glue_probe(struct udevice *dev)
 {
+	my_dbg(" [398]  shl_add\n");
 	struct dwc3_glue_ops *ops = (struct dwc3_glue_ops *)dev_get_driver_data(dev);
 	struct dwc3_glue_data *glue = dev_get_platdata(dev);
 	struct udevice *child = NULL;
@@ -437,6 +450,7 @@ static int dwc3_glue_probe(struct udevice *dev)
 
 static int dwc3_glue_remove(struct udevice *dev)
 {
+	my_dbg(" [439]  shl_add\n");
 	struct dwc3_glue_data *glue = dev_get_platdata(dev);
 
 	reset_release_bulk(&glue->resets);
@@ -466,3 +480,4 @@ U_BOOT_DRIVER(dwc3_generic_wrapper) = {
 	.platdata_auto_alloc_size = sizeof(struct dwc3_glue_data),
 
 };
+

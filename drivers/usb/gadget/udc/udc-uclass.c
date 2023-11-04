@@ -14,6 +14,7 @@
 static struct udevice *dev_array[MAX_UDC_DEVICES];
 int usb_gadget_initialize(int index)
 {
+	my_dbg(" [16]  shl_add\n");
 	int ret;
 	struct udevice *dev = NULL;
 
@@ -35,6 +36,7 @@ int usb_gadget_initialize(int index)
 
 int usb_gadget_release(int index)
 {
+	my_dbg(" [37]  shl_add\n");
 #if CONFIG_IS_ENABLED(DM_DEVICE_REMOVE)
 	int ret;
 	if (index < 0 || index >= ARRAY_SIZE(dev_array))
@@ -51,6 +53,7 @@ int usb_gadget_release(int index)
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [53]  shl_add\n");
 	if (index < 0 || index >= ARRAY_SIZE(dev_array))
 		return -EINVAL;
 	return dm_usb_gadget_handle_interrupts(dev_array[index]);
@@ -62,3 +65,4 @@ UCLASS_DRIVER(usb_gadget_generic) = {
 	.name		= "usb",
 	.flags		= DM_UC_FLAG_SEQ_ALIAS,
 };
+

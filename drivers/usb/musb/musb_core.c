@@ -19,6 +19,7 @@ struct musb_regs *musbr;
  */
 void musb_start(void)
 {
+	my_dbg(" [21]  shl_add\n");
 #if defined(CONFIG_USB_MUSB_HCD)
 	u8 devctl;
 	u8 busctl;
@@ -65,6 +66,7 @@ void musb_start(void)
  */
 void musb_configure_ep(const struct musb_epinfo *epinfo, u8 cnt)
 {
+	my_dbg(" [67]  shl_add\n");
 	u16 csr;
 	u16 fifoaddr = 64; /* First 64 bytes of FIFO reserved for EP0 */
 	u32 fifosize;
@@ -118,6 +120,7 @@ void musb_configure_ep(const struct musb_epinfo *epinfo, u8 cnt)
 __attribute__((weak))
 void write_fifo(u8 ep, u32 length, void *fifo_data)
 {
+	my_dbg(" [120]  shl_add\n");
 	u8  *data = (u8 *)fifo_data;
 
 	/* select the endpoint index */
@@ -143,6 +146,7 @@ void write_fifo(u8 ep, u32 length, void *fifo_data)
 __attribute__((weak))
 void read_fifo(u8 ep, u32 length, void *fifo_data)
 {
+	my_dbg(" [145]  shl_add\n");
 	u8  *data = (u8 *)fifo_data;
 
 	/* select the endpoint index */
@@ -153,3 +157,4 @@ void read_fifo(u8 ep, u32 length, void *fifo_data)
 		*data++ = readb(&musbr->fifox[ep]);
 }
 #endif /* CONFIG_USB_AM35X */
+

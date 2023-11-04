@@ -18,6 +18,7 @@
 
 static int utmi_phy_init(void)
 {
+	my_dbg(" [20]  shl_add\n");
 	struct armd1usb_phy_reg *phy_regs =
 		(struct armd1usb_phy_reg *)UTMI_PHY_BASE;
 	int timeout;
@@ -62,6 +63,7 @@ static int utmi_phy_init(void)
  */
 int utmi_init(void)
 {
+	my_dbg(" [64]  shl_add\n");
 	struct armd1mpmu_registers *mpmu_regs =
 		(struct armd1mpmu_registers *)ARMD1_MPMU_BASE;
 
@@ -78,3 +80,4 @@ int utmi_init(void)
 	/* Initialize UTMI transceiver */
 	return utmi_phy_init();
 }
+

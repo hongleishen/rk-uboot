@@ -39,6 +39,7 @@
 
 void otg_phy_init(struct dwc2_udc *dev)
 {
+	my_dbg(" [41]  shl_add\n");
 	unsigned int usb_phy_ctrl = dev->pdata->usb_phy_ctrl;
 	struct dwc2_usbotg_phy *phy =
 		(struct dwc2_usbotg_phy *)dev->pdata->regs_phy;
@@ -77,6 +78,7 @@ void otg_phy_init(struct dwc2_udc *dev)
 
 void otg_phy_off(struct dwc2_udc *dev)
 {
+	my_dbg(" [79]  shl_add\n");
 	unsigned int usb_phy_ctrl = dev->pdata->usb_phy_ctrl;
 	struct dwc2_usbotg_phy *phy =
 		(struct dwc2_usbotg_phy *)dev->pdata->regs_phy;
@@ -99,3 +101,4 @@ void otg_phy_off(struct dwc2_udc *dev)
 
 	dev->pdata->phy_control(0);
 }
+

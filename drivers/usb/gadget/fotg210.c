@@ -66,16 +66,19 @@ static struct usb_endpoint_descriptor ep0_desc = {
 
 static inline int fifo_to_ep(struct fotg210_chip *chip, int id, int in)
 {
+	my_dbg(" [68]  shl_add\n");
 	return (id < 0) ? 0 : ((id & 0x03) + 1);
 }
 
 static inline int ep_to_fifo(struct fotg210_chip *chip, int id)
 {
+	my_dbg(" [73]  shl_add\n");
 	return (id <= 0) ? -1 : ((id - 1) & 0x03);
 }
 
 static inline int ep_reset(struct fotg210_chip *chip, uint8_t ep_addr)
 {
+	my_dbg(" [78]  shl_add\n");
 	int ep = ep_addr & USB_ENDPOINT_NUMBER_MASK;
 	struct fotg210_regs *regs = chip->regs;
 
@@ -100,6 +103,7 @@ static inline int ep_reset(struct fotg210_chip *chip, uint8_t ep_addr)
 
 static int fotg210_reset(struct fotg210_chip *chip)
 {
+	my_dbg(" [102]  shl_add\n");
 	struct fotg210_regs *regs = chip->regs;
 	uint32_t i;
 
@@ -189,6 +193,7 @@ static int fotg210_reset(struct fotg210_chip *chip)
 
 static inline int fotg210_cxwait(struct fotg210_chip *chip, uint32_t mask)
 {
+	my_dbg(" [191]  shl_add\n");
 	struct fotg210_regs *regs = chip->regs;
 	int ret = -1;
 	ulong ts;
@@ -208,6 +213,7 @@ static inline int fotg210_cxwait(struct fotg210_chip *chip, uint32_t mask)
 
 static int fotg210_dma(struct fotg210_ep *ep, struct fotg210_request *req)
 {
+	my_dbg(" [210]  shl_add\n");
 	struct fotg210_chip *chip = ep->chip;
 	struct fotg210_regs *regs = chip->regs;
 	uint32_t tmp, ts;
@@ -318,6 +324,7 @@ static int fotg210_dma(struct fotg210_ep *ep, struct fotg210_request *req)
 
 static void fotg210_setup(struct fotg210_chip *chip)
 {
+	my_dbg(" [320]  shl_add\n");
 	int id, ret = CX_IDLE;
 	uint32_t tmp[2];
 	struct usb_ctrlrequest *req = (struct usb_ctrlrequest *)tmp;
@@ -466,6 +473,7 @@ static void fotg210_setup(struct fotg210_chip *chip)
  */
 static void fotg210_recv(struct fotg210_chip *chip, int ep_id)
 {
+	my_dbg(" [468]  shl_add\n");
 	struct fotg210_regs *regs = chip->regs;
 	struct fotg210_ep *ep = chip->ep + ep_id;
 	struct fotg210_request *req;
@@ -501,6 +509,7 @@ static void fotg210_recv(struct fotg210_chip *chip, int ep_id)
 static int fotg210_ep_enable(
 	struct usb_ep *_ep, const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [503]  shl_add\n");
 	struct fotg210_ep *ep = container_of(_ep, struct fotg210_ep, ep);
 	struct fotg210_chip *chip = ep->chip;
 	struct fotg210_regs *regs = chip->regs;
@@ -545,6 +554,7 @@ static int fotg210_ep_enable(
 
 static int fotg210_ep_disable(struct usb_ep *_ep)
 {
+	my_dbg(" [547]  shl_add\n");
 	struct fotg210_ep *ep = container_of(_ep, struct fotg210_ep, ep);
 	struct fotg210_chip *chip = ep->chip;
 	struct fotg210_regs *regs = chip->regs;
@@ -562,6 +572,7 @@ static int fotg210_ep_disable(struct usb_ep *_ep)
 static struct usb_request *fotg210_ep_alloc_request(
 	struct usb_ep *_ep, gfp_t gfp_flags)
 {
+	my_dbg(" [564]  shl_add\n");
 	struct fotg210_request *req = malloc(sizeof(*req));
 
 	if (req) {
@@ -574,6 +585,7 @@ static struct usb_request *fotg210_ep_alloc_request(
 static void fotg210_ep_free_request(
 	struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [576]  shl_add\n");
 	struct fotg210_request *req;
 
 	req = container_of(_req, struct fotg210_request, req);
@@ -583,6 +595,7 @@ static void fotg210_ep_free_request(
 static int fotg210_ep_queue(
 	struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 {
+	my_dbg(" [585]  shl_add\n");
 	struct fotg210_ep *ep = container_of(_ep, struct fotg210_ep, ep);
 	struct fotg210_chip *chip = ep->chip;
 	struct fotg210_regs *regs = chip->regs;
@@ -642,6 +655,7 @@ static int fotg210_ep_queue(
 
 static int fotg210_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [644]  shl_add\n");
 	struct fotg210_ep *ep = container_of(_ep, struct fotg210_ep, ep);
 	struct fotg210_request *req;
 
@@ -668,6 +682,7 @@ static int fotg210_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 
 static int fotg210_ep_halt(struct usb_ep *_ep, int halt)
 {
+	my_dbg(" [670]  shl_add\n");
 	struct fotg210_ep *ep = container_of(_ep, struct fotg210_ep, ep);
 	struct fotg210_chip *chip = ep->chip;
 	struct fotg210_regs *regs = chip->regs;
@@ -708,6 +723,7 @@ static int fotg210_ep_halt(struct usb_ep *_ep, int halt)
  */
 static void pullup(struct fotg210_chip *chip, int is_on)
 {
+	my_dbg(" [710]  shl_add\n");
 	struct fotg210_regs *regs = chip->regs;
 
 	if (is_on) {
@@ -733,6 +749,7 @@ static void pullup(struct fotg210_chip *chip, int is_on)
 
 static int fotg210_pullup(struct usb_gadget *_gadget, int is_on)
 {
+	my_dbg(" [735]  shl_add\n");
 	struct fotg210_chip *chip;
 
 	chip = container_of(_gadget, struct fotg210_chip, gadget);
@@ -746,6 +763,7 @@ static int fotg210_pullup(struct usb_gadget *_gadget, int is_on)
 
 static int fotg210_get_frame(struct usb_gadget *_gadget)
 {
+	my_dbg(" [748]  shl_add\n");
 	struct fotg210_chip *chip;
 	struct fotg210_regs *regs;
 
@@ -834,6 +852,7 @@ static struct fotg210_chip controller = {
 
 int usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [836]  shl_add\n");
 	struct fotg210_chip *chip = &controller;
 	struct fotg210_regs *regs = chip->regs;
 	uint32_t id, st, isr, gisr;
@@ -911,6 +930,7 @@ int usb_gadget_handle_interrupts(int index)
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [913]  shl_add\n");
 	int i, ret = 0;
 	struct fotg210_chip *chip = &controller;
 
@@ -951,6 +971,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [953]  shl_add\n");
 	struct fotg210_chip *chip = &controller;
 
 	driver->unbind(&chip->gadget);
@@ -960,3 +981,4 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 
 	return 0;
 }
+

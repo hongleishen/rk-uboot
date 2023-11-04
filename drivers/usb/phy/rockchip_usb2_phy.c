@@ -60,6 +60,7 @@ static struct rockchip_usb2_phy_dt_id rockchip_usb2_phy_dt_ids[] = {
 static void property_enable(struct dwc2_plat_otg_data *pdata,
 				  const struct usb2phy_reg *reg, bool en)
 {
+	my_dbg(" [62]  shl_add\n");
 	unsigned int val, mask, tmp;
 
 	tmp = en ? reg->enable : reg->disable;
@@ -71,6 +72,7 @@ static void property_enable(struct dwc2_plat_otg_data *pdata,
 
 int rockchip_u2phy_vbus_detect(void)
 {
+	my_dbg(" [73]  shl_add\n");
 	u32 val = 0;
 
 #ifdef CONFIG_ROCKCHIP_RK3288
@@ -85,6 +87,7 @@ int rockchip_u2phy_vbus_detect(void)
 
 static int otg_phy_parse(struct dwc2_udc *dev)
 {
+	my_dbg(" [87]  shl_add\n");
 	int node, phy_node;
 	u32 grf_base, grf_offset;
 	const void *blob = gd->fdt_blob;
@@ -158,6 +161,7 @@ retry:
 
 void otg_phy_init(struct dwc2_udc *dev)
 {
+	my_dbg(" [160]  shl_add\n");
 	struct dwc2_plat_otg_data *pdata = dev->pdata;
 	struct rockchip_usb2_phy_cfg *phy_cfg = NULL;
 	struct rockchip_usb2_phy_dt_id *of_id;
@@ -199,6 +203,7 @@ void otg_phy_init(struct dwc2_udc *dev)
 
 void otg_phy_off(struct dwc2_udc *dev)
 {
+	my_dbg(" [201]  shl_add\n");
 	struct dwc2_plat_otg_data *pdata = dev->pdata;
 	struct rockchip_usb2_phy_cfg *phy_cfg = pdata->priv;
 
@@ -212,3 +217,4 @@ void otg_phy_off(struct dwc2_udc *dev)
 	/* enter suspend */
 	property_enable(pdata, &phy_cfg->suspend, true);
 }
+

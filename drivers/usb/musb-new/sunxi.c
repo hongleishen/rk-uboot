@@ -85,6 +85,7 @@ struct sunxi_glue {
 
 static u32 USBC_WakeUp_ClearChangeDetect(u32 reg_val)
 {
+	my_dbg(" [87]  shl_add\n");
 	u32 temp = reg_val;
 
 	temp &= ~(1 << USBC_BP_ISCR_VBUS_CHANGE_DETECT);
@@ -96,6 +97,7 @@ static u32 USBC_WakeUp_ClearChangeDetect(u32 reg_val)
 
 static void USBC_EnableIdPullUp(__iomem void *base)
 {
+	my_dbg(" [98]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -106,6 +108,7 @@ static void USBC_EnableIdPullUp(__iomem void *base)
 
 static void USBC_EnableDpDmPullUp(__iomem void *base)
 {
+	my_dbg(" [108]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -116,6 +119,7 @@ static void USBC_EnableDpDmPullUp(__iomem void *base)
 
 static void USBC_ForceIdToLow(__iomem void *base)
 {
+	my_dbg(" [118]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -127,6 +131,7 @@ static void USBC_ForceIdToLow(__iomem void *base)
 
 static void USBC_ForceIdToHigh(__iomem void *base)
 {
+	my_dbg(" [129]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -138,6 +143,7 @@ static void USBC_ForceIdToHigh(__iomem void *base)
 
 static void USBC_ForceVbusValidToLow(__iomem void *base)
 {
+	my_dbg(" [140]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -149,6 +155,7 @@ static void USBC_ForceVbusValidToLow(__iomem void *base)
 
 static void USBC_ForceVbusValidToHigh(__iomem void *base)
 {
+	my_dbg(" [151]  shl_add\n");
 	u32 reg_val;
 
 	reg_val = musb_readl(base, USBC_REG_o_ISCR);
@@ -160,6 +167,7 @@ static void USBC_ForceVbusValidToHigh(__iomem void *base)
 
 static void USBC_ConfigFIFO_Base(void)
 {
+	my_dbg(" [162]  shl_add\n");
 	u32 reg_value;
 
 	/* config usb fifo, 8kb mode */
@@ -177,6 +185,7 @@ static u8 last_int_usb;
 
 bool dfu_usb_get_reset(void)
 {
+	my_dbg(" [179]  shl_add\n");
 	return !!(last_int_usb & MUSB_INTR_RESET);
 }
 
@@ -186,6 +195,7 @@ bool dfu_usb_get_reset(void)
 
 static irqreturn_t sunxi_musb_interrupt(int irq, void *__hci)
 {
+	my_dbg(" [188]  shl_add\n");
 	struct musb		*musb = __hci;
 	irqreturn_t		retval = IRQ_NONE;
 
@@ -212,6 +222,7 @@ static bool enabled = false;
 
 static int sunxi_musb_enable(struct musb *musb)
 {
+	my_dbg(" [214]  shl_add\n");
 	int ret;
 
 	pr_debug("%s():\n", __func__);
@@ -247,6 +258,7 @@ static int sunxi_musb_enable(struct musb *musb)
 
 static void sunxi_musb_disable(struct musb *musb)
 {
+	my_dbg(" [249]  shl_add\n");
 	pr_debug("%s():\n", __func__);
 
 	if (!enabled)
@@ -263,6 +275,7 @@ static void sunxi_musb_disable(struct musb *musb)
 
 static int sunxi_musb_init(struct musb *musb)
 {
+	my_dbg(" [265]  shl_add\n");
 	struct sunxi_glue *glue = to_sunxi_glue(musb->controller);
 
 	pr_debug("%s():\n", __func__);
@@ -317,6 +330,7 @@ static struct musb_hdrc_platform_data musb_plat = {
 
 static int musb_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [319]  shl_add\n");
 	struct sunxi_glue *glue = dev_get_priv(dev);
 	struct musb_host_data *host = &glue->mdata;
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
@@ -351,6 +365,7 @@ static int musb_usb_probe(struct udevice *dev)
 
 static int musb_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [353]  shl_add\n");
 	struct sunxi_glue *glue = dev_get_priv(dev);
 	struct musb_host_data *host = &glue->mdata;
 
@@ -392,3 +407,4 @@ U_BOOT_DRIVER(usb_musb) = {
 	.platdata_auto_alloc_size = sizeof(struct usb_platdata),
 	.priv_auto_alloc_size = sizeof(struct sunxi_glue),
 };
+

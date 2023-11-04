@@ -39,6 +39,7 @@
 
 static char *decode_ep0stage(u8 stage)
 {
+	my_dbg(" [41]  shl_add\n");
 	switch (stage) {
 	case MUSB_EP0_STAGE_IDLE:	return "idle";
 	case MUSB_EP0_STAGE_SETUP:	return "setup";
@@ -58,6 +59,7 @@ static int service_tx_status_request(
 	struct musb *musb,
 	const struct usb_ctrlrequest *ctrlrequest)
 {
+	my_dbg(" [60]  shl_add\n");
 	void __iomem	*mbase = musb->mregs;
 	int handled = 1;
 	u8 result[2], epnum = 0;
@@ -153,6 +155,7 @@ static int service_tx_status_request(
 static int
 service_in_request(struct musb *musb, const struct usb_ctrlrequest *ctrlrequest)
 {
+	my_dbg(" [155]  shl_add\n");
 	int handled = 0;	/* not handled */
 
 	if ((ctrlrequest->bRequestType & USB_TYPE_MASK)
@@ -177,6 +180,7 @@ service_in_request(struct musb *musb, const struct usb_ctrlrequest *ctrlrequest)
  */
 static void musb_g_ep0_giveback(struct musb *musb, struct usb_request *req)
 {
+	my_dbg(" [179]  shl_add\n");
 	musb_g_giveback(&musb->endpoints[0].ep_in, req, 0);
 }
 
@@ -185,6 +189,7 @@ static void musb_g_ep0_giveback(struct musb *musb, struct usb_request *req)
  */
 static inline void musb_try_b_hnp_enable(struct musb *musb)
 {
+	my_dbg(" [187]  shl_add\n");
 	void __iomem	*mbase = musb->mregs;
 	u8		devctl;
 
@@ -209,6 +214,7 @@ service_zero_data_request(struct musb *musb,
 __releases(musb->lock)
 __acquires(musb->lock)
 {
+	my_dbg(" [211]  shl_add\n");
 	int handled = -EINVAL;
 	void __iomem *mbase = musb->mregs;
 	const u8 recip = ctrlrequest->bRequestType & USB_RECIP_MASK;
@@ -466,6 +472,7 @@ stall:
  */
 static void ep0_rxstate(struct musb *musb)
 {
+	my_dbg(" [468]  shl_add\n");
 	void __iomem		*regs = musb->control_ep->regs;
 	struct musb_request	*request;
 	struct usb_request	*req;
@@ -521,6 +528,7 @@ static void ep0_rxstate(struct musb *musb)
  */
 static void ep0_txstate(struct musb *musb)
 {
+	my_dbg(" [523]  shl_add\n");
 	void __iomem		*regs = musb->control_ep->regs;
 	struct musb_request	*req = next_ep0_request(musb);
 	struct usb_request	*request;
@@ -579,6 +587,7 @@ static void ep0_txstate(struct musb *musb)
 static void
 musb_read_setup(struct musb *musb, struct usb_ctrlrequest *req)
 {
+	my_dbg(" [581]  shl_add\n");
 	struct musb_request	*r;
 	void __iomem		*regs = musb->control_ep->regs;
 
@@ -629,6 +638,7 @@ forward_to_driver(struct musb *musb, const struct usb_ctrlrequest *ctrlrequest)
 __releases(musb->lock)
 __acquires(musb->lock)
 {
+	my_dbg(" [631]  shl_add\n");
 	int retval;
 	if (!musb->gadget_driver)
 		return -EOPNOTSUPP;
@@ -645,6 +655,7 @@ __acquires(musb->lock)
  */
 irqreturn_t musb_g_ep0_irq(struct musb *musb)
 {
+	my_dbg(" [647]  shl_add\n");
 	u16		csr;
 	u16		len;
 	void __iomem	*mbase = musb->mregs;
@@ -896,12 +907,14 @@ finish:
 static int
 musb_g_ep0_enable(struct usb_ep *ep, const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [898]  shl_add\n");
 	/* always enabled */
 	return -EINVAL;
 }
 
 static int musb_g_ep0_disable(struct usb_ep *e)
 {
+	my_dbg(" [904]  shl_add\n");
 	/* always enabled */
 	return -EINVAL;
 }
@@ -909,6 +922,7 @@ static int musb_g_ep0_disable(struct usb_ep *e)
 static int
 musb_g_ep0_queue(struct usb_ep *e, struct usb_request *r, gfp_t gfp_flags)
 {
+	my_dbg(" [911]  shl_add\n");
 	struct musb_ep		*ep;
 	struct musb_request	*req;
 	struct musb		*musb;
@@ -990,12 +1004,14 @@ cleanup:
 
 static int musb_g_ep0_dequeue(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [992]  shl_add\n");
 	/* we just won't support this */
 	return -EINVAL;
 }
 
 static int musb_g_ep0_halt(struct usb_ep *e, int value)
 {
+	my_dbg(" [998]  shl_add\n");
 	struct musb_ep		*ep;
 	struct musb		*musb;
 	void __iomem		*base, *regs;
@@ -1063,3 +1079,4 @@ const struct usb_ep_ops musb_g_ep0_ops = {
 	.dequeue	= musb_g_ep0_dequeue,
 	.set_halt	= musb_g_ep0_halt,
 };
+

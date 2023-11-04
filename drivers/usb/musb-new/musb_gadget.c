@@ -81,6 +81,7 @@
 static inline void map_dma_buffer(struct musb_request *request,
 			struct musb *musb, struct musb_ep *musb_ep)
 {
+	my_dbg(" [83]  shl_add\n");
 	int compatible = true;
 	struct dma_controller *dma = musb->dma_controller;
 
@@ -124,6 +125,7 @@ static inline void map_dma_buffer(struct musb_request *request,
 static inline void unmap_dma_buffer(struct musb_request *request,
 				struct musb *musb)
 {
+	my_dbg(" [126]  shl_add\n");
 	if (!is_buffer_mapped(request))
 		return;
 
@@ -154,11 +156,13 @@ static inline void unmap_dma_buffer(struct musb_request *request,
 static inline void map_dma_buffer(struct musb_request *request,
 			struct musb *musb, struct musb_ep *musb_ep)
 {
+	my_dbg(" [156]  shl_add\n");
 }
 
 static inline void unmap_dma_buffer(struct musb_request *request,
 				struct musb *musb)
 {
+	my_dbg(" [161]  shl_add\n");
 }
 #endif
 
@@ -176,6 +180,7 @@ void musb_g_giveback(
 __releases(ep->musb->lock)
 __acquires(ep->musb->lock)
 {
+	my_dbg(" [178]  shl_add\n");
 	struct musb_request	*req;
 	struct musb		*musb;
 	int			busy = ep->busy;
@@ -212,6 +217,7 @@ __acquires(ep->musb->lock)
  */
 static void nuke(struct musb_ep *ep, const int status)
 {
+	my_dbg(" [214]  shl_add\n");
 	struct musb		*musb = ep->musb;
 	struct musb_request	*req = NULL;
 	void __iomem *epio = ep->musb->endpoints[ep->current_epnum].regs;
@@ -263,6 +269,7 @@ static void nuke(struct musb_ep *ep, const int status)
 
 static inline int max_ep_writesize(struct musb *musb, struct musb_ep *ep)
 {
+	my_dbg(" [265]  shl_add\n");
 	if (can_bulk_split(musb, ep->type))
 		return ep->hw_ep->max_packet_sz_tx;
 	else
@@ -313,6 +320,7 @@ static inline int max_ep_writesize(struct musb *musb, struct musb_ep *ep)
  */
 static void txstate(struct musb *musb, struct musb_request *req)
 {
+	my_dbg(" [315]  shl_add\n");
 	u8			epnum = req->epnum;
 	struct musb_ep		*musb_ep;
 	void __iomem		*epio = musb->endpoints[epnum].regs;
@@ -485,6 +493,7 @@ static void txstate(struct musb *musb, struct musb_request *req)
  */
 void musb_g_tx(struct musb *musb, u8 epnum)
 {
+	my_dbg(" [487]  shl_add\n");
 	u16			csr;
 	struct musb_request	*req;
 	struct usb_request	*request;
@@ -634,6 +643,7 @@ void musb_g_tx(struct musb *musb, u8 epnum)
  */
 static void rxstate(struct musb *musb, struct musb_request *req)
 {
+	my_dbg(" [636]  shl_add\n");
 	const u8		epnum = req->epnum;
 	struct usb_request	*request = &req->request;
 	struct musb_ep		*musb_ep;
@@ -904,6 +914,7 @@ static void rxstate(struct musb *musb, struct musb_request *req)
  */
 void musb_g_rx(struct musb *musb, u8 epnum)
 {
+	my_dbg(" [906]  shl_add\n");
 	u16			csr;
 	struct musb_request	*req;
 	struct usb_request	*request;
@@ -1027,6 +1038,7 @@ exit:
 static int musb_gadget_enable(struct usb_ep *ep,
 			const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [1029]  shl_add\n");
 	unsigned long		flags;
 	struct musb_ep		*musb_ep;
 	struct musb_hw_ep	*hw_ep;
@@ -1211,6 +1223,7 @@ fail:
  */
 static int musb_gadget_disable(struct usb_ep *ep)
 {
+	my_dbg(" [1213]  shl_add\n");
 	unsigned long	flags;
 	struct musb	*musb;
 	u8		epnum;
@@ -1262,6 +1275,7 @@ static int musb_gadget_disable(struct usb_ep *ep)
  */
 struct usb_request *musb_alloc_request(struct usb_ep *ep, gfp_t gfp_flags)
 {
+	my_dbg(" [1264]  shl_add\n");
 	struct musb_ep		*musb_ep = to_musb_ep(ep);
 	struct musb		*musb = musb_ep->musb;
 	struct musb_request	*request = NULL;
@@ -1285,6 +1299,7 @@ struct usb_request *musb_alloc_request(struct usb_ep *ep, gfp_t gfp_flags)
  */
 void musb_free_request(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1287]  shl_add\n");
 	kfree(to_musb_request(req));
 }
 
@@ -1302,6 +1317,7 @@ struct free_record {
  */
 void musb_ep_restart(struct musb *musb, struct musb_request *req)
 {
+	my_dbg(" [1304]  shl_add\n");
 	dev_dbg(musb->controller, "<== %s request %p len %u on hw_ep%d\n",
 		req->tx ? "TX/IN" : "RX/OUT",
 		&req->request, req->request.length, req->epnum);
@@ -1316,6 +1332,7 @@ void musb_ep_restart(struct musb *musb, struct musb_request *req)
 static int musb_gadget_queue(struct usb_ep *ep, struct usb_request *req,
 			gfp_t gfp_flags)
 {
+	my_dbg(" [1318]  shl_add\n");
 	struct musb_ep		*musb_ep;
 	struct musb_request	*request;
 	struct musb		*musb;
@@ -1370,6 +1387,7 @@ cleanup:
 
 static int musb_gadget_dequeue(struct usb_ep *ep, struct usb_request *request)
 {
+	my_dbg(" [1372]  shl_add\n");
 	struct musb_ep		*musb_ep = to_musb_ep(ep);
 	struct musb_request	*req = to_musb_request(request);
 	struct musb_request	*r;
@@ -1427,6 +1445,7 @@ done:
  */
 static int musb_gadget_set_halt(struct usb_ep *ep, int value)
 {
+	my_dbg(" [1429]  shl_add\n");
 	struct musb_ep		*musb_ep = to_musb_ep(ep);
 	u8			epnum = musb_ep->current_epnum;
 	struct musb		*musb = musb_ep->musb;
@@ -1513,6 +1532,7 @@ done:
  */
 static int musb_gadget_set_wedge(struct usb_ep *ep)
 {
+	my_dbg(" [1515]  shl_add\n");
 	struct musb_ep		*musb_ep = to_musb_ep(ep);
 
 	if (!ep)
@@ -1526,6 +1546,7 @@ static int musb_gadget_set_wedge(struct usb_ep *ep)
 
 static int musb_gadget_fifo_status(struct usb_ep *ep)
 {
+	my_dbg(" [1528]  shl_add\n");
 	struct musb_ep		*musb_ep = to_musb_ep(ep);
 	void __iomem		*epio = musb_ep->hw_ep->regs;
 	int			retval = -EINVAL;
@@ -1549,6 +1570,7 @@ static int musb_gadget_fifo_status(struct usb_ep *ep)
 
 static void musb_gadget_fifo_flush(struct usb_ep *ep)
 {
+	my_dbg(" [1551]  shl_add\n");
 	struct musb_ep	*musb_ep = to_musb_ep(ep);
 	struct musb	*musb = musb_ep->musb;
 	u8		epnum = musb_ep->current_epnum;
@@ -1611,6 +1633,7 @@ static const struct usb_ep_ops musb_ep_ops = {
 
 static int musb_gadget_get_frame(struct usb_gadget *gadget)
 {
+	my_dbg(" [1613]  shl_add\n");
 	struct musb	*musb = gadget_to_musb(gadget);
 
 	return (int)musb_readw(musb->mregs, MUSB_FRAME);
@@ -1618,6 +1641,7 @@ static int musb_gadget_get_frame(struct usb_gadget *gadget)
 
 static int musb_gadget_wakeup(struct usb_gadget *gadget)
 {
+	my_dbg(" [1620]  shl_add\n");
 #ifndef __UBOOT__
 	struct musb	*musb = gadget_to_musb(gadget);
 	void __iomem	*mregs = musb->mregs;
@@ -1697,6 +1721,7 @@ done:
 static int
 musb_gadget_set_self_powered(struct usb_gadget *gadget, int is_selfpowered)
 {
+	my_dbg(" [1699]  shl_add\n");
 	struct musb	*musb = gadget_to_musb(gadget);
 
 	musb->is_self_powered = !!is_selfpowered;
@@ -1705,6 +1730,7 @@ musb_gadget_set_self_powered(struct usb_gadget *gadget, int is_selfpowered)
 
 static void musb_pullup(struct musb *musb, int is_on)
 {
+	my_dbg(" [1707]  shl_add\n");
 	u8 power;
 
 	power = musb_readb(musb->mregs, MUSB_POWER);
@@ -1723,6 +1749,7 @@ static void musb_pullup(struct musb *musb, int is_on)
 #if 0
 static int musb_gadget_vbus_session(struct usb_gadget *gadget, int is_active)
 {
+	my_dbg(" [1725]  shl_add\n");
 	dev_dbg(musb->controller, "<= %s =>\n", __func__);
 
 	/*
@@ -1736,6 +1763,7 @@ static int musb_gadget_vbus_session(struct usb_gadget *gadget, int is_active)
 
 static int musb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
 {
+	my_dbg(" [1738]  shl_add\n");
 #ifndef __UBOOT__
 	struct musb	*musb = gadget_to_musb(gadget);
 
@@ -1749,6 +1777,7 @@ static int musb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
 
 static int musb_gadget_pullup(struct usb_gadget *gadget, int is_on)
 {
+	my_dbg(" [1751]  shl_add\n");
 	struct musb	*musb = gadget_to_musb(gadget);
 	unsigned long	flags;
 
@@ -1803,6 +1832,7 @@ static const struct usb_gadget_ops musb_gadget_operations = {
 #ifndef __UBOOT__
 static void musb_gadget_release(struct device *dev)
 {
+	my_dbg(" [1805]  shl_add\n");
 	/* kref_put(WHAT) */
 	dev_dbg(dev, "%s\n", __func__);
 }
@@ -1812,6 +1842,7 @@ static void musb_gadget_release(struct device *dev)
 static void __devinit
 init_peripheral_ep(struct musb *musb, struct musb_ep *ep, u8 epnum, int is_in)
 {
+	my_dbg(" [1814]  shl_add\n");
 	struct musb_hw_ep	*hw_ep = musb->endpoints + epnum;
 
 	memset(ep, 0, sizeof *ep);
@@ -1848,6 +1879,7 @@ init_peripheral_ep(struct musb *musb, struct musb_ep *ep, u8 epnum, int is_in)
  */
 static inline void __devinit musb_g_init_endpoints(struct musb *musb)
 {
+	my_dbg(" [1850]  shl_add\n");
 	u8			epnum;
 	struct musb_hw_ep	*hw_ep;
 	unsigned		count = 0;
@@ -1881,6 +1913,7 @@ static inline void __devinit musb_g_init_endpoints(struct musb *musb)
  */
 int __devinit musb_gadget_setup(struct musb *musb)
 {
+	my_dbg(" [1883]  shl_add\n");
 	int status;
 
 	/* REVISIT minor race:  if (erroneously) setting up two
@@ -1935,6 +1968,7 @@ err:
 
 void musb_gadget_cleanup(struct musb *musb)
 {
+	my_dbg(" [1937]  shl_add\n");
 #ifndef __UBOOT__
 	usb_del_gadget_udc(&musb->g);
 	if (musb->g.dev.parent)
@@ -1961,6 +1995,7 @@ int musb_gadget_start(struct usb_gadget *g,
 		struct usb_gadget_driver *driver)
 #endif
 {
+	my_dbg(" [1963]  shl_add\n");
 	struct musb		*musb = gadget_to_musb(g);
 #ifndef __UBOOT__
 	struct usb_otg		*otg = musb->xceiv->otg;
@@ -2042,6 +2077,7 @@ err0:
 #ifndef __UBOOT__
 static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
 {
+	my_dbg(" [2044]  shl_add\n");
 	int			i;
 	struct musb_hw_ep	*hw_ep;
 
@@ -2087,6 +2123,7 @@ static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
 static int musb_gadget_stop(struct usb_gadget *g,
 		struct usb_gadget_driver *driver)
 {
+	my_dbg(" [2089]  shl_add\n");
 	struct musb	*musb = gadget_to_musb(g);
 	unsigned long	flags;
 
@@ -2137,6 +2174,7 @@ static int musb_gadget_stop(struct usb_gadget *g,
 
 void musb_g_resume(struct musb *musb)
 {
+	my_dbg(" [2139]  shl_add\n");
 #ifndef __UBOOT__
 	musb->is_suspended = 0;
 	switch (musb->xceiv->state) {
@@ -2161,6 +2199,7 @@ void musb_g_resume(struct musb *musb)
 /* called when SOF packets stop for 3+ msec */
 void musb_g_suspend(struct musb *musb)
 {
+	my_dbg(" [2163]  shl_add\n");
 #ifndef __UBOOT__
 	u8	devctl;
 
@@ -2193,12 +2232,14 @@ void musb_g_suspend(struct musb *musb)
 /* Called during SRP */
 void musb_g_wakeup(struct musb *musb)
 {
+	my_dbg(" [2195]  shl_add\n");
 	musb_gadget_wakeup(&musb->g);
 }
 
 /* called when VBUS drops below session threshold, and in other cases */
 void musb_g_disconnect(struct musb *musb)
 {
+	my_dbg(" [2201]  shl_add\n");
 	void __iomem	*mregs = musb->mregs;
 	u8	devctl = musb_readb(mregs, MUSB_DEVCTL);
 
@@ -2247,6 +2288,7 @@ void musb_g_reset(struct musb *musb)
 __releases(musb->lock)
 __acquires(musb->lock)
 {
+	my_dbg(" [2249]  shl_add\n");
 	void __iomem	*mbase = musb->mregs;
 	u8		devctl = musb_readb(mbase, MUSB_DEVCTL);
 	u8		power;
@@ -2306,3 +2348,4 @@ __acquires(musb->lock)
 			is_otg_enabled(musb) ? 8 : 100);
 #endif
 }
+

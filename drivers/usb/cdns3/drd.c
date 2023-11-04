@@ -31,6 +31,7 @@
  */
 int cdns3_set_mode(struct cdns3 *cdns, enum usb_dr_mode mode)
 {
+	my_dbg(" [33]  shl_add\n");
 	int ret = 0;
 	u32 reg;
 
@@ -68,6 +69,7 @@ int cdns3_set_mode(struct cdns3 *cdns, enum usb_dr_mode mode)
 
 int cdns3_get_id(struct cdns3 *cdns)
 {
+	my_dbg(" [70]  shl_add\n");
 	int id;
 
 	id = readl(&cdns->otg_regs->sts) & OTGSTS_ID_VALUE;
@@ -78,6 +80,7 @@ int cdns3_get_id(struct cdns3 *cdns)
 
 int cdns3_get_vbus(struct cdns3 *cdns)
 {
+	my_dbg(" [80]  shl_add\n");
 	int vbus;
 
 	vbus = !!(readl(&cdns->otg_regs->sts) & OTGSTS_VBUS_VALID);
@@ -88,6 +91,7 @@ int cdns3_get_vbus(struct cdns3 *cdns)
 
 int cdns3_is_host(struct cdns3 *cdns)
 {
+	my_dbg(" [90]  shl_add\n");
 	if (cdns->dr_mode == USB_DR_MODE_HOST)
 		return 1;
 	else if (!cdns3_get_id(cdns))
@@ -98,6 +102,7 @@ int cdns3_is_host(struct cdns3 *cdns)
 
 int cdns3_is_device(struct cdns3 *cdns)
 {
+	my_dbg(" [100]  shl_add\n");
 	if (cdns->dr_mode == USB_DR_MODE_PERIPHERAL)
 		return 1;
 	else if (cdns->dr_mode == USB_DR_MODE_OTG)
@@ -116,6 +121,7 @@ int cdns3_is_device(struct cdns3 *cdns)
  */
 int cdns3_drd_switch_host(struct cdns3 *cdns, int on)
 {
+	my_dbg(" [118]  shl_add\n");
 	int ret, val;
 	u32 reg = OTGCMD_OTG_DIS;
 
@@ -153,6 +159,7 @@ int cdns3_drd_switch_host(struct cdns3 *cdns, int on)
  */
 int cdns3_drd_switch_gadget(struct cdns3 *cdns, int on)
 {
+	my_dbg(" [155]  shl_add\n");
 	int ret, val;
 	u32 reg = OTGCMD_OTG_DIS;
 
@@ -195,6 +202,7 @@ int cdns3_drd_switch_gadget(struct cdns3 *cdns, int on)
  */
 static int cdns3_init_otg_mode(struct cdns3 *cdns)
 {
+	my_dbg(" [197]  shl_add\n");
 	int ret = 0;
 
 	/* clear all interrupts */
@@ -215,6 +223,7 @@ static int cdns3_init_otg_mode(struct cdns3 *cdns)
  */
 int cdns3_drd_update_mode(struct cdns3 *cdns)
 {
+	my_dbg(" [217]  shl_add\n");
 	int ret = 0;
 
 	switch (cdns->dr_mode) {
@@ -238,6 +247,7 @@ int cdns3_drd_update_mode(struct cdns3 *cdns)
 
 int cdns3_drd_init(struct cdns3 *cdns)
 {
+	my_dbg(" [240]  shl_add\n");
 	void __iomem *regs;
 	int ret = 0;
 	u32 state;
@@ -297,5 +307,7 @@ int cdns3_drd_init(struct cdns3 *cdns)
 
 int cdns3_drd_exit(struct cdns3 *cdns)
 {
+	my_dbg(" [299]  shl_add\n");
 	return 0;
 }
+

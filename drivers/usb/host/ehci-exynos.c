@@ -44,6 +44,7 @@ struct exynos_ehci {
 
 static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [46]  shl_add\n");
 	struct exynos_ehci_platdata *plat = dev_get_platdata(dev);
 	const void *blob = gd->fdt_blob;
 	unsigned int node;
@@ -84,6 +85,7 @@ static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 
 static void exynos5_setup_usb_phy(struct exynos_usb_phy *usb)
 {
+	my_dbg(" [86]  shl_add\n");
 	u32 hsic_ctrl;
 
 	clrbits_le32(&usb->usbphyctrl0,
@@ -144,6 +146,7 @@ static void exynos5_setup_usb_phy(struct exynos_usb_phy *usb)
 
 static void exynos4412_setup_usb_phy(struct exynos4412_usb_phy *usb)
 {
+	my_dbg(" [146]  shl_add\n");
 	writel(CLK_24MHZ, &usb->usbphyclk);
 
 	clrbits_le32(&usb->usbphyctrl, (PHYPWR_NORMAL_MASK_HSIC0 |
@@ -157,6 +160,7 @@ static void exynos4412_setup_usb_phy(struct exynos4412_usb_phy *usb)
 
 static void setup_usb_phy(struct exynos_usb_phy *usb)
 {
+	my_dbg(" [159]  shl_add\n");
 	set_usbhost_mode(USB20_PHY_CFG_HOST_LINK_EN);
 
 	set_usbhost_phy_ctrl(POWER_USB_HOST_PHY_CTRL_EN);
@@ -171,6 +175,7 @@ static void setup_usb_phy(struct exynos_usb_phy *usb)
 
 static void exynos5_reset_usb_phy(struct exynos_usb_phy *usb)
 {
+	my_dbg(" [173]  shl_add\n");
 	u32 hsic_ctrl;
 
 	/* HOST_PHY reset */
@@ -193,6 +198,7 @@ static void exynos5_reset_usb_phy(struct exynos_usb_phy *usb)
 
 static void exynos4412_reset_usb_phy(struct exynos4412_usb_phy *usb)
 {
+	my_dbg(" [195]  shl_add\n");
 	setbits_le32(&usb->usbphyctrl, (PHYPWR_NORMAL_MASK_HSIC0 |
 		PHYPWR_NORMAL_MASK_HSIC1 | PHYPWR_NORMAL_MASK_PHY1 |
 		PHYPWR_NORMAL_MASK_PHY0));
@@ -201,6 +207,7 @@ static void exynos4412_reset_usb_phy(struct exynos4412_usb_phy *usb)
 /* Reset the EHCI host controller. */
 static void reset_usb_phy(struct exynos_usb_phy *usb)
 {
+	my_dbg(" [203]  shl_add\n");
 	if (cpu_is_exynos5())
 		exynos5_reset_usb_phy(usb);
 	else if (cpu_is_exynos4())
@@ -213,6 +220,7 @@ static void reset_usb_phy(struct exynos_usb_phy *usb)
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [215]  shl_add\n");
 	struct exynos_ehci_platdata *plat = dev_get_platdata(dev);
 	struct exynos_ehci *ctx = dev_get_priv(dev);
 	struct ehci_hcor *hcor;
@@ -233,6 +241,7 @@ static int ehci_usb_probe(struct udevice *dev)
 
 static int ehci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [235]  shl_add\n");
 	struct exynos_ehci *ctx = dev_get_priv(dev);
 	int ret;
 
@@ -261,3 +270,4 @@ U_BOOT_DRIVER(usb_ehci) = {
 	.platdata_auto_alloc_size = sizeof(struct exynos_ehci_platdata),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

@@ -105,17 +105,20 @@ static struct usb3_dpll_map dpll_map_usb[] = {
 
 static inline unsigned int ti_usb3_readl(void __iomem *base, u32 offset)
 {
+	my_dbg(" [107]  shl_add\n");
 	return readl(base + offset);
 }
 
 static inline void ti_usb3_writel(void __iomem *base, u32 offset, u32 value)
 {
+	my_dbg(" [112]  shl_add\n");
 	writel(value, base + offset);
 }
 
 #ifndef CONFIG_AM43XX
 static struct usb3_dpll_params *ti_usb3_get_dpll_params(struct ti_usb_phy *phy)
 {
+	my_dbg(" [118]  shl_add\n");
 	unsigned long rate;
 	struct usb3_dpll_map *dpll_map = phy->dpll_map;
 
@@ -133,6 +136,7 @@ static struct usb3_dpll_params *ti_usb3_get_dpll_params(struct ti_usb_phy *phy)
 
 static int ti_usb3_dpll_wait_lock(struct ti_usb_phy *phy)
 {
+	my_dbg(" [135]  shl_add\n");
 	u32 val;
 	do {
 		val = ti_usb3_readl(phy->pll_ctrl_base, PLL_STATUS);
@@ -145,6 +149,7 @@ static int ti_usb3_dpll_wait_lock(struct ti_usb_phy *phy)
 
 static int ti_usb3_dpll_program(struct ti_usb_phy *phy)
 {
+	my_dbg(" [147]  shl_add\n");
 	u32			val;
 	struct usb3_dpll_params	*dpll_params;
 
@@ -188,6 +193,7 @@ static int ti_usb3_dpll_program(struct ti_usb_phy *phy)
 
 void ti_usb2_phy_power(struct ti_usb_phy *phy, int on)
 {
+	my_dbg(" [190]  shl_add\n");
 	u32 val;
 
 	val = readl(phy->usb2_phy_power);
@@ -224,6 +230,7 @@ void ti_usb2_phy_power(struct ti_usb_phy *phy, int on)
 #ifndef CONFIG_AM43XX
 void ti_usb3_phy_power(struct ti_usb_phy *phy, int on)
 {
+	my_dbg(" [226]  shl_add\n");
 	u32 val;
 	u32 rate;
 	rate = get_sys_clk_freq();
@@ -262,6 +269,7 @@ void ti_usb3_phy_power(struct ti_usb_phy *phy, int on)
  */
 int ti_usb_phy_uboot_init(struct ti_usb_phy_device *dev)
 {
+	my_dbg(" [264]  shl_add\n");
 	struct ti_usb_phy *phy;
 
 	phy = devm_kzalloc(NULL, sizeof(*phy), GFP_KERNEL);
@@ -299,6 +307,7 @@ int ti_usb_phy_uboot_init(struct ti_usb_phy_device *dev)
  */
 void ti_usb_phy_uboot_exit(int index)
 {
+	my_dbg(" [301]  shl_add\n");
 	struct ti_usb_phy *phy = NULL;
 
 	list_for_each_entry(phy, &ti_usb_phy_list, list) {
@@ -314,3 +323,4 @@ void ti_usb_phy_uboot_exit(int index)
 		break;
 	}
 }
+

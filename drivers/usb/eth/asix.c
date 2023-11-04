@@ -115,6 +115,7 @@ static int curr_eth_dev; /* index for name of next device detected */
 static int asix_write_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 			     u16 size, void *data)
 {
+	my_dbg(" [117]  shl_add\n");
 	int len;
 
 	debug("asix_write_cmd() cmd=0x%02x value=0x%04x index=0x%04x "
@@ -137,6 +138,7 @@ static int asix_write_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 static int asix_read_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 			    u16 size, void *data)
 {
+	my_dbg(" [139]  shl_add\n");
 	int len;
 
 	debug("asix_read_cmd() cmd=0x%02x value=0x%04x index=0x%04x size=%d\n",
@@ -157,6 +159,7 @@ static int asix_read_cmd(struct ueth_data *dev, u8 cmd, u16 value, u16 index,
 
 static inline int asix_set_sw_mii(struct ueth_data *dev)
 {
+	my_dbg(" [159]  shl_add\n");
 	int ret;
 
 	ret = asix_write_cmd(dev, AX_CMD_SET_SW_MII, 0x0000, 0, 0, NULL);
@@ -167,6 +170,7 @@ static inline int asix_set_sw_mii(struct ueth_data *dev)
 
 static inline int asix_set_hw_mii(struct ueth_data *dev)
 {
+	my_dbg(" [169]  shl_add\n");
 	int ret;
 
 	ret = asix_write_cmd(dev, AX_CMD_SET_HW_MII, 0x0000, 0, 0, NULL);
@@ -177,6 +181,7 @@ static inline int asix_set_hw_mii(struct ueth_data *dev)
 
 static int asix_mdio_read(struct ueth_data *dev, int phy_id, int loc)
 {
+	my_dbg(" [179]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(__le16, res, 1);
 
 	asix_set_sw_mii(dev);
@@ -192,6 +197,7 @@ static int asix_mdio_read(struct ueth_data *dev, int phy_id, int loc)
 static void
 asix_mdio_write(struct ueth_data *dev, int phy_id, int loc, int val)
 {
+	my_dbg(" [194]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(__le16, res, 1);
 	*res = cpu_to_le16(val);
 
@@ -207,6 +213,7 @@ asix_mdio_write(struct ueth_data *dev, int phy_id, int loc, int val)
  */
 static int asix_sw_reset(struct ueth_data *dev, u8 flags)
 {
+	my_dbg(" [209]  shl_add\n");
 	int ret;
 
 	ret = asix_write_cmd(dev, AX_CMD_SW_RESET, flags, 0, 0, NULL);
@@ -220,6 +227,7 @@ static int asix_sw_reset(struct ueth_data *dev, u8 flags)
 
 static inline int asix_get_phy_addr(struct ueth_data *dev)
 {
+	my_dbg(" [222]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(u8, buf, 2);
 
 	int ret = asix_read_cmd(dev, AX_CMD_READ_PHY_ID, 0, 0, 2, buf);
@@ -239,6 +247,7 @@ out:
 
 static int asix_write_medium_mode(struct ueth_data *dev, u16 mode)
 {
+	my_dbg(" [241]  shl_add\n");
 	int ret;
 
 	debug("asix_write_medium_mode() - mode = 0x%04x\n", mode);
@@ -253,6 +262,7 @@ static int asix_write_medium_mode(struct ueth_data *dev, u16 mode)
 
 static u16 asix_read_rx_ctl(struct ueth_data *dev)
 {
+	my_dbg(" [255]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(__le16, v, 1);
 
 	int ret = asix_read_cmd(dev, AX_CMD_READ_RX_CTL, 0, 0, 2, v);
@@ -266,6 +276,7 @@ static u16 asix_read_rx_ctl(struct ueth_data *dev)
 
 static int asix_write_rx_ctl(struct ueth_data *dev, u16 mode)
 {
+	my_dbg(" [268]  shl_add\n");
 	int ret;
 
 	debug("asix_write_rx_ctl() - mode = 0x%04x\n", mode);
@@ -279,6 +290,7 @@ static int asix_write_rx_ctl(struct ueth_data *dev, u16 mode)
 
 static int asix_write_gpio(struct ueth_data *dev, u16 value, int sleep)
 {
+	my_dbg(" [281]  shl_add\n");
 	int ret;
 
 	debug("asix_write_gpio() - value = 0x%04x\n", value);
@@ -295,6 +307,7 @@ static int asix_write_gpio(struct ueth_data *dev, u16 value, int sleep)
 
 static int asix_write_hwaddr_common(struct ueth_data *dev, uint8_t *enetaddr)
 {
+	my_dbg(" [297]  shl_add\n");
 	int ret;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buf, ETH_ALEN);
 
@@ -318,6 +331,7 @@ static int asix_write_hwaddr_common(struct ueth_data *dev, uint8_t *enetaddr)
  */
 static int mii_nway_restart(struct ueth_data *dev)
 {
+	my_dbg(" [320]  shl_add\n");
 	int bmcr;
 	int r = -1;
 
@@ -336,6 +350,7 @@ static int mii_nway_restart(struct ueth_data *dev)
 static int asix_read_mac_common(struct ueth_data *dev,
 				struct asix_private *priv, uint8_t *enetaddr)
 {
+	my_dbg(" [338]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buf, ETH_ALEN);
 	int i;
 
@@ -362,6 +377,7 @@ static int asix_read_mac_common(struct ueth_data *dev,
 
 static int asix_basic_reset(struct ueth_data *dev)
 {
+	my_dbg(" [364]  shl_add\n");
 	int embd_phy;
 	u16 rx_ctl;
 
@@ -423,6 +439,7 @@ static int asix_basic_reset(struct ueth_data *dev)
 
 static int asix_init_common(struct ueth_data *dev, uint8_t *enetaddr)
 {
+	my_dbg(" [425]  shl_add\n");
 	int timeout = 0;
 #define TIMEOUT_RESOLUTION 50	/* ms */
 	int link_detected;
@@ -466,6 +483,7 @@ out_err:
 
 static int asix_send_common(struct ueth_data *dev, void *packet, int length)
 {
+	my_dbg(" [468]  shl_add\n");
 	int err;
 	u32 packet_len;
 	int actual_len;
@@ -498,6 +516,7 @@ static int asix_send_common(struct ueth_data *dev, void *packet, int length)
  */
 static int asix_init(struct eth_device *eth, bd_t *bd)
 {
+	my_dbg(" [500]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return asix_init_common(dev, eth->enetaddr);
@@ -505,6 +524,7 @@ static int asix_init(struct eth_device *eth, bd_t *bd)
 
 static int asix_send(struct eth_device *eth, void *packet, int length)
 {
+	my_dbg(" [507]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return asix_send_common(dev, packet, length);
@@ -512,6 +532,7 @@ static int asix_send(struct eth_device *eth, void *packet, int length)
 
 static int asix_recv(struct eth_device *eth)
 {
+	my_dbg(" [514]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, recv_buf, AX_RX_URB_SIZE);
 	unsigned char *buf_ptr;
@@ -578,11 +599,13 @@ static int asix_recv(struct eth_device *eth)
 
 static void asix_halt(struct eth_device *eth)
 {
+	my_dbg(" [580]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 static int asix_write_hwaddr(struct eth_device *eth)
 {
+	my_dbg(" [585]  shl_add\n");
 	struct ueth_data *dev = (struct ueth_data *)eth->priv;
 
 	return asix_write_hwaddr_common(dev, eth->enetaddr);
@@ -593,6 +616,7 @@ static int asix_write_hwaddr(struct eth_device *eth)
  */
 void asix_eth_before_probe(void)
 {
+	my_dbg(" [595]  shl_add\n");
 	curr_eth_dev = 0;
 }
 
@@ -625,6 +649,7 @@ static const struct asix_dongle asix_dongles[] = {
 int asix_eth_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct ueth_data *ss)
 {
+	my_dbg(" [627]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_interface_descriptor *iface_desc;
 	int ep_in_found = 0, ep_out_found = 0;
@@ -711,6 +736,7 @@ int asix_eth_probe(struct usb_device *dev, unsigned int ifnum,
 int asix_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 				struct eth_device *eth)
 {
+	my_dbg(" [713]  shl_add\n");
 	struct asix_private *priv = (struct asix_private *)ss->dev_priv;
 
 	if (!eth) {
@@ -741,6 +767,7 @@ int asix_eth_get_info(struct usb_device *dev, struct ueth_data *ss,
 #ifdef CONFIG_DM_ETH
 static int asix_eth_start(struct udevice *dev)
 {
+	my_dbg(" [743]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct asix_private *priv = dev_get_priv(dev);
 
@@ -749,11 +776,13 @@ static int asix_eth_start(struct udevice *dev)
 
 void asix_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [751]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 int asix_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [756]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 
 	return asix_send_common(&priv->ueth, packet, length);
@@ -761,6 +790,7 @@ int asix_eth_send(struct udevice *dev, void *packet, int length)
 
 int asix_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [763]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	uint8_t *ptr;
@@ -812,6 +842,7 @@ err:
 
 static int asix_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [814]  shl_add\n");
 	struct asix_private *priv = dev_get_priv(dev);
 
 	if (packet_len & 1)
@@ -823,6 +854,7 @@ static int asix_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 int asix_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [825]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct asix_private *priv = dev_get_priv(dev);
 
@@ -834,6 +866,7 @@ int asix_write_hwaddr(struct udevice *dev)
 
 static int asix_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [836]  shl_add\n");
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct asix_private *priv = dev_get_priv(dev);
 	struct ueth_data *ss = &priv->ueth;
@@ -908,3 +941,4 @@ static const struct usb_device_id asix_eth_id_table[] = {
 
 U_BOOT_USB_DEVICE(asix_eth, asix_eth_id_table);
 #endif
+

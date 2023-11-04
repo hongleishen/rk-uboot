@@ -53,6 +53,7 @@ struct exynos_xhci {
 
 static int xhci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [55]  shl_add\n");
 	struct exynos_xhci_platdata *plat = dev_get_platdata(dev);
 	const void *blob = gd->fdt_blob;
 	unsigned int node;
@@ -93,6 +94,7 @@ static int xhci_usb_ofdata_to_platdata(struct udevice *dev)
 
 static void exynos5_usb3_phy_init(struct exynos_usb3_phy *phy)
 {
+	my_dbg(" [95]  shl_add\n");
 	u32 reg;
 
 	/* enabling usb_drd phy */
@@ -160,6 +162,7 @@ static void exynos5_usb3_phy_init(struct exynos_usb3_phy *phy)
 
 static void exynos5_usb3_phy_exit(struct exynos_usb3_phy *phy)
 {
+	my_dbg(" [162]  shl_add\n");
 	setbits_le32(&phy->phy_utmi,
 			PHYUTMI_OTGDISABLE |
 			PHYUTMI_FORCESUSPEND |
@@ -181,6 +184,7 @@ static void exynos5_usb3_phy_exit(struct exynos_usb3_phy *phy)
 
 static int exynos_xhci_core_init(struct exynos_xhci *exynos)
 {
+	my_dbg(" [183]  shl_add\n");
 	int ret;
 
 	exynos5_usb3_phy_init(exynos->usb3_phy);
@@ -199,11 +203,13 @@ static int exynos_xhci_core_init(struct exynos_xhci *exynos)
 
 static void exynos_xhci_core_exit(struct exynos_xhci *exynos)
 {
+	my_dbg(" [201]  shl_add\n");
 	exynos5_usb3_phy_exit(exynos->usb3_phy);
 }
 
 static int xhci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [206]  shl_add\n");
 	struct exynos_xhci_platdata *plat = dev_get_platdata(dev);
 	struct exynos_xhci *ctx = dev_get_priv(dev);
 	struct xhci_hcor *hcor;
@@ -230,6 +236,7 @@ static int xhci_usb_probe(struct udevice *dev)
 
 static int xhci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [232]  shl_add\n");
 	struct exynos_xhci *ctx = dev_get_priv(dev);
 	int ret;
 
@@ -258,3 +265,4 @@ U_BOOT_DRIVER(usb_xhci) = {
 	.priv_auto_alloc_size = sizeof(struct exynos_xhci),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

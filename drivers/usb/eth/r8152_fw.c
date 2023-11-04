@@ -723,6 +723,7 @@ static u16 r8153_usb_patch_d_bp[] = {
 
 static void rtl_clear_bp(struct r8152 *tp)
 {
+	my_dbg(" [725]  shl_add\n");
 	ocp_write_dword(tp, MCU_TYPE_PLA, PLA_BP_0, 0);
 	ocp_write_dword(tp, MCU_TYPE_PLA, PLA_BP_2, 0);
 	ocp_write_dword(tp, MCU_TYPE_PLA, PLA_BP_4, 0);
@@ -740,6 +741,7 @@ static void rtl_clear_bp(struct r8152 *tp)
 
 static void r8153_clear_bp(struct r8152 *tp)
 {
+	my_dbg(" [742]  shl_add\n");
 	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_BP_EN, 0);
 	ocp_write_byte(tp, MCU_TYPE_USB, USB_BP_EN, 0);
 	rtl_clear_bp(tp);
@@ -747,6 +749,7 @@ static void r8153_clear_bp(struct r8152 *tp)
 
 static void r8152b_set_dq_desc(struct r8152 *tp)
 {
+	my_dbg(" [749]  shl_add\n");
 	u8 data;
 
 	data = ocp_read_byte(tp, MCU_TYPE_USB, 0xd429);
@@ -760,6 +763,7 @@ static void r8152b_set_dq_desc(struct r8152 *tp)
 
 static int r8153_pre_ram_code(struct r8152 *tp, u16 patch_key)
 {
+	my_dbg(" [762]  shl_add\n");
 	u16 data;
 	int i;
 
@@ -780,6 +784,7 @@ static int r8153_pre_ram_code(struct r8152 *tp, u16 patch_key)
 
 static int r8153_post_ram_code(struct r8152 *tp)
 {
+	my_dbg(" [782]  shl_add\n");
 	u16 data;
 
 	sram_write(tp, 0x0000, 0x0000);
@@ -801,6 +806,7 @@ static int r8153_post_ram_code(struct r8152 *tp)
 
 static void r8153_wdt1_end(struct r8152 *tp)
 {
+	my_dbg(" [803]  shl_add\n");
 	int i;
 
 	for (i = 0; i < 104; i++) {
@@ -812,6 +818,7 @@ static void r8153_wdt1_end(struct r8152 *tp)
 
 void r8152b_firmware(struct r8152 *tp)
 {
+	my_dbg(" [814]  shl_add\n");
 	int i;
 
 	if (tp->version == RTL_VER_01) {
@@ -855,6 +862,7 @@ void r8152b_firmware(struct r8152 *tp)
 
 void r8153_firmware(struct r8152 *tp)
 {
+	my_dbg(" [857]  shl_add\n");
 	int i;
 
 	if (tp->version == RTL_VER_03) {
@@ -980,3 +988,4 @@ void r8153_firmware(struct r8152 *tp)
 				       r8153_usb_patch_d_bp[i+1]);
 	}
 }
+

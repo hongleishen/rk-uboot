@@ -24,6 +24,7 @@ static const char *const usb_dr_modes[] = {
 
 enum usb_dr_mode usb_get_dr_mode(ofnode node)
 {
+	my_dbg(" [26]  shl_add\n");
 	const char *dr_mode;
 	int i;
 
@@ -51,6 +52,7 @@ static const char *const speed_names[] = {
 
 enum usb_device_speed usb_get_maximum_speed(ofnode node)
 {
+	my_dbg(" [53]  shl_add\n");
 	const char *max_speed;
 	int i;
 
@@ -76,6 +78,7 @@ static const char *const usbphy_modes[] = {
 
 enum usb_phy_interface usb_get_phy_mode(ofnode node)
 {
+	my_dbg(" [78]  shl_add\n");
 	const char *phy_type;
 	int i;
 
@@ -90,3 +93,4 @@ enum usb_phy_interface usb_get_phy_mode(ofnode node)
 	return USBPHY_INTERFACE_MODE_UNKNOWN;
 }
 #endif
+

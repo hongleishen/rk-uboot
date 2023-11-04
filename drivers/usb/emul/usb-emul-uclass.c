@@ -14,6 +14,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 static int copy_to_unicode(char *buff, int length, const char *str)
 {
+	my_dbg(" [16]  shl_add\n");
 	int ptr;
 	int i;
 
@@ -32,6 +33,7 @@ static int copy_to_unicode(char *buff, int length, const char *str)
 static int usb_emul_get_string(struct usb_string *strings, int index,
 			       char *buff, int length)
 {
+	my_dbg(" [34]  shl_add\n");
 	if (index == 0) {
 		char *desc = buff;
 
@@ -55,6 +57,7 @@ static int usb_emul_get_string(struct usb_string *strings, int index,
 struct usb_generic_descriptor **usb_emul_find_descriptor(
 		struct usb_generic_descriptor **ptr, int type, int index)
 {
+	my_dbg(" [57]  shl_add\n");
 	debug("%s: type=%x, index=%d\n", __func__, type, index);
 	for (; *ptr; ptr++) {
 		if ((*ptr)->bDescriptorType != type)
@@ -80,6 +83,7 @@ struct usb_generic_descriptor **usb_emul_find_descriptor(
 static int usb_emul_get_descriptor(struct usb_dev_platdata *plat, int value,
 				   void *buffer, int length)
 {
+	my_dbg(" [82]  shl_add\n");
 	struct usb_generic_descriptor **ptr;
 	int type = value >> 8;
 	int index = value & 0xff;
@@ -108,6 +112,7 @@ static int usb_emul_get_descriptor(struct usb_dev_platdata *plat, int value,
 
 static int usb_emul_find_devnum(int devnum, int port1, struct udevice **emulp)
 {
+	my_dbg(" [110]  shl_add\n");
 	struct udevice *dev;
 	struct uclass *uc;
 	int ret;
@@ -164,6 +169,7 @@ static int usb_emul_find_devnum(int devnum, int port1, struct udevice **emulp)
 int usb_emul_find(struct udevice *bus, ulong pipe, int port1,
 		  struct udevice **emulp)
 {
+	my_dbg(" [166]  shl_add\n");
 	int devnum = usb_pipedevice(pipe);
 
 	return usb_emul_find_devnum(devnum, port1, emulp);
@@ -171,6 +177,7 @@ int usb_emul_find(struct udevice *bus, ulong pipe, int port1,
 
 int usb_emul_find_for_dev(struct udevice *dev, struct udevice **emulp)
 {
+	my_dbg(" [173]  shl_add\n");
 	struct usb_dev_platdata *udev = dev_get_parent_platdata(dev);
 
 	return usb_emul_find_devnum(udev->devnum, 0, emulp);
@@ -180,6 +187,7 @@ int usb_emul_control(struct udevice *emul, struct usb_device *udev,
 		     unsigned long pipe, void *buffer, int length,
 		     struct devrequest *setup)
 {
+	my_dbg(" [182]  shl_add\n");
 	struct dm_usb_ops *ops = usb_get_emul_ops(emul);
 	struct usb_dev_platdata *plat;
 	int ret;
@@ -234,6 +242,7 @@ int usb_emul_control(struct udevice *emul, struct usb_device *udev,
 int usb_emul_bulk(struct udevice *emul, struct usb_device *udev,
 		  unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [236]  shl_add\n");
 	struct dm_usb_ops *ops = usb_get_emul_ops(emul);
 	int ret;
 
@@ -251,6 +260,7 @@ int usb_emul_int(struct udevice *emul, struct usb_device *udev,
 		  unsigned long pipe, void *buffer, int length, int interval,
 		  bool nonblock)
 {
+	my_dbg(" [253]  shl_add\n");
 	struct dm_usb_ops *ops = usb_get_emul_ops(emul);
 
 	if (!ops->interrupt)
@@ -264,6 +274,7 @@ int usb_emul_int(struct udevice *emul, struct usb_device *udev,
 int usb_emul_setup_device(struct udevice *dev, struct usb_string *strings,
 			  void **desc_list)
 {
+	my_dbg(" [266]  shl_add\n");
 	struct usb_dev_platdata *plat = dev_get_parent_platdata(dev);
 	struct usb_generic_descriptor **ptr;
 	struct usb_config_descriptor *cdesc;
@@ -304,3 +315,4 @@ UCLASS_DRIVER(usb_emul) = {
 	.per_child_auto_alloc_size = sizeof(struct usb_device),
 	.per_child_platdata_auto_alloc_size = sizeof(struct usb_dev_platdata),
 };
+

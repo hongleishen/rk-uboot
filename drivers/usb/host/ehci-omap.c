@@ -28,6 +28,7 @@ static struct omap_ehci *const ehci = (struct omap_ehci *)OMAP_EHCI_BASE;
 
 static int omap_uhh_reset(void)
 {
+	my_dbg(" [30]  shl_add\n");
 	int timeout = 0;
 	u32 rev;
 
@@ -75,6 +76,7 @@ static int omap_uhh_reset(void)
 
 static int omap_ehci_tll_reset(void)
 {
+	my_dbg(" [77]  shl_add\n");
 	unsigned long init = get_timer(0);
 
 	/* perform TLL soft reset, and wait until reset is complete */
@@ -92,6 +94,7 @@ static int omap_ehci_tll_reset(void)
 
 static void omap_usbhs_hsic_init(int port)
 {
+	my_dbg(" [94]  shl_add\n");
 	unsigned int reg;
 
 	/* Enable channels now */
@@ -109,6 +112,7 @@ static void omap_usbhs_hsic_init(int port)
 #ifdef CONFIG_USB_ULPI
 static void omap_ehci_soft_phy_reset(int port)
 {
+	my_dbg(" [111]  shl_add\n");
 	struct ulpi_viewport ulpi_vp;
 
 	ulpi_vp.viewport_addr = (u32)&ehci->insreg05_utmi_ulpi;
@@ -119,6 +123,7 @@ static void omap_ehci_soft_phy_reset(int port)
 #else
 static void omap_ehci_soft_phy_reset(int port)
 {
+	my_dbg(" [121]  shl_add\n");
 	return;
 }
 #endif
@@ -129,6 +134,7 @@ static void omap_ehci_soft_phy_reset(int port)
 /* controls PHY(s) reset signal(s) */
 static inline void omap_ehci_phy_reset(int on, int delay)
 {
+	my_dbg(" [131]  shl_add\n");
 	/*
 	 * Refer ISSUE1:
 	 * Hold the PHY in RESET for enough time till
@@ -161,6 +167,7 @@ static inline void omap_ehci_phy_reset(int on, int delay)
 /* Reset is needed otherwise the kernel-driver will throw an error. */
 int omap_ehci_hcd_stop(void)
 {
+	my_dbg(" [163]  shl_add\n");
 	debug("Resetting OMAP EHCI\n");
 	omap_ehci_phy_reset(1, 0);
 
@@ -181,6 +188,7 @@ int omap_ehci_hcd_stop(void)
 int omap_ehci_hcd_init(int index, struct omap_usbhs_board_data *usbhs_pdata,
 		       struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [183]  shl_add\n");
 	int ret;
 	unsigned int i, reg = 0, rev = 0;
 
@@ -293,3 +301,4 @@ int omap_ehci_hcd_init(int index, struct omap_usbhs_board_data *usbhs_pdata,
 	debug("OMAP EHCI init done\n");
 	return 0;
 }
+

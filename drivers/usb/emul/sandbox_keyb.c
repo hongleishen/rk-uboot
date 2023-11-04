@@ -160,6 +160,7 @@ static void *keyb_desc_list[] = {
 
 int sandbox_usb_keyb_add_string(struct udevice *dev, const char *str)
 {
+	my_dbg(" [162]  shl_add\n");
 	struct sandbox_keyb_priv *priv = dev_get_priv(dev);
 	int len, ret;
 
@@ -175,6 +176,7 @@ static int sandbox_keyb_control(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buff, int len,
 				struct devrequest *setup)
 {
+	my_dbg(" [177]  shl_add\n");
 	debug("pipe=%lx\n", pipe);
 
 	return -EIO;
@@ -184,6 +186,7 @@ static int sandbox_keyb_interrupt(struct udevice *dev, struct usb_device *udev,
 		unsigned long pipe, void *buffer, int length, int interval,
 		bool nonblock)
 {
+	my_dbg(" [186]  shl_add\n");
 	struct sandbox_keyb_priv *priv = dev_get_priv(dev);
 	uint8_t *data = buffer;
 	int ch;
@@ -198,6 +201,7 @@ static int sandbox_keyb_interrupt(struct udevice *dev, struct usb_device *udev,
 
 static int sandbox_keyb_bind(struct udevice *dev)
 {
+	my_dbg(" [200]  shl_add\n");
 	struct sandbox_keyb_plat *plat = dev_get_platdata(dev);
 	struct usb_string *fs;
 
@@ -214,6 +218,7 @@ static int sandbox_keyb_bind(struct udevice *dev)
 
 static int sandbox_keyb_probe(struct udevice *dev)
 {
+	my_dbg(" [216]  shl_add\n");
 	struct sandbox_keyb_priv *priv = dev_get_priv(dev);
 
 	return membuff_new(&priv->in, 256);
@@ -239,3 +244,4 @@ U_BOOT_DRIVER(usb_sandbox_keyb) = {
 	.priv_auto_alloc_size = sizeof(struct sandbox_keyb_priv),
 	.platdata_auto_alloc_size = sizeof(struct sandbox_keyb_plat),
 };
+

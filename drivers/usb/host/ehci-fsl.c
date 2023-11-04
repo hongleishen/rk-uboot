@@ -46,6 +46,7 @@ static int ehci_fsl_init(int index, struct usb_ehci *ehci,
 /* Check USB PHY clock valid */
 static int usb_phy_clk_valid(struct usb_ehci *ehci)
 {
+	my_dbg(" [48]  shl_add\n");
 	if (!((in_be32(&ehci->control) & PHY_CLK_VALID) ||
 			in_be32(&ehci->prictrl))) {
 		printf("USB PHY clock invalid!\n");
@@ -58,6 +59,7 @@ static int usb_phy_clk_valid(struct usb_ehci *ehci)
 #if CONFIG_IS_ENABLED(DM_USB)
 static int ehci_fsl_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [60]  shl_add\n");
 	struct ehci_fsl_priv *priv = dev_get_priv(dev);
 	const void *prop;
 
@@ -73,6 +75,7 @@ static int ehci_fsl_ofdata_to_platdata(struct udevice *dev)
 
 static int ehci_fsl_init_after_reset(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [75]  shl_add\n");
 	struct usb_ehci *ehci = NULL;
 	struct ehci_fsl_priv *priv = container_of(ctrl, struct ehci_fsl_priv,
 						   ehci);
@@ -94,6 +97,7 @@ static const struct ehci_ops fsl_ehci_ops = {
 
 static int ehci_fsl_probe(struct udevice *dev)
 {
+	my_dbg(" [96]  shl_add\n");
 	struct ehci_fsl_priv *priv = dev_get_priv(dev);
 	struct usb_ehci *ehci = NULL;
 	struct ehci_hccr *hccr;
@@ -154,6 +158,7 @@ U_BOOT_DRIVER(ehci_fsl) = {
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [156]  shl_add\n");
 	struct usb_ehci *ehci = NULL;
 
 	switch (index) {
@@ -181,6 +186,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [183]  shl_add\n");
 	return 0;
 }
 #endif
@@ -193,6 +199,7 @@ static int ehci_fsl_init(int index, struct usb_ehci *ehci,
 			 struct ehci_hccr *hccr, struct ehci_hcor *hcor)
 #endif
 {
+	my_dbg(" [195]  shl_add\n");
 	const char *phy_type = NULL;
 #if !CONFIG_IS_ENABLED(DM_USB)
 	size_t len;
@@ -297,9 +304,11 @@ static int ehci_fsl_init(int index, struct usb_ehci *ehci,
  */
 static void set_txfifothresh(struct usb_ehci *ehci, u32 txfifo_thresh)
 {
+	my_dbg(" [299]  shl_add\n");
 	u32 cmd;
 	cmd = ehci_readl(&ehci->txfilltuning);
 	cmd &= ~TXFIFO_THRESH_MASK;
 	cmd |= TXFIFO_THRESH(txfifo_thresh);
 	ehci_writel(&ehci->txfilltuning, cmd);
 }
+

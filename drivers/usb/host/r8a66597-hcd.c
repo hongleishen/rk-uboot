@@ -24,6 +24,7 @@
 
 static inline struct usb_device *usb_dev_get_parent(struct usb_device *udev)
 {
+	my_dbg(" [26]  shl_add\n");
 	struct udevice *parent = udev->dev->parent;
 
 	/*
@@ -53,6 +54,7 @@ static inline struct usb_device *usb_dev_get_parent(struct usb_device *udev)
 
 static void get_hub_data(struct usb_device *dev, u16 *hub_devnum, u16 *hubport)
 {
+	my_dbg(" [55]  shl_add\n");
 	struct usb_device *parent = usb_dev_get_parent(dev);
 
 	*hub_devnum = 0;
@@ -70,6 +72,7 @@ static void get_hub_data(struct usb_device *dev, u16 *hub_devnum, u16 *hubport)
 static void set_devadd(struct r8a66597 *r8a66597, u8 r8a66597_address,
 		       struct usb_device *dev, int port)
 {
+	my_dbg(" [72]  shl_add\n");
 	u16 val, usbspd, upphub, hubport;
 	unsigned long devadd_reg = get_devadd_addr(r8a66597_address);
 
@@ -81,6 +84,7 @@ static void set_devadd(struct r8a66597 *r8a66597, u8 r8a66597_address,
 
 static int r8a66597_clock_enable(struct r8a66597 *r8a66597)
 {
+	my_dbg(" [83]  shl_add\n");
 	u16 tmp;
 	int i = 0;
 
@@ -111,6 +115,7 @@ static int r8a66597_clock_enable(struct r8a66597 *r8a66597)
 
 static void r8a66597_clock_disable(struct r8a66597 *r8a66597)
 {
+	my_dbg(" [113]  shl_add\n");
 	r8a66597_bclr(r8a66597, SUSPM, SUSPMODE0);
 
 	clrbits(le16, R8A66597_BASE0, UPLLE);
@@ -121,6 +126,7 @@ static void r8a66597_clock_disable(struct r8a66597 *r8a66597)
 
 static void r8a66597_enable_port(struct r8a66597 *r8a66597, int port)
 {
+	my_dbg(" [123]  shl_add\n");
 	u16 val;
 
 	val = port ? DRPD : DCFM | DRPD;
@@ -130,6 +136,7 @@ static void r8a66597_enable_port(struct r8a66597 *r8a66597, int port)
 
 static void r8a66597_disable_port(struct r8a66597 *r8a66597, int port)
 {
+	my_dbg(" [132]  shl_add\n");
 	u16 val, tmp;
 
 	r8a66597_write(r8a66597, 0, get_intenb_reg(port));
@@ -149,6 +156,7 @@ static void r8a66597_disable_port(struct r8a66597 *r8a66597, int port)
 
 static int enable_controller(struct r8a66597 *r8a66597)
 {
+	my_dbg(" [151]  shl_add\n");
 	int ret, port;
 
 	ret = r8a66597_clock_enable(r8a66597);
@@ -175,6 +183,7 @@ static int enable_controller(struct r8a66597 *r8a66597)
 
 static void disable_controller(struct r8a66597 *r8a66597)
 {
+	my_dbg(" [177]  shl_add\n");
 	int i;
 
 	if (!(r8a66597_read(r8a66597, SYSCFG0) & USBE))
@@ -213,6 +222,7 @@ static void disable_controller(struct r8a66597 *r8a66597)
 static void r8a66597_reg_wait(struct r8a66597 *r8a66597, unsigned long reg,
 			      u16 mask, u16 loop)
 {
+	my_dbg(" [215]  shl_add\n");
 	u16 tmp;
 	int i = 0;
 
@@ -228,6 +238,7 @@ static void r8a66597_reg_wait(struct r8a66597 *r8a66597, unsigned long reg,
 static void pipe_buffer_setting(struct r8a66597 *r8a66597,
 				struct usb_device *dev, unsigned long pipe)
 {
+	my_dbg(" [230]  shl_add\n");
 	u16 val = 0;
 	u16 pipenum, bufnum, maxpacket;
 
@@ -267,6 +278,7 @@ static void pipe_buffer_setting(struct r8a66597 *r8a66597,
 static int send_setup_packet(struct r8a66597 *r8a66597, struct usb_device *dev,
 			     struct devrequest *setup)
 {
+	my_dbg(" [269]  shl_add\n");
 	int i;
 	unsigned short *p = (unsigned short *)setup;
 	unsigned long setup_addr = USBREQ;
@@ -316,6 +328,7 @@ static int send_setup_packet(struct r8a66597 *r8a66597, struct usb_device *dev,
 static int send_bulk_packet(struct r8a66597 *r8a66597, struct usb_device *dev,
 			    unsigned long pipe, void *buffer, int transfer_len)
 {
+	my_dbg(" [318]  shl_add\n");
 	u16 tmp, bufsize;
 	u16 *buf;
 	size_t size;
@@ -366,6 +379,7 @@ static int receive_bulk_packet(struct r8a66597 *r8a66597,
 			       unsigned long pipe,
 			       void *buffer, int transfer_len)
 {
+	my_dbg(" [368]  shl_add\n");
 	u16 tmp;
 	u16 *buf;
 	const u16 pipenum = BULK_IN_PIPENUM;
@@ -422,6 +436,7 @@ static int receive_control_packet(struct r8a66597 *r8a66597,
 				  struct usb_device *dev,
 				  void *buffer, int transfer_len)
 {
+	my_dbg(" [424]  shl_add\n");
 	u16 tmp;
 	int rcv_len;
 
@@ -466,6 +481,7 @@ static int receive_control_packet(struct r8a66597 *r8a66597,
 static int send_status_packet(struct r8a66597 *r8a66597,
 			      unsigned long pipe)
 {
+	my_dbg(" [468]  shl_add\n");
 	r8a66597_bset(r8a66597, SQSET, DCPCTR);
 	r8a66597_mdfy(r8a66597, PID_NAK, PID, DCPCTR);
 
@@ -492,6 +508,7 @@ static int send_status_packet(struct r8a66597 *r8a66597,
 
 static void r8a66597_check_syssts(struct r8a66597 *r8a66597, int port)
 {
+	my_dbg(" [494]  shl_add\n");
 	int count = R8A66597_MAX_SAMPLING;
 	unsigned short syssts, old_syssts;
 
@@ -513,6 +530,7 @@ static void r8a66597_check_syssts(struct r8a66597 *r8a66597, int port)
 
 static void r8a66597_bus_reset(struct r8a66597 *r8a66597, int port)
 {
+	my_dbg(" [515]  shl_add\n");
 	mdelay(10);
 	r8a66597_mdfy(r8a66597, USBRST, USBRST | UACT, get_dvstctr_reg(port));
 	mdelay(50);
@@ -522,6 +540,7 @@ static void r8a66597_bus_reset(struct r8a66597 *r8a66597, int port)
 
 static int check_usb_device_connecting(struct r8a66597 *r8a66597)
 {
+	my_dbg(" [524]  shl_add\n");
 	int timeout = 10000;	/* 100usec * 10000 = 1sec */
 	int i;
 
@@ -563,6 +582,7 @@ static int r8a66597_submit_rh_msg(struct udevice *udev, struct usb_device *dev,
 				  unsigned long pipe, void *buffer,
 				  int transfer_len, struct devrequest *cmd)
 {
+	my_dbg(" [565]  shl_add\n");
 	struct r8a66597 *r8a66597 = dev_get_priv(udev);
 	int leni = transfer_len;
 	int len = 0;
@@ -733,6 +753,7 @@ static int r8a66597_submit_control_msg(struct udevice *udev,
 				       unsigned long pipe, void *buffer,
 				       int length, struct devrequest *setup)
 {
+	my_dbg(" [735]  shl_add\n");
 	struct r8a66597 *r8a66597 = dev_get_priv(udev);
 	u16 r8a66597_address = setup->request == USB_REQ_SET_ADDRESS ?
 					0 : dev->devnum;
@@ -771,6 +792,7 @@ static int r8a66597_submit_bulk_msg(struct udevice *udev,
 				    struct usb_device *dev, unsigned long pipe,
 				    void *buffer, int length)
 {
+	my_dbg(" [773]  shl_add\n");
 	struct r8a66597 *r8a66597 = dev_get_priv(udev);
 	int ret = 0;
 
@@ -805,6 +827,7 @@ static int r8a66597_submit_bulk_msg(struct udevice *udev,
 
 static int r8a66597_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [807]  shl_add\n");
 	struct r8a66597 *priv = dev_get_priv(dev);
 	fdt_addr_t addr;
 
@@ -818,6 +841,7 @@ static int r8a66597_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int r8a66597_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [820]  shl_add\n");
 	struct r8a66597 *priv = dev_get_priv(dev);
 	struct usb_bus_priv *bus_priv = dev_get_uclass_priv(dev);
 	int ret;
@@ -857,6 +881,7 @@ static int r8a66597_usb_probe(struct udevice *dev)
 
 static int r8a66597_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [859]  shl_add\n");
 	struct r8a66597 *priv = dev_get_priv(dev);
 	int ret;
 
@@ -895,3 +920,4 @@ U_BOOT_DRIVER(usb_r8a66597) = {
 	.priv_auto_alloc_size = sizeof(struct r8a66597),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

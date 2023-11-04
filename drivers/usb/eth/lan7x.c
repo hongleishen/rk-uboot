@@ -19,6 +19,7 @@
  */
 int lan7x_write_reg(struct usb_device *udev, u32 index, u32 data)
 {
+	my_dbg(" [21]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(u32, tmpbuf, 1);
 
@@ -40,6 +41,7 @@ int lan7x_write_reg(struct usb_device *udev, u32 index, u32 data)
 
 int lan7x_read_reg(struct usb_device *udev, u32 index, u32 *data)
 {
+	my_dbg(" [42]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(u32, tmpbuf, 1);
 
@@ -60,6 +62,7 @@ int lan7x_read_reg(struct usb_device *udev, u32 index, u32 *data)
 
 static int lan7x_phy_wait_not_busy(struct usb_device *udev)
 {
+	my_dbg(" [62]  shl_add\n");
 	return lan7x_wait_for_bit(udev, __func__,
 				  MII_ACC, MII_ACC_MII_BUSY,
 				  false, 100, 0);
@@ -67,6 +70,7 @@ static int lan7x_phy_wait_not_busy(struct usb_device *udev)
 
 int lan7x_mdio_read(struct usb_device *udev, int phy_id, int idx)
 {
+	my_dbg(" [69]  shl_add\n");
 	u32 val, addr;
 
 	/* confirm MII not busy */
@@ -92,6 +96,7 @@ int lan7x_mdio_read(struct usb_device *udev, int phy_id, int idx)
 
 void lan7x_mdio_write(struct usb_device *udev, int phy_id, int idx, int regval)
 {
+	my_dbg(" [94]  shl_add\n");
 	u32 addr;
 
 	/* confirm MII not busy */
@@ -117,6 +122,7 @@ void lan7x_mdio_write(struct usb_device *udev, int phy_id, int idx, int regval)
 static int lan7x_phylib_mdio_read(struct mii_dev *bus,
 				  int addr, int devad, int reg)
 {
+	my_dbg(" [119]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(bus->priv);
 
 	return lan7x_mdio_read(udev, addr, reg);
@@ -125,6 +131,7 @@ static int lan7x_phylib_mdio_read(struct mii_dev *bus,
 static int lan7x_phylib_mdio_write(struct mii_dev *bus,
 				   int addr, int devad, int reg, u16 val)
 {
+	my_dbg(" [127]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(bus->priv);
 
 	lan7x_mdio_write(udev, addr, reg, (int)val);
@@ -137,6 +144,7 @@ static int lan7x_phylib_mdio_write(struct mii_dev *bus,
  */
 static int lan7x_eeprom_confirm_not_busy(struct usb_device *udev)
 {
+	my_dbg(" [139]  shl_add\n");
 	return lan7x_wait_for_bit(udev, __func__,
 				  E2P_CMD, E2P_CMD_EPC_BUSY,
 				  false, 100, 0);
@@ -144,6 +152,7 @@ static int lan7x_eeprom_confirm_not_busy(struct usb_device *udev)
 
 static int lan7x_wait_eeprom(struct usb_device *udev)
 {
+	my_dbg(" [146]  shl_add\n");
 	return lan7x_wait_for_bit(udev, __func__,
 				  E2P_CMD,
 				  (E2P_CMD_EPC_BUSY | E2P_CMD_EPC_TIMEOUT),
@@ -153,6 +162,7 @@ static int lan7x_wait_eeprom(struct usb_device *udev)
 static int lan7x_read_eeprom(struct usb_device *udev,
 			     u32 offset, u32 length, u8 *data)
 {
+	my_dbg(" [155]  shl_add\n");
 	u32 val;
 	int i, ret;
 
@@ -181,6 +191,7 @@ static int lan7x_read_eeprom(struct usb_device *udev,
  */
 int lan7x_phylib_register(struct udevice *udev)
 {
+	my_dbg(" [183]  shl_add\n");
 	struct usb_device *usbdev = dev_get_parent_priv(udev);
 	struct lan7x_private *priv = dev_get_priv(udev);
 	int ret;
@@ -208,6 +219,7 @@ int lan7x_phylib_register(struct udevice *udev)
 
 int lan7x_eth_phylib_connect(struct udevice *udev, struct ueth_data *dev)
 {
+	my_dbg(" [210]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(udev);
 
 	priv->phydev = phy_connect(priv->mdiobus, dev->phy_id,
@@ -222,6 +234,7 @@ int lan7x_eth_phylib_connect(struct udevice *udev, struct ueth_data *dev)
 
 int lan7x_eth_phylib_config_start(struct udevice *udev)
 {
+	my_dbg(" [224]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(udev);
 	int ret;
 
@@ -264,6 +277,7 @@ int lan7x_update_flowcontrol(struct usb_device *udev,
 			     struct ueth_data *dev,
 			     uint32_t *flow, uint32_t *fct_flow)
 {
+	my_dbg(" [266]  shl_add\n");
 	uint32_t lcladv, rmtadv;
 	u8 cap = 0;
 	struct lan7x_private *priv = dev_get_priv(udev->dev);
@@ -304,6 +318,7 @@ int lan7x_update_flowcontrol(struct usb_device *udev,
 
 int lan7x_read_eeprom_mac(unsigned char *enetaddr, struct usb_device *udev)
 {
+	my_dbg(" [306]  shl_add\n");
 	int ret;
 
 	memset(enetaddr, 0, 6);
@@ -330,6 +345,7 @@ int lan7x_read_eeprom_mac(unsigned char *enetaddr, struct usb_device *udev)
 int lan7x_pmt_phy_reset(struct usb_device *udev,
 			struct ueth_data *dev)
 {
+	my_dbg(" [332]  shl_add\n");
 	int ret;
 	u32 data;
 
@@ -355,6 +371,7 @@ int lan7x_pmt_phy_reset(struct usb_device *udev,
 int lan7x_basic_reset(struct usb_device *udev,
 		      struct ueth_data *dev)
 {
+	my_dbg(" [357]  shl_add\n");
 	int ret;
 
 	dev->phy_id = LAN7X_INTERNAL_PHY_ID; /* fixed phy id */
@@ -376,11 +393,13 @@ int lan7x_basic_reset(struct usb_device *udev,
 
 void lan7x_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [378]  shl_add\n");
 	debug("** %s()\n", __func__);
 }
 
 int lan7x_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [383]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	int err;
@@ -421,6 +440,7 @@ int lan7x_eth_send(struct udevice *dev, void *packet, int length)
 
 int lan7x_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [423]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
 	uint8_t *ptr;
@@ -478,6 +498,7 @@ err:
 
 int lan7x_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 {
+	my_dbg(" [480]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(dev);
 
 	packet_len = ALIGN(packet_len, 4);
@@ -488,6 +509,7 @@ int lan7x_free_pkt(struct udevice *dev, uchar *packet, int packet_len)
 
 int lan7x_eth_remove(struct udevice *dev)
 {
+	my_dbg(" [490]  shl_add\n");
 	struct lan7x_private *priv = dev_get_priv(dev);
 
 	debug("** %s()\n", __func__);
@@ -497,3 +519,4 @@ int lan7x_eth_remove(struct udevice *dev)
 
 	return 0;
 }
+

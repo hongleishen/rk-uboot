@@ -113,6 +113,7 @@ char *usbd_device_status[] = {
  */
 struct usb_string_descriptor *usbd_get_string (__u8 index)
 {
+	my_dbg(" [115]  shl_add\n");
 	if (index >= maxstrings) {
 		return NULL;
 	}
@@ -133,6 +134,7 @@ struct usb_string_descriptor *usbd_get_string (__u8 index)
 static struct usb_configuration_instance *usbd_device_configuration_instance (struct usb_device_instance *device,
 		unsigned int port, unsigned int configuration)
 {
+	my_dbg(" [135]  shl_add\n");
 	if (configuration >= device->configurations)
 		return NULL;
 
@@ -150,6 +152,7 @@ static struct usb_configuration_instance *usbd_device_configuration_instance (st
  */
 struct usb_interface_instance *usbd_device_interface_instance (struct usb_device_instance *device, int port, int configuration, int interface)
 {
+	my_dbg(" [152]  shl_add\n");
 	struct usb_configuration_instance *configuration_instance;
 
 	if ((configuration_instance = usbd_device_configuration_instance (device, port, configuration)) == NULL) {
@@ -172,6 +175,7 @@ struct usb_interface_instance *usbd_device_interface_instance (struct usb_device
  */
 struct usb_alternate_instance *usbd_device_alternate_instance (struct usb_device_instance *device, int port, int configuration, int interface, int alternate)
 {
+	my_dbg(" [174]  shl_add\n");
 	struct usb_interface_instance *interface_instance;
 
 	if ((interface_instance = usbd_device_interface_instance (device, port, configuration, interface)) == NULL) {
@@ -196,6 +200,7 @@ struct usb_alternate_instance *usbd_device_alternate_instance (struct usb_device
  */
 struct usb_device_descriptor *usbd_device_device_descriptor (struct usb_device_instance *device, int port)
 {
+	my_dbg(" [198]  shl_add\n");
 	return (device->device_descriptor);
 }
 
@@ -211,6 +216,7 @@ struct usb_configuration_descriptor *usbd_device_configuration_descriptor (struc
 									   usb_device_instance
 									   *device, int port, int configuration)
 {
+	my_dbg(" [213]  shl_add\n");
 	struct usb_configuration_instance *configuration_instance;
 	if (!(configuration_instance = usbd_device_configuration_instance (device, port, configuration))) {
 		return NULL;
@@ -232,6 +238,7 @@ struct usb_configuration_descriptor *usbd_device_configuration_descriptor (struc
 struct usb_interface_descriptor *usbd_device_interface_descriptor (struct usb_device_instance
 								   *device, int port, int configuration, int interface, int alternate)
 {
+	my_dbg(" [234]  shl_add\n");
 	struct usb_interface_instance *interface_instance;
 	if (!(interface_instance = usbd_device_interface_instance (device, port, configuration, interface))) {
 		return NULL;
@@ -256,6 +263,7 @@ struct usb_interface_descriptor *usbd_device_interface_descriptor (struct usb_de
 struct usb_endpoint_descriptor *usbd_device_endpoint_descriptor_index (struct usb_device_instance
 								       *device, int port, int configuration, int interface, int alternate, int index)
 {
+	my_dbg(" [258]  shl_add\n");
 	struct usb_alternate_instance *alternate_instance;
 
 	if (!(alternate_instance = usbd_device_alternate_instance (device, port, configuration, interface, alternate))) {
@@ -280,6 +288,7 @@ struct usb_endpoint_descriptor *usbd_device_endpoint_descriptor_index (struct us
  */
 int usbd_device_endpoint_transfersize (struct usb_device_instance *device, int port, int configuration, int interface, int alternate, int index)
 {
+	my_dbg(" [282]  shl_add\n");
 	struct usb_alternate_instance *alternate_instance;
 
 	if (!(alternate_instance = usbd_device_alternate_instance (device, port, configuration, interface, alternate))) {
@@ -305,6 +314,7 @@ int usbd_device_endpoint_transfersize (struct usb_device_instance *device, int p
  */
 struct usb_endpoint_descriptor *usbd_device_endpoint_descriptor (struct usb_device_instance *device, int port, int configuration, int interface, int alternate, int endpoint)
 {
+	my_dbg(" [307]  shl_add\n");
 	struct usb_endpoint_descriptor *endpoint_descriptor;
 	int i;
 
@@ -325,6 +335,7 @@ struct usb_endpoint_descriptor *usbd_device_endpoint_descriptor (struct usb_devi
  */
 int usbd_endpoint_halted (struct usb_device_instance *device, int endpoint)
 {
+	my_dbg(" [327]  shl_add\n");
 	return (device->status == USB_STATUS_HALT);
 }
 
@@ -339,6 +350,7 @@ int usbd_endpoint_halted (struct usb_device_instance *device, int endpoint)
  */
 void usbd_rcv_complete(struct usb_endpoint_instance *endpoint, int len, int urb_bad)
 {
+	my_dbg(" [341]  shl_add\n");
 	if (endpoint) {
 		struct urb *rcv_urb;
 
@@ -382,6 +394,7 @@ void usbd_rcv_complete(struct usb_endpoint_instance *endpoint, int len, int urb_
  */
 void usbd_tx_complete (struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [384]  shl_add\n");
 	if (endpoint) {
 		struct urb *tx_urb;
 
@@ -429,6 +442,7 @@ void usbd_tx_complete (struct usb_endpoint_instance *endpoint)
  */
 void urb_link_init (urb_link * ul)
 {
+	my_dbg(" [431]  shl_add\n");
 	if (ul) {
 		ul->prev = ul->next = ul;
 	}
@@ -442,6 +456,7 @@ void urb_link_init (urb_link * ul)
  */
 void urb_detach (struct urb *urb)
 {
+	my_dbg(" [444]  shl_add\n");
 	if (urb) {
 		urb_link *ul = &urb->link;
 		ul->next->prev = ul->prev;
@@ -458,6 +473,7 @@ void urb_detach (struct urb *urb)
  */
 urb_link *first_urb_link (urb_link * hd)
 {
+	my_dbg(" [460]  shl_add\n");
 	urb_link *nx;
 	if (NULL != hd && NULL != (nx = hd->next) && nx != hd) {
 		/* There is at least one element in the list */
@@ -474,6 +490,7 @@ urb_link *first_urb_link (urb_link * hd)
  */
 struct urb *first_urb (urb_link * hd)
 {
+	my_dbg(" [476]  shl_add\n");
 	urb_link *nx;
 	if (NULL == (nx = first_urb_link (hd))) {
 		/* The list is empty */
@@ -489,6 +506,7 @@ struct urb *first_urb (urb_link * hd)
  */
 struct urb *first_urb_detached (urb_link * hd)
 {
+	my_dbg(" [491]  shl_add\n");
 	struct urb *urb;
 	if ((urb = first_urb (hd))) {
 		urb_detach (urb);
@@ -504,6 +522,7 @@ struct urb *first_urb_detached (urb_link * hd)
  */
 void urb_append (urb_link * hd, struct urb *urb)
 {
+	my_dbg(" [506]  shl_add\n");
 	if (hd && urb) {
 		urb_link *new = &urb->link;
 
@@ -535,6 +554,7 @@ void urb_append (urb_link * hd, struct urb *urb)
 struct urb *usbd_alloc_urb (struct usb_device_instance *device,
 			    struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [537]  shl_add\n");
 	struct urb *urb;
 
 	if (!(urb = (struct urb *) malloc (sizeof (struct urb)))) {
@@ -563,6 +583,7 @@ struct urb *usbd_alloc_urb (struct usb_device_instance *device,
  */
 void usbd_dealloc_urb (struct urb *urb)
 {
+	my_dbg(" [565]  shl_add\n");
 	if (urb) {
 		free (urb);
 	}
@@ -579,6 +600,7 @@ void usbd_dealloc_urb (struct urb *urb)
  */
 void usbd_device_event_irq (struct usb_device_instance *device, usb_device_event_t event, int data)
 {
+	my_dbg(" [581]  shl_add\n");
 	usb_device_state_t state;
 
 	if (!device || !device->bus) {
@@ -667,3 +689,4 @@ void usbd_device_event_irq (struct usb_device_instance *device, usb_device_event
 		device->event(device, event, data);
 	}
 }
+

@@ -67,6 +67,7 @@ static struct omap3_otg_regs *otg;
 #ifdef DEBUG_MUSB_OMAP3
 static void musb_db_otg_regs(void)
 {
+	my_dbg(" [69]  shl_add\n");
 	u32 l;
 	l = readl(&otg->revision);
 	serial_printf("OTG_REVISION 0x%x\n", l);
@@ -83,6 +84,7 @@ static void musb_db_otg_regs(void)
 
 int musb_platform_init(void)
 {
+	my_dbg(" [85]  shl_add\n");
 	int ret = -1;
 
 	if (platform_needs_initialization) {
@@ -141,5 +143,7 @@ end:
 
 void musb_platform_deinit(void)
 {
+	my_dbg(" [143]  shl_add\n");
 	/* noop */
 }
+

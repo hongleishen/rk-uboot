@@ -53,6 +53,7 @@ typedef int (*dfu_state_fn) (struct f_dfu *,
 
 static inline struct f_dfu *func_to_dfu(struct usb_function *f)
 {
+	my_dbg(" [55]  shl_add\n");
 	return container_of(f, struct f_dfu, usb_function);
 }
 
@@ -126,6 +127,7 @@ static struct usb_gadget_strings *dfu_strings[] = {
 
 static void dfu_set_poll_timeout(struct dfu_status *dstat, unsigned int ms)
 {
+	my_dbg(" [128]  shl_add\n");
 	/*
 	 * The bwPollTimeout DFU_GETSTATUS request payload provides information
 	 * about minimum time, in milliseconds, that the host should wait before
@@ -155,6 +157,7 @@ static void dfu_set_poll_timeout(struct dfu_status *dstat, unsigned int ms)
 
 static void dnload_request_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [157]  shl_add\n");
 	struct f_dfu *f_dfu = req->context;
 	int ret;
 
@@ -168,18 +171,21 @@ static void dnload_request_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void dnload_request_flush(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [170]  shl_add\n");
 	struct f_dfu *f_dfu = req->context;
 	dfu_set_defer_flush(dfu_get_entity(f_dfu->altsetting));
 }
 
 static inline int dfu_get_manifest_timeout(struct dfu_entity *dfu)
 {
+	my_dbg(" [176]  shl_add\n");
 	return dfu->poll_timeout ? dfu->poll_timeout(dfu) :
 		DFU_MANIFEST_POLL_TIMEOUT;
 }
 
 static int handle_getstatus(struct usb_request *req)
 {
+	my_dbg(" [182]  shl_add\n");
 	struct dfu_status *dstat = (struct dfu_status *)req->buf;
 	struct f_dfu *f_dfu = req->context;
 	struct dfu_entity *dfu = dfu_get_entity(f_dfu->altsetting);
@@ -216,6 +222,7 @@ static int handle_getstatus(struct usb_request *req)
 
 static int handle_getstate(struct usb_request *req)
 {
+	my_dbg(" [218]  shl_add\n");
 	struct f_dfu *f_dfu = req->context;
 
 	((u8 *)req->buf)[0] = f_dfu->dfu_state;
@@ -224,6 +231,7 @@ static int handle_getstate(struct usb_request *req)
 
 static inline void to_dfu_mode(struct f_dfu *f_dfu)
 {
+	my_dbg(" [226]  shl_add\n");
 	f_dfu->usb_function.strings = dfu_strings;
 	f_dfu->usb_function.hs_descriptors = f_dfu->function;
 	f_dfu->usb_function.descriptors = f_dfu->function;
@@ -232,6 +240,7 @@ static inline void to_dfu_mode(struct f_dfu *f_dfu)
 
 static inline void to_runtime_mode(struct f_dfu *f_dfu)
 {
+	my_dbg(" [234]  shl_add\n");
 	f_dfu->usb_function.strings = NULL;
 	f_dfu->usb_function.hs_descriptors = dfu_runtime_descs;
 	f_dfu->usb_function.descriptors = dfu_runtime_descs;
@@ -239,6 +248,7 @@ static inline void to_runtime_mode(struct f_dfu *f_dfu)
 
 static int handle_upload(struct usb_request *req, u16 len)
 {
+	my_dbg(" [241]  shl_add\n");
 	struct f_dfu *f_dfu = req->context;
 
 	return dfu_read(dfu_get_entity(f_dfu->altsetting), req->buf,
@@ -247,6 +257,7 @@ static int handle_upload(struct usb_request *req, u16 len)
 
 static int handle_dnload(struct usb_gadget *gadget, u16 len)
 {
+	my_dbg(" [249]  shl_add\n");
 	struct usb_composite_dev *cdev = get_gadget_data(gadget);
 	struct usb_request *req = cdev->req;
 	struct f_dfu *f_dfu = req->context;
@@ -266,6 +277,7 @@ static int state_app_idle(struct f_dfu *f_dfu,
 			  struct usb_gadget *gadget,
 			  struct usb_request *req)
 {
+	my_dbg(" [268]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -293,6 +305,7 @@ static int state_app_detach(struct f_dfu *f_dfu,
 			    struct usb_gadget *gadget,
 			    struct usb_request *req)
 {
+	my_dbg(" [295]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -316,6 +329,7 @@ static int state_dfu_idle(struct f_dfu *f_dfu,
 			  struct usb_gadget *gadget,
 			  struct usb_request *req)
 {
+	my_dbg(" [318]  shl_add\n");
 	u16 w_value = le16_to_cpu(ctrl->wValue);
 	u16 len = le16_to_cpu(ctrl->wLength);
 	int value = 0;
@@ -376,6 +390,7 @@ static int state_dfu_dnload_sync(struct f_dfu *f_dfu,
 				 struct usb_gadget *gadget,
 				 struct usb_request *req)
 {
+	my_dbg(" [378]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -399,6 +414,7 @@ static int state_dfu_dnbusy(struct f_dfu *f_dfu,
 			    struct usb_gadget *gadget,
 			    struct usb_request *req)
 {
+	my_dbg(" [401]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -419,6 +435,7 @@ static int state_dfu_dnload_idle(struct f_dfu *f_dfu,
 				 struct usb_gadget *gadget,
 				 struct usb_request *req)
 {
+	my_dbg(" [421]  shl_add\n");
 	u16 w_value = le16_to_cpu(ctrl->wValue);
 	u16 len = le16_to_cpu(ctrl->wLength);
 	int value = 0;
@@ -453,6 +470,7 @@ static int state_dfu_manifest_sync(struct f_dfu *f_dfu,
 				   struct usb_gadget *gadget,
 				   struct usb_request *req)
 {
+	my_dbg(" [455]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -480,6 +498,7 @@ static int state_dfu_manifest(struct f_dfu *f_dfu,
 			      struct usb_gadget *gadget,
 			      struct usb_request *req)
 {
+	my_dbg(" [482]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -506,6 +525,7 @@ static int state_dfu_upload_idle(struct f_dfu *f_dfu,
 				 struct usb_gadget *gadget,
 				 struct usb_request *req)
 {
+	my_dbg(" [508]  shl_add\n");
 	u16 w_value = le16_to_cpu(ctrl->wValue);
 	u16 len = le16_to_cpu(ctrl->wLength);
 	int value = 0;
@@ -543,6 +563,7 @@ static int state_dfu_error(struct f_dfu *f_dfu,
 				 struct usb_gadget *gadget,
 				 struct usb_request *req)
 {
+	my_dbg(" [545]  shl_add\n");
 	int value = 0;
 
 	switch (ctrl->bRequest) {
@@ -584,6 +605,7 @@ static dfu_state_fn dfu_state[] = {
 static int
 dfu_handle(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [586]  shl_add\n");
 	struct usb_gadget *gadget = f->config->cdev->gadget;
 	struct usb_request *req = f->config->cdev->req;
 	struct f_dfu *f_dfu = f->config->cdev->req->context;
@@ -623,6 +645,7 @@ dfu_handle(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 static int
 dfu_prepare_strings(struct f_dfu *f_dfu, int n)
 {
+	my_dbg(" [625]  shl_add\n");
 	struct dfu_entity *de = NULL;
 	int i = 0;
 
@@ -643,6 +666,7 @@ dfu_prepare_strings(struct f_dfu *f_dfu, int n)
 
 static int dfu_prepare_function(struct f_dfu *f_dfu, int n)
 {
+	my_dbg(" [645]  shl_add\n");
 	struct usb_interface_descriptor *d;
 	int i = 0;
 
@@ -689,6 +713,7 @@ enomem:
 
 static int dfu_bind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [691]  shl_add\n");
 	struct usb_composite_dev *cdev = c->cdev;
 	struct f_dfu *f_dfu = func_to_dfu(f);
 	const char *s;
@@ -735,6 +760,7 @@ error:
 
 static void dfu_unbind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [737]  shl_add\n");
 	struct f_dfu *f_dfu = func_to_dfu(f);
 	int alt_num = dfu_get_alt_number();
 	int i;
@@ -762,6 +788,7 @@ static void dfu_unbind(struct usb_configuration *c, struct usb_function *f)
 
 static int dfu_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 {
+	my_dbg(" [764]  shl_add\n");
 	struct f_dfu *f_dfu = func_to_dfu(f);
 
 	debug("%s: intf:%d alt:%d\n", __func__, intf, alt);
@@ -775,6 +802,7 @@ static int dfu_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 
 static int __dfu_get_alt(struct usb_function *f, unsigned intf)
 {
+	my_dbg(" [777]  shl_add\n");
 	struct f_dfu *f_dfu = func_to_dfu(f);
 
 	return f_dfu->altsetting;
@@ -783,6 +811,7 @@ static int __dfu_get_alt(struct usb_function *f, unsigned intf)
 /* TODO: is this really what we need here? */
 static void dfu_disable(struct usb_function *f)
 {
+	my_dbg(" [785]  shl_add\n");
 	struct f_dfu *f_dfu = func_to_dfu(f);
 	if (f_dfu->config == 0)
 		return;
@@ -794,6 +823,7 @@ static void dfu_disable(struct usb_function *f)
 
 static int dfu_bind_config(struct usb_configuration *c)
 {
+	my_dbg(" [796]  shl_add\n");
 	struct f_dfu *f_dfu;
 	int status;
 
@@ -821,6 +851,7 @@ static int dfu_bind_config(struct usb_configuration *c)
 
 int dfu_add(struct usb_configuration *c)
 {
+	my_dbg(" [823]  shl_add\n");
 	int id;
 
 	id = usb_string_id(c->cdev);
@@ -836,3 +867,4 @@ int dfu_add(struct usb_configuration *c)
 }
 
 DECLARE_GADGET_BIND_CALLBACK(usb_dnl_dfu, dfu_add);
+

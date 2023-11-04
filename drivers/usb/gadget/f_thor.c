@@ -37,6 +37,7 @@ static int thor_rx_data(void);
 static struct f_thor *thor_func;
 static inline struct f_thor *func_to_thor(struct usb_function *f)
 {
+	my_dbg(" [39]  shl_add\n");
 	return container_of(f, struct f_thor, usb_function);
 }
 
@@ -54,6 +55,7 @@ static int alt_setting_num;
 
 static void send_rsp(const struct rsp_box *rsp)
 {
+	my_dbg(" [56]  shl_add\n");
 	memcpy(thor_tx_data_buf, rsp, sizeof(struct rsp_box));
 	thor_tx_data(thor_tx_data_buf, sizeof(struct rsp_box));
 
@@ -62,6 +64,7 @@ static void send_rsp(const struct rsp_box *rsp)
 
 static void send_data_rsp(s32 ack, s32 count)
 {
+	my_dbg(" [64]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct data_rsp_box, rsp,
 				 sizeof(struct data_rsp_box));
 
@@ -76,6 +79,7 @@ static void send_data_rsp(s32 ack, s32 count)
 
 static int process_rqt_info(const struct rqt_box *rqt)
 {
+	my_dbg(" [78]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct rsp_box, rsp, sizeof(struct rsp_box));
 	memset(rsp, 0, sizeof(struct rsp_box));
 
@@ -113,6 +117,7 @@ static int process_rqt_info(const struct rqt_box *rqt)
 
 static int process_rqt_cmd(const struct rqt_box *rqt)
 {
+	my_dbg(" [115]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct rsp_box, rsp, sizeof(struct rsp_box));
 	memset(rsp, 0, sizeof(struct rsp_box));
 
@@ -146,6 +151,7 @@ static long long int download_head(unsigned long long total,
 				   long long int *left,
 				   int *cnt)
 {
+	my_dbg(" [148]  shl_add\n");
 	long long int rcv_cnt = 0, left_to_rcv, ret_rcv;
 	struct dfu_entity *dfu_entity = dfu_get_entity(alt_setting_num);
 	void *transfer_buffer = dfu_get_buf(dfu_entity);
@@ -210,6 +216,7 @@ static long long int download_head(unsigned long long total,
 
 static int download_tail(long long int left, int cnt)
 {
+	my_dbg(" [212]  shl_add\n");
 	struct dfu_entity *dfu_entity;
 	void *transfer_buffer;
 	int ret;
@@ -252,6 +259,7 @@ static int download_tail(long long int left, int cnt)
 
 static long long int process_rqt_download(const struct rqt_box *rqt)
 {
+	my_dbg(" [254]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct rsp_box, rsp, sizeof(struct rsp_box));
 	static long long int left, ret_head;
 	int file_type, ret = 0;
@@ -326,6 +334,7 @@ static long long int process_rqt_download(const struct rqt_box *rqt)
 
 static int process_data(void)
 {
+	my_dbg(" [328]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct rqt_box, rqt, sizeof(struct rqt_box));
 	int ret = -EINVAL;
 
@@ -361,6 +370,7 @@ static inline struct usb_endpoint_descriptor *
 ep_desc(struct usb_gadget *g, struct usb_endpoint_descriptor *hs,
 	struct usb_endpoint_descriptor *fs)
 {
+	my_dbg(" [363]  shl_add\n");
 	if (gadget_is_dualspeed(g) && g->speed == USB_SPEED_HIGH)
 		return hs;
 	return fs;
@@ -516,6 +526,7 @@ static const struct usb_descriptor_header *hs_thor_downloader_function[] = {
 /*-------------------------------------------------------------------------*/
 static struct usb_request *alloc_ep_req(struct usb_ep *ep, unsigned length)
 {
+	my_dbg(" [518]  shl_add\n");
 	struct usb_request *req;
 
 	req = usb_ep_alloc_request(ep, 0);
@@ -534,6 +545,7 @@ static struct usb_request *alloc_ep_req(struct usb_ep *ep, unsigned length)
 
 static int thor_rx_data(void)
 {
+	my_dbg(" [536]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 	int data_to_rx, tmp, status;
 
@@ -566,6 +578,7 @@ static int thor_rx_data(void)
 
 static void thor_tx_data(unsigned char *data, int len)
 {
+	my_dbg(" [568]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 	unsigned char *ptr = dev->in_req->buf;
 	int status;
@@ -594,6 +607,7 @@ static void thor_tx_data(unsigned char *data, int len)
 
 static void thor_rx_tx_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [596]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 	int status = req->status;
 
@@ -623,6 +637,7 @@ static void thor_rx_tx_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void thor_setup_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [625]  shl_add\n");
 	if (req->status || req->actual != req->length)
 		debug("setup complete --> %d, %d/%d\n",
 		      req->status, req->actual, req->length);
@@ -631,6 +646,7 @@ static void thor_setup_complete(struct usb_ep *ep, struct usb_request *req)
 static int
 thor_func_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [633]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 	struct usb_request *req = dev->req;
 	struct usb_gadget *gadget = dev->gadget;
@@ -672,6 +688,7 @@ thor_func_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 /* Specific to the THOR protocol */
 static void thor_set_dma(void *addr, int len)
 {
+	my_dbg(" [674]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 
 	debug("in_req:%p, out_req:%p\n", dev->in_req, dev->out_req);
@@ -683,6 +700,7 @@ static void thor_set_dma(void *addr, int len)
 
 int thor_init(void)
 {
+	my_dbg(" [685]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 
 	/* Wait for a device enumeration and configuration settings */
@@ -713,6 +731,7 @@ int thor_init(void)
 
 int thor_handle(void)
 {
+	my_dbg(" [715]  shl_add\n");
 	int ret;
 
 	/* receive the data from Host PC */
@@ -739,6 +758,7 @@ int thor_handle(void)
 
 static void free_ep_req(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [741]  shl_add\n");
 	if (req->buf)
 		free(req->buf);
 	usb_ep_free_request(ep, req);
@@ -746,6 +766,7 @@ static void free_ep_req(struct usb_ep *ep, struct usb_request *req)
 
 static int thor_func_bind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [748]  shl_add\n");
 	struct usb_gadget *gadget = c->cdev->gadget;
 	struct f_thor *f_thor = func_to_thor(f);
 	struct thor_dev *dev;
@@ -860,6 +881,7 @@ static int thor_func_bind(struct usb_configuration *c, struct usb_function *f)
 
 static void thor_unbind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [862]  shl_add\n");
 	struct f_thor *f_thor = func_to_thor(f);
 	struct thor_dev *dev = f_thor->dev;
 
@@ -871,6 +893,7 @@ static void thor_unbind(struct usb_configuration *c, struct usb_function *f)
 
 static void thor_func_disable(struct usb_function *f)
 {
+	my_dbg(" [873]  shl_add\n");
 	struct f_thor *f_thor = func_to_thor(f);
 	struct thor_dev *dev = f_thor->dev;
 
@@ -897,6 +920,7 @@ static void thor_func_disable(struct usb_function *f)
 
 static int thor_eps_setup(struct usb_function *f)
 {
+	my_dbg(" [899]  shl_add\n");
 	struct usb_composite_dev *cdev = f->config->cdev;
 	struct usb_gadget *gadget = cdev->gadget;
 	struct thor_dev *dev = thor_func->dev;
@@ -970,6 +994,7 @@ static int thor_eps_setup(struct usb_function *f)
 static int thor_func_set_alt(struct usb_function *f,
 			     unsigned intf, unsigned alt)
 {
+	my_dbg(" [972]  shl_add\n");
 	struct thor_dev *dev = thor_func->dev;
 	int result;
 
@@ -994,6 +1019,7 @@ static int thor_func_set_alt(struct usb_function *f,
 
 static int thor_func_init(struct usb_configuration *c)
 {
+	my_dbg(" [996]  shl_add\n");
 	struct f_thor *f_thor;
 	int status;
 
@@ -1021,8 +1047,10 @@ static int thor_func_init(struct usb_configuration *c)
 
 int thor_add(struct usb_configuration *c)
 {
+	my_dbg(" [1023]  shl_add\n");
 	debug("%s:\n", __func__);
 	return thor_func_init(c);
 }
 
 DECLARE_GADGET_BIND_CALLBACK(usb_dnl_thor, thor_add);
+

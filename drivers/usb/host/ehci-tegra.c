@@ -208,6 +208,7 @@ static struct fdt_usb_controller fdt_usb_controllers[USB_CTRL_COUNT] = {
 static void tegra_ehci_powerup_fixup(struct ehci_ctrl *ctrl,
 				     uint32_t *status_reg, uint32_t *reg)
 {
+	my_dbg(" [210]  shl_add\n");
 	struct fdt_usb *config = ctrl->priv;
 	struct fdt_usb_controller *controller;
 
@@ -226,6 +227,7 @@ static void tegra_ehci_powerup_fixup(struct ehci_ctrl *ctrl,
 
 static void tegra_ehci_set_usbmode(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [228]  shl_add\n");
 	struct fdt_usb *config = ctrl->priv;
 	struct usb_ctlr *usbctlr;
 	uint32_t tmp;
@@ -239,6 +241,7 @@ static void tegra_ehci_set_usbmode(struct ehci_ctrl *ctrl)
 
 static int tegra_ehci_get_port_speed(struct ehci_ctrl *ctrl, uint32_t reg)
 {
+	my_dbg(" [241]  shl_add\n");
 	struct fdt_usb *config = ctrl->priv;
 	struct fdt_usb_controller *controller;
 	uint32_t tmp;
@@ -257,6 +260,7 @@ static int tegra_ehci_get_port_speed(struct ehci_ctrl *ctrl, uint32_t reg)
 /* Set up VBUS for host/device mode */
 static void set_up_vbus(struct fdt_usb *config, enum usb_init_type init)
 {
+	my_dbg(" [259]  shl_add\n");
 	/*
 	 * If we are an OTG port initializing in host mode,
 	 * check if remote host is driving VBus and bail out in this case.
@@ -282,6 +286,7 @@ static void set_up_vbus(struct fdt_usb *config, enum usb_init_type init)
 static void usbf_reset_controller(struct fdt_usb *config,
 				  struct usb_ctlr *usbctlr)
 {
+	my_dbg(" [284]  shl_add\n");
 	/* Reset the USB controller with 2us delay */
 	reset_periph(config->periph_id, 2);
 
@@ -302,6 +307,7 @@ static void usbf_reset_controller(struct fdt_usb *config,
 
 static const unsigned *get_pll_timing(struct fdt_usb_controller *controller)
 {
+	my_dbg(" [304]  shl_add\n");
 	const unsigned *timing;
 
 	timing = controller->pll_parameter +
@@ -314,6 +320,7 @@ static const unsigned *get_pll_timing(struct fdt_usb_controller *controller)
 static void init_phy_mux(struct fdt_usb *config, uint pts,
 			 enum usb_init_type init)
 {
+	my_dbg(" [316]  shl_add\n");
 	struct usb_ctlr *usbctlr = config->reg;
 
 #if defined(CONFIG_TEGRA20)
@@ -347,6 +354,7 @@ static void init_phy_mux(struct fdt_usb *config, uint pts,
 static int init_utmi_usb_controller(struct fdt_usb *config,
 				    enum usb_init_type init)
 {
+	my_dbg(" [349]  shl_add\n");
 	struct fdt_usb_controller *controller;
 	u32 b_sess_valid_mask, val;
 	int loop_count;
@@ -587,6 +595,7 @@ static int init_utmi_usb_controller(struct fdt_usb *config,
 static int init_ulpi_usb_controller(struct fdt_usb *config,
 				    enum usb_init_type init)
 {
+	my_dbg(" [589]  shl_add\n");
 	u32 val;
 	int loop_count;
 	struct ulpi_viewport ulpi_vp;
@@ -675,6 +684,7 @@ static int init_ulpi_usb_controller(struct fdt_usb *config,
 static int init_ulpi_usb_controller(struct fdt_usb *config,
 				    enum usb_init_type init)
 {
+	my_dbg(" [677]  shl_add\n");
 	printf("No code to set up ULPI controller, please enable"
 			"CONFIG_USB_ULPI and CONFIG_USB_ULPI_VIEWPORT");
 	return -ENOSYS;
@@ -683,6 +693,7 @@ static int init_ulpi_usb_controller(struct fdt_usb *config,
 
 static void config_clock(const u32 timing[])
 {
+	my_dbg(" [685]  shl_add\n");
 	debug("%s: DIVM = %d, DIVN = %d, DIVP = %d, cpcon/lfcon = %d/%d\n",
 	      __func__, timing[PARAM_DIVM], timing[PARAM_DIVN],
 	      timing[PARAM_DIVP], timing[PARAM_CPCON], timing[PARAM_LFCON]);
@@ -694,6 +705,7 @@ static void config_clock(const u32 timing[])
 
 static int fdt_decode_usb(struct udevice *dev, struct fdt_usb *config)
 {
+	my_dbg(" [696]  shl_add\n");
 	const char *phy, *mode;
 
 	config->reg = (struct usb_ctlr *)dev_read_addr(dev);
@@ -739,6 +751,7 @@ static int fdt_decode_usb(struct udevice *dev, struct fdt_usb *config)
 
 int usb_common_init(struct fdt_usb *config, enum usb_init_type init)
 {
+	my_dbg(" [741]  shl_add\n");
 	int ret = 0;
 
 	switch (init) {
@@ -794,6 +807,7 @@ int usb_common_init(struct fdt_usb *config, enum usb_init_type init)
 
 void usb_common_uninit(struct fdt_usb *priv)
 {
+	my_dbg(" [796]  shl_add\n");
 	struct usb_ctlr *usbctlr;
 
 	usbctlr = priv->reg;
@@ -815,6 +829,7 @@ static const struct ehci_ops tegra_ehci_ops = {
 
 static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [817]  shl_add\n");
 	struct fdt_usb *priv = dev_get_priv(dev);
 	int ret;
 
@@ -829,6 +844,7 @@ static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [831]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct fdt_usb *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr;
@@ -870,3 +886,4 @@ U_BOOT_DRIVER(usb_ehci) = {
 	.priv_auto_alloc_size = sizeof(struct fdt_usb),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

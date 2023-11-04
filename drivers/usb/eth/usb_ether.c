@@ -19,6 +19,7 @@
 
 int usb_ether_register(struct udevice *dev, struct ueth_data *ueth, int rxsize)
 {
+	my_dbg(" [21]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct usb_interface_descriptor *iface_desc;
 	bool ep_in_found = false, ep_out_found = false;
@@ -90,11 +91,13 @@ int usb_ether_register(struct udevice *dev, struct ueth_data *ueth, int rxsize)
 
 int usb_ether_deregister(struct ueth_data *ueth)
 {
+	my_dbg(" [92]  shl_add\n");
 	return 0;
 }
 
 int usb_ether_receive(struct ueth_data *ueth, int rxsize)
 {
+	my_dbg(" [97]  shl_add\n");
 	int actual_len;
 	int ret;
 
@@ -121,6 +124,7 @@ int usb_ether_receive(struct ueth_data *ueth, int rxsize)
 
 void usb_ether_advance_rxbuf(struct ueth_data *ueth, int num_bytes)
 {
+	my_dbg(" [123]  shl_add\n");
 	ueth->rxptr += num_bytes;
 	if (num_bytes < 0 || ueth->rxptr >= ueth->rxlen)
 		ueth->rxlen = 0;
@@ -128,6 +132,7 @@ void usb_ether_advance_rxbuf(struct ueth_data *ueth, int num_bytes)
 
 int usb_ether_get_rx_bytes(struct ueth_data *ueth, uint8_t **ptrp)
 {
+	my_dbg(" [130]  shl_add\n");
 	if (!ueth->rxlen)
 		return 0;
 
@@ -198,6 +203,7 @@ static struct ueth_data usb_eth[USB_MAX_ETH_DEV];
  */
 int is_eth_dev_on_usb_host(void)
 {
+	my_dbg(" [200]  shl_add\n");
 	int i;
 	struct eth_device *dev = eth_get_dev();
 
@@ -215,6 +221,7 @@ int is_eth_dev_on_usb_host(void)
  */
 static void probe_valid_drivers(struct usb_device *dev)
 {
+	my_dbg(" [217]  shl_add\n");
 	struct eth_device *eth;
 	int j;
 
@@ -253,6 +260,7 @@ static void probe_valid_drivers(struct usb_device *dev)
  */
 int usb_host_eth_scan(int mode)
 {
+	my_dbg(" [255]  shl_add\n");
 	int i, old_async;
 
 	if (mode == 1)
@@ -332,3 +340,4 @@ int usb_host_eth_scan(int mode)
 	return -1;
 }
 #endif
+

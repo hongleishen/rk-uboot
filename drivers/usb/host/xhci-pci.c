@@ -15,6 +15,7 @@
 static void xhci_pci_init(struct udevice *dev, struct xhci_hccr **ret_hccr,
 			  struct xhci_hcor **ret_hcor)
 {
+	my_dbg(" [17]  shl_add\n");
 	struct xhci_hccr *hccr;
 	struct xhci_hcor *hcor;
 	u32 cmd;
@@ -38,6 +39,7 @@ static void xhci_pci_init(struct udevice *dev, struct xhci_hccr **ret_hccr,
 
 static int xhci_pci_probe(struct udevice *dev)
 {
+	my_dbg(" [40]  shl_add\n");
 	struct xhci_hccr *hccr;
 	struct xhci_hcor *hcor;
 
@@ -69,3 +71,4 @@ static struct pci_device_id xhci_pci_supported[] = {
 };
 
 U_BOOT_PCI_DEVICE(xhci_pci, xhci_pci_supported);
+

@@ -19,6 +19,7 @@ struct sandbox_usb_ctrl {
 static void usbmon_trace(struct udevice *bus, ulong pipe,
 			 struct devrequest *setup, struct udevice *emul)
 {
+	my_dbg(" [21]  shl_add\n");
 	static const char types[] = "ZICB";
 	int type;
 
@@ -44,6 +45,7 @@ static int sandbox_submit_control(struct udevice *bus,
 				      void *buffer, int length,
 				      struct devrequest *setup)
 {
+	my_dbg(" [46]  shl_add\n");
 	struct sandbox_usb_ctrl *ctrl = dev_get_priv(bus);
 	struct udevice *emul;
 	int ret;
@@ -78,6 +80,7 @@ static int sandbox_submit_control(struct udevice *bus,
 static int sandbox_submit_bulk(struct udevice *bus, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [80]  shl_add\n");
 	struct udevice *emul;
 	int ret;
 
@@ -104,6 +107,7 @@ static int sandbox_submit_int(struct udevice *bus, struct usb_device *udev,
 			      unsigned long pipe, void *buffer, int length,
 			      int interval, bool nonblock)
 {
+	my_dbg(" [106]  shl_add\n");
 	struct udevice *emul;
 	int ret;
 
@@ -121,6 +125,7 @@ static int sandbox_submit_int(struct udevice *bus, struct usb_device *udev,
 
 static int sandbox_alloc_device(struct udevice *dev, struct usb_device *udev)
 {
+	my_dbg(" [123]  shl_add\n");
 	struct sandbox_usb_ctrl *ctrl = dev_get_priv(dev);
 
 	/*
@@ -136,6 +141,7 @@ static int sandbox_alloc_device(struct udevice *dev, struct usb_device *udev)
 
 static int sandbox_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [138]  shl_add\n");
 	return 0;
 }
 
@@ -159,3 +165,4 @@ U_BOOT_DRIVER(usb_sandbox) = {
 	.ops	= &sandbox_usb_ops,
 	.priv_auto_alloc_size = sizeof(struct sandbox_usb_ctrl),
 };
+

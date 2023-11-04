@@ -28,6 +28,7 @@ struct xhci_dwc3_platdata {
 
 void dwc3_set_mode(struct dwc3 *dwc3_reg, u32 mode)
 {
+	my_dbg(" [30]  shl_add\n");
 	clrsetbits_le32(&dwc3_reg->g_ctl,
 			DWC3_GCTL_PRTCAPDIR(DWC3_GCTL_PRTCAP_OTG),
 			DWC3_GCTL_PRTCAPDIR(mode));
@@ -35,6 +36,7 @@ void dwc3_set_mode(struct dwc3 *dwc3_reg, u32 mode)
 
 static void dwc3_phy_reset(struct dwc3 *dwc3_reg)
 {
+	my_dbg(" [37]  shl_add\n");
 	/* Assert USB3 PHY reset */
 	setbits_le32(&dwc3_reg->g_usb3pipectl[0], DWC3_GUSB3PIPECTL_PHYSOFTRST);
 
@@ -52,6 +54,7 @@ static void dwc3_phy_reset(struct dwc3 *dwc3_reg)
 
 void dwc3_core_soft_reset(struct dwc3 *dwc3_reg)
 {
+	my_dbg(" [54]  shl_add\n");
 	/* Before Resetting PHY, put Core in Reset */
 	setbits_le32(&dwc3_reg->g_ctl, DWC3_GCTL_CORESOFTRESET);
 
@@ -66,6 +69,7 @@ void dwc3_core_soft_reset(struct dwc3 *dwc3_reg)
 
 int dwc3_core_init(struct dwc3 *dwc3_reg)
 {
+	my_dbg(" [68]  shl_add\n");
 	u32 reg;
 	u32 revision;
 	unsigned int dwc3_hwparams1;
@@ -108,6 +112,7 @@ int dwc3_core_init(struct dwc3 *dwc3_reg)
 
 void dwc3_set_fladj(struct dwc3 *dwc3_reg, u32 val)
 {
+	my_dbg(" [110]  shl_add\n");
 	setbits_le32(&dwc3_reg->g_fladj, GFLADJ_30MHZ_REG_SEL |
 			GFLADJ_30MHZ(val));
 }
@@ -115,6 +120,7 @@ void dwc3_set_fladj(struct dwc3 *dwc3_reg, u32 val)
 #if CONFIG_IS_ENABLED(DM_USB)
 static int xhci_dwc3_probe(struct udevice *dev)
 {
+	my_dbg(" [117]  shl_add\n");
 	struct xhci_hcor *hcor;
 	struct xhci_hccr *hccr;
 	struct dwc3 *dwc3_reg;
@@ -169,6 +175,7 @@ static int xhci_dwc3_probe(struct udevice *dev)
 
 static int xhci_dwc3_remove(struct udevice *dev)
 {
+	my_dbg(" [171]  shl_add\n");
 	struct xhci_dwc3_platdata *plat = dev_get_platdata(dev);
 
 	dwc3_shutdown_phy(dev, plat->usb_phys, plat->num_phys);
@@ -193,3 +200,4 @@ U_BOOT_DRIVER(xhci_dwc3) = {
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif
+

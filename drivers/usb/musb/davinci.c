@@ -32,6 +32,7 @@ struct davinci_usb_regs *dregs;
  */
 static u8 phy_on(void)
 {
+	my_dbg(" [34]  shl_add\n");
 	u32 timeout;
 #ifdef DAVINCI_DM365EVM
 	u32 val;
@@ -65,12 +66,14 @@ static u8 phy_on(void)
  */
 static void phy_off(void)
 {
+	my_dbg(" [67]  shl_add\n");
 	/* powerdown the on-chip PHY and its oscillator */
 	writel(USBPHY_OSCPDWN | USBPHY_PHYPDWN, USBPHY_CTL_PADDR);
 }
 
 void __enable_vbus(void)
 {
+	my_dbg(" [73]  shl_add\n");
 	/*
 	 *  nothing to do, vbus is handled through the cpu.
 	 *  Define this function in board code, if it is
@@ -85,6 +88,7 @@ void  enable_vbus(void)
  */
 int musb_platform_init(void)
 {
+	my_dbg(" [87]  shl_add\n");
 	u32  revision;
 
 	/* enable USB VBUS */
@@ -115,6 +119,7 @@ int musb_platform_init(void)
  */
 void musb_platform_deinit(void)
 {
+	my_dbg(" [117]  shl_add\n");
 	/* Turn of the phy */
 	phy_off();
 
@@ -122,3 +127,4 @@ void musb_platform_deinit(void)
 	writel(DAVINCI_USB_USBINT_MASK | DAVINCI_USB_TXINT_MASK |
 			DAVINCI_USB_RXINT_MASK , &dregs->intclrr);
 }
+

@@ -18,6 +18,7 @@ int vct_ehci_hcd_init(u32 *hccr, u32 *hcor);
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [20]  shl_add\n");
 	int ret;
 	u32 vct_hccr;
 	u32 vct_hcor;
@@ -41,5 +42,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [43]  shl_add\n");
 	return 0;
 }
+

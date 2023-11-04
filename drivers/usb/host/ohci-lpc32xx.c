@@ -85,6 +85,7 @@ static struct clk_pm_regs *clk_pwr = (struct clk_pm_regs *)CLK_PM_BASE;
 
 static int isp1301_set_value(struct udevice *dev, int reg, u8 value)
 {
+	my_dbg(" [87]  shl_add\n");
 #ifndef CONFIG_DM_I2C
 	return i2c_write(ISP1301_I2C_ADDR, reg, 1, &value, 1);
 #else
@@ -94,6 +95,7 @@ static int isp1301_set_value(struct udevice *dev, int reg, u8 value)
 
 static void isp1301_configure(struct udevice *dev)
 {
+	my_dbg(" [96]  shl_add\n");
 #ifndef CONFIG_DM_I2C
 	i2c_set_bus_num(I2C_2);
 #endif
@@ -128,6 +130,7 @@ static void isp1301_configure(struct udevice *dev)
 
 static int usbpll_setup(void)
 {
+	my_dbg(" [130]  shl_add\n");
 	u32 ret;
 
 	/* make sure clocks are disabled */
@@ -156,6 +159,7 @@ static int usbpll_setup(void)
 
 int usb_cpu_init(void)
 {
+	my_dbg(" [158]  shl_add\n");
 	u32 ret;
 	struct udevice *dev = NULL;
 
@@ -212,6 +216,7 @@ int usb_cpu_init(void)
 
 int usb_cpu_stop(void)
 {
+	my_dbg(" [214]  shl_add\n");
 	struct udevice *dev = NULL;
 	int ret = 0;
 
@@ -235,5 +240,7 @@ int usb_cpu_stop(void)
 
 int usb_cpu_init_fail(void)
 {
+	my_dbg(" [237]  shl_add\n");
 	return usb_cpu_stop();
 }
+

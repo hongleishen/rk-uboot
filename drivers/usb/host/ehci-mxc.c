@@ -64,6 +64,7 @@
 
 static int mxc_set_usbcontrol(int port, unsigned int flags)
 {
+	my_dbg(" [66]  shl_add\n");
 	unsigned int v;
 
 	v = readl(IMX_USB_BASE + USBCTRL_OTGBASE_OFFSET);
@@ -211,6 +212,7 @@ static int mxc_set_usbcontrol(int port, unsigned int flags)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [213]  shl_add\n");
 	struct usb_ehci *ehci;
 #ifdef CONFIG_MX31
 	struct clock_control_regs *sc_regs =
@@ -246,5 +248,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [248]  shl_add\n");
 	return 0;
 }
+

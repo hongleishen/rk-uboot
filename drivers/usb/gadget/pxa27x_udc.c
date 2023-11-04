@@ -29,6 +29,7 @@ static int ep0state = EP0_IDLE;
 #ifdef USBDDBG
 static void udc_dump_buffer(char *name, u8 *buf, int len)
 {
+	my_dbg(" [31]  shl_add\n");
 	usbdbg("%s - buf %p, len %d", name, buf, len);
 	print_buffer(0, buf, 1, len, 0);
 }
@@ -38,6 +39,7 @@ static void udc_dump_buffer(char *name, u8 *buf, int len)
 
 static inline void udc_ack_int_UDCCR(int mask)
 {
+	my_dbg(" [40]  shl_add\n");
 	writel(readl(USIR1) | mask, USIR1);
 }
 
@@ -54,6 +56,7 @@ static inline void udc_ack_int_UDCCR(int mask)
  */
 static int udc_write_urb(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [56]  shl_add\n");
 	struct urb *urb = endpoint->tx_urb;
 	int ep_num = endpoint->endpoint_address & USB_ENDPOINT_NUMBER_MASK;
 	u32 *data32 = (u32 *) urb->buffer;
@@ -135,6 +138,7 @@ static int udc_write_urb(struct usb_endpoint_instance *endpoint)
 
 static int udc_read_urb(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [137]  shl_add\n");
 	struct urb *urb = endpoint->rcv_urb;
 	int ep_num = endpoint->endpoint_address & USB_ENDPOINT_NUMBER_MASK;
 	u32 *data32 = (u32 *) urb->buffer;
@@ -165,6 +169,7 @@ static int udc_read_urb(struct usb_endpoint_instance *endpoint)
 
 static int udc_read_urb_ep0(void)
 {
+	my_dbg(" [167]  shl_add\n");
 	u32 *data32 = (u32 *) ep0_urb->buffer;
 	u8 *data8 = (u8 *) ep0_urb->buffer;
 	unsigned int i, n, w, b;
@@ -202,6 +207,7 @@ static int udc_read_urb_ep0(void)
 
 static void udc_handle_ep0(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [204]  shl_add\n");
 	u32 udccsr0 = readl(UDCCSR0);
 	u32 *data = (u32 *) &ep0_urb->device_request;
 	int i;
@@ -370,6 +376,7 @@ read_complete:
 
 static void udc_handle_ep(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [372]  shl_add\n");
 	int ep_addr = endpoint->endpoint_address;
 	int ep_num = ep_addr & USB_ENDPOINT_NUMBER_MASK;
 	int ep_isout = (ep_addr & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT;
@@ -388,6 +395,7 @@ static void udc_handle_ep(struct usb_endpoint_instance *endpoint)
 
 static void udc_state_changed(void)
 {
+	my_dbg(" [390]  shl_add\n");
 
 	writel(readl(UDCCR) | UDCCR_SMAC, UDCCR);
 
@@ -402,6 +410,7 @@ static void udc_state_changed(void)
 
 void udc_irq(void)
 {
+	my_dbg(" [404]  shl_add\n");
 	int handled;
 	struct usb_endpoint_instance *endpoint;
 	int ep_num, i;
@@ -476,16 +485,19 @@ void udc_irq(void)
 
 static inline void udc_set_mask_UDCCR(int mask)
 {
+	my_dbg(" [478]  shl_add\n");
     writel((readl(UDCCR) & UDCCR_MASK_BITS) | (mask & UDCCR_MASK_BITS), UDCCR);
 }
 
 static inline void udc_clear_mask_UDCCR(int mask)
 {
+	my_dbg(" [483]  shl_add\n");
     writel((readl(UDCCR) & UDCCR_MASK_BITS) & ~(mask & UDCCR_MASK_BITS), UDCCR);
 }
 
 static void pio_irq_enable(int ep_num)
 {
+	my_dbg(" [488]  shl_add\n");
 	if (ep_num < 16)
 		writel(readl(UDCICR0) | 3 << (ep_num * 2), UDCICR0);
 	else {
@@ -501,6 +513,7 @@ static void pio_irq_enable(int ep_num)
  */
 void udc_set_nak(int ep_num)
 {
+	my_dbg(" [503]  shl_add\n");
 	/* TODO */
 }
 
@@ -512,11 +525,13 @@ void udc_set_nak(int ep_num)
  */
 void udc_unset_nak(int ep_num)
 {
+	my_dbg(" [514]  shl_add\n");
 	/* TODO */
 }
 
 int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [519]  shl_add\n");
 	return udc_write_urb(endpoint);
 }
 
@@ -524,6 +539,7 @@ int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 void udc_setup_ep(struct usb_device_instance *device, unsigned int id,
 				struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [526]  shl_add\n");
 	int ep_num, ep_addr, ep_isout, ep_type, ep_size;
 	int config, interface, alternate;
 	u32 tmp;
@@ -589,6 +605,7 @@ void udc_setup_ep(struct usb_device_instance *device, unsigned int id,
 /* Connect the USB device to the bus */
 void udc_connect(void)
 {
+	my_dbg(" [591]  shl_add\n");
 	usbdbg("UDC connect");
 
 #ifdef CONFIG_USB_DEV_PULLUP_GPIO
@@ -606,6 +623,7 @@ void udc_connect(void)
 /* Disconnect the USB device to the bus */
 void udc_disconnect(void)
 {
+	my_dbg(" [608]  shl_add\n");
 	usbdbg("UDC disconnect");
 
 #ifdef CONFIG_USB_DEV_PULLUP_GPIO
@@ -620,6 +638,7 @@ void udc_disconnect(void)
 /* Switch on the UDC */
 void udc_enable(struct usb_device_instance *device)
 {
+	my_dbg(" [622]  shl_add\n");
 
 	ep0state = EP0_IDLE;
 
@@ -647,6 +666,7 @@ void udc_enable(struct usb_device_instance *device)
 /* Need to check this again */
 void udc_disable(void)
 {
+	my_dbg(" [649]  shl_add\n");
 	usbdbg("disable UDC");
 
 	udc_clear_mask_UDCCR(UDCCR_UDE);
@@ -667,6 +687,7 @@ void udc_disable(void)
 /* Allow udc code to do any additional startup */
 void udc_startup_events(struct usb_device_instance *device)
 {
+	my_dbg(" [669]  shl_add\n");
 	/* The DEVICE_INIT event puts the USB device in the state STATE_INIT */
 	usbd_device_event_irq(device, DEVICE_INIT, 0);
 
@@ -686,6 +707,7 @@ void udc_startup_events(struct usb_device_instance *device)
 /* Initialize h/w stuff */
 int udc_init(void)
 {
+	my_dbg(" [688]  shl_add\n");
 	udc_device = NULL;
 	usbdbg("PXA27x usbd start");
 
@@ -701,3 +723,4 @@ int udc_init(void)
 
 	return 0;
 }
+

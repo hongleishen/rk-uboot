@@ -58,6 +58,7 @@ static const struct ehci_mxs_port mxs_port[] = {
 
 static int ehci_mxs_toggle_clock(const struct ehci_mxs_port *port, int enable)
 {
+	my_dbg(" [60]  shl_add\n");
 	struct mxs_register_32 *digctl_ctrl =
 		(struct mxs_register_32 *)HW_DIGCTL_CTRL;
 	int pll_offset, dig_offset;
@@ -79,17 +80,20 @@ static int ehci_mxs_toggle_clock(const struct ehci_mxs_port *port, int enable)
 
 int __weak board_ehci_hcd_init(int port)
 {
+	my_dbg(" [81]  shl_add\n");
 	return 0;
 }
 
 int __weak board_ehci_hcd_exit(int port)
 {
+	my_dbg(" [86]  shl_add\n");
 	return 0;
 }
 
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [92]  shl_add\n");
 
 	int ret;
 	uint32_t usb_base, cap_base;
@@ -135,6 +139,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [137]  shl_add\n");
 	int ret;
 	uint32_t usb_base, cap_base, tmp;
 	struct ehci_hccr *hccr;
@@ -172,3 +177,4 @@ int ehci_hcd_stop(int index)
 
 	return ret;
 }
+

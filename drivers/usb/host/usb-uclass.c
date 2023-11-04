@@ -27,6 +27,7 @@ struct usb_uclass_priv {
 
 int usb_disable_asynch(int disable)
 {
+	my_dbg(" [29]  shl_add\n");
 	int old_value = asynch_allowed;
 
 	asynch_allowed = !disable;
@@ -36,6 +37,7 @@ int usb_disable_asynch(int disable)
 int submit_int_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
 		   int length, int interval, bool nonblock)
 {
+	my_dbg(" [38]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -49,6 +51,7 @@ int submit_int_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
 int submit_control_msg(struct usb_device *udev, unsigned long pipe,
 		       void *buffer, int length, struct devrequest *setup)
 {
+	my_dbg(" [51]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 	struct usb_uclass_priv *uc_priv = bus->uclass->priv;
@@ -72,6 +75,7 @@ int submit_control_msg(struct usb_device *udev, unsigned long pipe,
 int submit_bulk_msg(struct usb_device *udev, unsigned long pipe, void *buffer,
 		    int length)
 {
+	my_dbg(" [74]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -85,6 +89,7 @@ struct int_queue *create_int_queue(struct usb_device *udev,
 		unsigned long pipe, int queuesize, int elementsize,
 		void *buffer, int interval)
 {
+	my_dbg(" [87]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -97,6 +102,7 @@ struct int_queue *create_int_queue(struct usb_device *udev,
 
 void *poll_int_queue(struct usb_device *udev, struct int_queue *queue)
 {
+	my_dbg(" [99]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -108,6 +114,7 @@ void *poll_int_queue(struct usb_device *udev, struct int_queue *queue)
 
 int destroy_int_queue(struct usb_device *udev, struct int_queue *queue)
 {
+	my_dbg(" [110]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -119,6 +126,7 @@ int destroy_int_queue(struct usb_device *udev, struct int_queue *queue)
 
 int usb_alloc_device(struct usb_device *udev)
 {
+	my_dbg(" [121]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -131,6 +139,7 @@ int usb_alloc_device(struct usb_device *udev)
 
 int usb_reset_root_port(struct usb_device *udev)
 {
+	my_dbg(" [133]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -142,6 +151,7 @@ int usb_reset_root_port(struct usb_device *udev)
 
 int usb_update_hub_device(struct usb_device *udev)
 {
+	my_dbg(" [144]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -153,6 +163,7 @@ int usb_update_hub_device(struct usb_device *udev)
 
 int usb_get_max_xfer_size(struct usb_device *udev, size_t *size)
 {
+	my_dbg(" [155]  shl_add\n");
 	struct udevice *bus = udev->controller_dev;
 	struct dm_usb_ops *ops = usb_get_ops(bus);
 
@@ -164,6 +175,7 @@ int usb_get_max_xfer_size(struct usb_device *udev, size_t *size)
 
 int usb_stop(void)
 {
+	my_dbg(" [166]  shl_add\n");
 	struct udevice *bus;
 	struct udevice *rh;
 	struct uclass *uc;
@@ -206,6 +218,7 @@ int usb_stop(void)
 
 static void usb_scan_bus(struct udevice *bus, bool recurse)
 {
+	my_dbg(" [208]  shl_add\n");
 	struct usb_bus_priv *priv;
 	struct udevice *dev;
 	int ret;
@@ -227,6 +240,7 @@ static void usb_scan_bus(struct udevice *bus, bool recurse)
 
 static void remove_inactive_children(struct uclass *uc, struct udevice *bus)
 {
+	my_dbg(" [229]  shl_add\n");
 	uclass_foreach_dev(bus, uc) {
 		struct udevice *dev, *next;
 
@@ -241,6 +255,7 @@ static void remove_inactive_children(struct uclass *uc, struct udevice *bus)
 
 int usb_init(void)
 {
+	my_dbg(" [243]  shl_add\n");
 	int controllers_initialized = 0;
 	struct usb_uclass_priv *uc_priv;
 	struct usb_bus_priv *priv;
@@ -345,6 +360,7 @@ int usb_init(void)
 #if !defined(CONFIG_DM_ETH) && defined(CONFIG_USB_HOST_ETHER)
 static struct usb_device *find_child_devnum(struct udevice *parent, int devnum)
 {
+	my_dbg(" [347]  shl_add\n");
 	struct usb_device *udev;
 	struct udevice *dev;
 
@@ -367,6 +383,7 @@ static struct usb_device *find_child_devnum(struct udevice *parent, int devnum)
 
 struct usb_device *usb_get_dev_index(struct udevice *bus, int index)
 {
+	my_dbg(" [369]  shl_add\n");
 	struct udevice *dev;
 	int devnum = index + 1; /* Addresses are allocated from 1 on USB */
 
@@ -380,6 +397,7 @@ struct usb_device *usb_get_dev_index(struct udevice *bus, int index)
 
 int usb_setup_ehci_gadget(struct ehci_ctrl **ctlrp)
 {
+	my_dbg(" [382]  shl_add\n");
 	struct usb_platdata *plat;
 	struct udevice *dev;
 	int ret;
@@ -406,6 +424,7 @@ int usb_setup_ehci_gadget(struct ehci_ctrl **ctlrp)
 static int usb_match_device(const struct usb_device_descriptor *desc,
 			    const struct usb_device_id *id)
 {
+	my_dbg(" [408]  shl_add\n");
 	if ((id->match_flags & USB_DEVICE_ID_MATCH_VENDOR) &&
 	    id->idVendor != le16_to_cpu(desc->idVendor))
 		return 0;
@@ -444,6 +463,7 @@ static int usb_match_one_id_intf(const struct usb_device_descriptor *desc,
 			const struct usb_interface_descriptor *int_desc,
 			const struct usb_device_id *id)
 {
+	my_dbg(" [446]  shl_add\n");
 	/* The interface class, subclass, protocol and number should never be
 	 * checked for a match if the device class is Vendor Specific,
 	 * unless the match record specifies the Vendor ID. */
@@ -479,6 +499,7 @@ static int usb_match_one_id(struct usb_device_descriptor *desc,
 			    struct usb_interface_descriptor *int_desc,
 			    const struct usb_device_id *id)
 {
+	my_dbg(" [481]  shl_add\n");
 	if (!usb_match_device(desc, id))
 		return 0;
 
@@ -496,6 +517,7 @@ static int usb_find_and_bind_driver(struct udevice *parent,
 				    int bus_seq, int devnum,
 				    struct udevice **devp)
 {
+	my_dbg(" [498]  shl_add\n");
 	struct usb_driver_entry *start, *entry;
 	int n_ents;
 	int ret;
@@ -559,6 +581,7 @@ static int usb_find_child(struct udevice *parent,
 			  struct usb_interface_descriptor *iface,
 			  struct udevice **devp)
 {
+	my_dbg(" [561]  shl_add\n");
 	struct udevice *dev;
 
 	*devp = NULL;
@@ -584,6 +607,7 @@ static int usb_find_child(struct udevice *parent,
 int usb_scan_device(struct udevice *parent, int port,
 		    enum usb_device_speed speed, struct udevice **devp)
 {
+	my_dbg(" [586]  shl_add\n");
 	struct udevice *dev;
 	bool created = false;
 	struct usb_dev_platdata *plat;
@@ -672,6 +696,7 @@ int usb_scan_device(struct udevice *parent, int port,
  */
 int usb_detect_change(void)
 {
+	my_dbg(" [674]  shl_add\n");
 	struct udevice *hub;
 	struct uclass *uc;
 	int change = 0;
@@ -712,6 +737,7 @@ int usb_detect_change(void)
 
 static int usb_child_post_bind(struct udevice *dev)
 {
+	my_dbg(" [714]  shl_add\n");
 	struct usb_dev_platdata *plat = dev_get_parent_platdata(dev);
 	int val;
 
@@ -735,6 +761,7 @@ static int usb_child_post_bind(struct udevice *dev)
 
 struct udevice *usb_get_bus(struct udevice *dev)
 {
+	my_dbg(" [737]  shl_add\n");
 	struct udevice *bus;
 
 	for (bus = dev; bus && device_get_uclass_id(bus) != UCLASS_USB; )
@@ -750,6 +777,7 @@ struct udevice *usb_get_bus(struct udevice *dev)
 
 int usb_child_pre_probe(struct udevice *dev)
 {
+	my_dbg(" [752]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct usb_dev_platdata *plat = dev_get_parent_platdata(dev);
 	int ret;
@@ -808,3 +836,4 @@ U_BOOT_DRIVER(usb_dev_generic_drv) = {
 	.id		= UCLASS_USB_DEV_GENERIC,
 	.name		= "usb_dev_generic_drv",
 };
+

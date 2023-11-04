@@ -24,6 +24,7 @@ struct ehci_pci_priv {
 static int ehci_pci_init(struct udevice *dev, struct ehci_hccr **ret_hccr,
 			  struct ehci_hcor **ret_hcor)
 {
+	my_dbg(" [26]  shl_add\n");
 	struct ehci_pci_priv *priv = dev_get_priv(dev);
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
@@ -69,6 +70,7 @@ static struct pci_device_id ehci_pci_ids[] = {
 static void ehci_pci_legacy_init(pci_dev_t pdev, struct ehci_hccr **ret_hccr,
 				 struct ehci_hcor **ret_hcor)
 {
+	my_dbg(" [71]  shl_add\n");
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	u32 cmd;
@@ -98,6 +100,7 @@ static void ehci_pci_legacy_init(pci_dev_t pdev, struct ehci_hccr **ret_hccr,
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **ret_hccr, struct ehci_hcor **ret_hcor)
 {
+	my_dbg(" [100]  shl_add\n");
 	pci_dev_t pdev;
 
 #ifdef CONFIG_PCI_EHCI_DEVICE
@@ -120,6 +123,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [122]  shl_add\n");
 	return 0;
 }
 #endif /* !CONFIG_IS_ENABLED(DM_USB) */
@@ -127,6 +131,7 @@ int ehci_hcd_stop(int index)
 #if CONFIG_IS_ENABLED(DM_USB)
 static int ehci_pci_probe(struct udevice *dev)
 {
+	my_dbg(" [129]  shl_add\n");
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	int ret;
@@ -140,6 +145,7 @@ static int ehci_pci_probe(struct udevice *dev)
 
 static int ehci_pci_remove(struct udevice *dev)
 {
+	my_dbg(" [142]  shl_add\n");
 	struct ehci_pci_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -175,3 +181,4 @@ static struct pci_device_id ehci_pci_supported[] = {
 U_BOOT_PCI_DEVICE(ehci_pci, ehci_pci_supported);
 
 #endif /* CONFIG_IS_ENABLED(DM_USB) */
+

@@ -160,6 +160,7 @@ struct ether_priv *l_priv = &eth_priv;
 /* "main" config is either CDC, or its simple subset */
 static inline int is_cdc(struct eth_dev *dev)
 {
+	my_dbg(" [162]  shl_add\n");
 #if	!defined(CONFIG_USB_ETH_SUBSET)
 	return 1;		/* only cdc possible */
 #elif	!defined(CONFIG_USB_ETH_CDC)
@@ -172,6 +173,7 @@ static inline int is_cdc(struct eth_dev *dev)
 /* "secondary" RNDIS config may sometimes be activated */
 static inline int rndis_active(struct eth_dev *dev)
 {
+	my_dbg(" [174]  shl_add\n");
 #ifdef	CONFIG_USB_ETH_RNDIS
 	return dev->rndis;
 #else
@@ -203,6 +205,7 @@ static inline int rndis_active(struct eth_dev *dev)
 
 static inline int BITRATE(struct usb_gadget *g)
 {
+	my_dbg(" [205]  shl_add\n");
 	return (g->speed == USB_SPEED_HIGH) ? HS_BPS : FS_BPS;
 }
 
@@ -216,6 +219,7 @@ static inline int BITRATE(struct usb_gadget *g)
 
 static inline int BITRATE(struct usb_gadget *g)
 {
+	my_dbg(" [218]  shl_add\n");
 	return FS_BPS;
 }
 #endif
@@ -685,6 +689,7 @@ static const struct usb_descriptor_header *fs_eth_function[11] = {
 
 static inline void fs_subset_descriptors(void)
 {
+	my_dbg(" [687]  shl_add\n");
 #ifdef CONFIG_USB_ETH_SUBSET
 	/* behavior is "CDC Subset"; extra descriptors say "SAFE" */
 	fs_eth_function[1] = (struct usb_descriptor_header *) &subset_data_intf;
@@ -785,6 +790,7 @@ static const struct usb_descriptor_header *hs_eth_function[11] = {
 
 static inline void hs_subset_descriptors(void)
 {
+	my_dbg(" [787]  shl_add\n");
 #ifdef CONFIG_USB_ETH_SUBSET
 	/* behavior is "CDC Subset"; extra descriptors say "SAFE" */
 	hs_eth_function[1] = (struct usb_descriptor_header *) &subset_data_intf;
@@ -824,6 +830,7 @@ static inline struct usb_endpoint_descriptor *
 ep_desc(struct usb_gadget *g, struct usb_endpoint_descriptor *hs,
 		struct usb_endpoint_descriptor *fs)
 {
+	my_dbg(" [826]  shl_add\n");
 	if (gadget_is_dualspeed(g) && g->speed == USB_SPEED_HIGH)
 		return hs;
 	return fs;
@@ -882,6 +889,7 @@ DEFINE_CACHE_ALIGN_BUFFER(u8, status_req, STATUS_BYTECOUNT);
 static int
 config_buf(struct usb_gadget *g, u8 *buf, u8 type, unsigned index, int is_otg)
 {
+	my_dbg(" [884]  shl_add\n");
 	int					len;
 	const struct usb_config_descriptor	*config;
 	const struct usb_descriptor_header	**function;
@@ -931,6 +939,7 @@ static int alloc_requests(struct eth_dev *dev, unsigned n, gfp_t gfp_flags);
 static int
 set_ether_config(struct eth_dev *dev, gfp_t gfp_flags)
 {
+	my_dbg(" [933]  shl_add\n");
 	int					result = 0;
 	struct usb_gadget			*gadget = dev->gadget;
 
@@ -1008,6 +1017,7 @@ done:
 
 static void eth_reset_config(struct eth_dev *dev)
 {
+	my_dbg(" [1010]  shl_add\n");
 	if (dev->config == 0)
 		return;
 
@@ -1049,6 +1059,7 @@ static void eth_reset_config(struct eth_dev *dev)
 static int eth_set_config(struct eth_dev *dev, unsigned number,
 				gfp_t gfp_flags)
 {
+	my_dbg(" [1051]  shl_add\n");
 	int			result = 0;
 	struct usb_gadget	*gadget = dev->gadget;
 
@@ -1126,6 +1137,7 @@ static int eth_set_config(struct eth_dev *dev, unsigned number,
  */
 static void eth_status_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1128]  shl_add\n");
 	struct usb_cdc_notification	*event = req->buf;
 	int				value = req->status;
 	struct eth_dev			*dev = ep->driver_data;
@@ -1163,6 +1175,7 @@ static void eth_status_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void issue_start_status(struct eth_dev *dev)
 {
+	my_dbg(" [1165]  shl_add\n");
 	struct usb_request		*req = dev->stat_req;
 	struct usb_cdc_notification	*event;
 	int				value;
@@ -1206,6 +1219,7 @@ static void issue_start_status(struct eth_dev *dev)
 
 static void eth_setup_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1208]  shl_add\n");
 	if (req->status || req->actual != req->length)
 		debug("setup complete --> %d, %d/%d\n",
 				req->status, req->actual, req->length);
@@ -1215,6 +1229,7 @@ static void eth_setup_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void rndis_response_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1217]  shl_add\n");
 	if (req->status || req->actual != req->length)
 		debug("rndis response complete --> %d, %d/%d\n",
 			req->status, req->actual, req->length);
@@ -1224,6 +1239,7 @@ static void rndis_response_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void rndis_command_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1226]  shl_add\n");
 	struct eth_dev          *dev = ep->driver_data;
 	int			status;
 
@@ -1247,6 +1263,7 @@ static void rndis_command_complete(struct usb_ep *ep, struct usb_request *req)
 static int
 eth_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [1249]  shl_add\n");
 	struct eth_dev		*dev = get_gadget_data(gadget);
 	struct usb_request	*req = dev->req;
 	int			value = -EOPNOTSUPP;
@@ -1512,6 +1529,7 @@ static void rx_complete(struct usb_ep *ep, struct usb_request *req);
 static int rx_submit(struct eth_dev *dev, struct usb_request *req,
 				gfp_t gfp_flags)
 {
+	my_dbg(" [1514]  shl_add\n");
 	int			retval = -ENOMEM;
 	size_t			size;
 
@@ -1558,6 +1576,7 @@ static int rx_submit(struct eth_dev *dev, struct usb_request *req,
 
 static void rx_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1560]  shl_add\n");
 	struct eth_dev	*dev = ep->driver_data;
 
 	debug("%s: status %d\n", __func__, req->status);
@@ -1605,6 +1624,7 @@ length_err:
 
 static int alloc_requests(struct eth_dev *dev, unsigned n, gfp_t gfp_flags)
 {
+	my_dbg(" [1607]  shl_add\n");
 
 	dev->tx_req = usb_ep_alloc_request(dev->in_ep, 0);
 
@@ -1627,6 +1647,7 @@ fail1:
 
 static void tx_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1629]  shl_add\n");
 	struct eth_dev	*dev = ep->driver_data;
 
 	debug("%s: status %s\n", __func__, (req->status) ? "failed" : "ok");
@@ -1648,6 +1669,7 @@ static void tx_complete(struct usb_ep *ep, struct usb_request *req)
 
 static inline int eth_is_promisc(struct eth_dev *dev)
 {
+	my_dbg(" [1650]  shl_add\n");
 	/* no filters for the CDC subset; always promisc */
 	if (subset_active(dev))
 		return 1;
@@ -1657,6 +1679,7 @@ static inline int eth_is_promisc(struct eth_dev *dev)
 #if 0
 static int eth_start_xmit (struct sk_buff *skb, struct net_device *net)
 {
+	my_dbg(" [1659]  shl_add\n");
 	struct eth_dev		*dev = netdev_priv(net);
 	int			length = skb->len;
 	int			retval;
@@ -1769,6 +1792,7 @@ drop:
 
 static void eth_unbind(struct usb_gadget *gadget)
 {
+	my_dbg(" [1771]  shl_add\n");
 	struct eth_dev		*dev = get_gadget_data(gadget);
 
 	debug("%s...\n", __func__);
@@ -1804,17 +1828,20 @@ static void eth_unbind(struct usb_gadget *gadget)
 
 static void eth_disconnect(struct usb_gadget *gadget)
 {
+	my_dbg(" [1806]  shl_add\n");
 	eth_reset_config(get_gadget_data(gadget));
 	/* FIXME RNDIS should enter RNDIS_UNINITIALIZED */
 }
 
 static void eth_suspend(struct usb_gadget *gadget)
 {
+	my_dbg(" [1812]  shl_add\n");
 	/* Not used */
 }
 
 static void eth_resume(struct usb_gadget *gadget)
 {
+	my_dbg(" [1817]  shl_add\n");
 	/* Not used */
 }
 
@@ -1835,6 +1862,7 @@ static void eth_resume(struct usb_gadget *gadget)
 static void rndis_control_ack_complete(struct usb_ep *ep,
 					struct usb_request *req)
 {
+	my_dbg(" [1837]  shl_add\n");
 	struct eth_dev          *dev = ep->driver_data;
 
 	debug("%s...\n", __func__);
@@ -1864,6 +1892,7 @@ static int rndis_control_ack(struct eth_device *net)
 static int rndis_control_ack(struct udevice *net)
 #endif
 {
+	my_dbg(" [1866]  shl_add\n");
 	struct ether_priv	*priv = (struct ether_priv *)net->priv;
 	struct eth_dev		*dev = &priv->ethdev;
 	int                     length;
@@ -1911,6 +1940,7 @@ static int rndis_control_ack(struct udevice *net)
 
 static void eth_start(struct eth_dev *dev, gfp_t gfp_flags)
 {
+	my_dbg(" [1913]  shl_add\n");
 	if (rndis_active(dev)) {
 		rndis_set_param_medium(dev->rndis_config,
 					NDIS_MEDIUM_802_3,
@@ -1921,6 +1951,7 @@ static void eth_start(struct eth_dev *dev, gfp_t gfp_flags)
 
 static int eth_stop(struct eth_dev *dev)
 {
+	my_dbg(" [1923]  shl_add\n");
 #ifdef RNDIS_COMPLETE_SIGNAL_DISCONNECT
 	unsigned long ts;
 	unsigned long timeout = CONFIG_SYS_HZ; /* 1 sec to stop RNDIS */
@@ -1948,6 +1979,7 @@ static int eth_stop(struct eth_dev *dev)
 
 static int is_eth_addr_valid(char *str)
 {
+	my_dbg(" [1950]  shl_add\n");
 	if (strlen(str) == 17) {
 		int i;
 		char *p, *q;
@@ -1976,6 +2008,7 @@ static int is_eth_addr_valid(char *str)
 
 static u8 nibble(unsigned char c)
 {
+	my_dbg(" [1978]  shl_add\n");
 	if (likely(isdigit(c)))
 		return c - '0';
 	c = toupper(c);
@@ -1986,6 +2019,7 @@ static u8 nibble(unsigned char c)
 
 static int get_ether_addr(const char *str, u8 *dev_addr)
 {
+	my_dbg(" [1988]  shl_add\n");
 	if (str) {
 		unsigned	i;
 
@@ -2006,6 +2040,7 @@ static int get_ether_addr(const char *str, u8 *dev_addr)
 
 static int eth_bind(struct usb_gadget *gadget)
 {
+	my_dbg(" [2008]  shl_add\n");
 	struct eth_dev		*dev = &l_priv->ethdev;
 	u8			cdc = 1, zlp = 1, rndis = 1;
 	struct usb_ep		*in_ep, *out_ep, *status_ep = NULL;
@@ -2342,6 +2377,7 @@ static void _usb_eth_halt(struct ether_priv *priv);
 
 static int _usb_eth_init(struct ether_priv *priv)
 {
+	my_dbg(" [2344]  shl_add\n");
 	struct eth_dev *dev = &priv->ethdev;
 	struct usb_gadget *gadget;
 	unsigned long ts;
@@ -2419,6 +2455,7 @@ fail:
 
 static int _usb_eth_send(struct ether_priv *priv, void *packet, int length)
 {
+	my_dbg(" [2421]  shl_add\n");
 	int			retval;
 	void			*rndis_pkt = NULL;
 	struct eth_dev		*dev = &priv->ethdev;
@@ -2488,6 +2525,7 @@ drop:
 
 static int _usb_eth_recv(struct ether_priv *priv)
 {
+	my_dbg(" [2490]  shl_add\n");
 	usb_gadget_handle_interrupts(0);
 
 	return 0;
@@ -2495,6 +2533,7 @@ static int _usb_eth_recv(struct ether_priv *priv)
 
 static void _usb_eth_halt(struct ether_priv *priv)
 {
+	my_dbg(" [2497]  shl_add\n");
 	struct eth_dev *dev = &priv->ethdev;
 
 	/* If the gadget not registered, simple return */
@@ -2529,6 +2568,7 @@ static void _usb_eth_halt(struct ether_priv *priv)
 #ifndef CONFIG_DM_ETH
 static int usb_eth_init(struct eth_device *netdev, bd_t *bd)
 {
+	my_dbg(" [2531]  shl_add\n");
 	struct ether_priv *priv = (struct ether_priv *)netdev->priv;
 
 	return _usb_eth_init(priv);
@@ -2536,6 +2576,7 @@ static int usb_eth_init(struct eth_device *netdev, bd_t *bd)
 
 static int usb_eth_send(struct eth_device *netdev, void *packet, int length)
 {
+	my_dbg(" [2538]  shl_add\n");
 	struct ether_priv	*priv = (struct ether_priv *)netdev->priv;
 
 	return _usb_eth_send(priv, packet, length);
@@ -2543,6 +2584,7 @@ static int usb_eth_send(struct eth_device *netdev, void *packet, int length)
 
 static int usb_eth_recv(struct eth_device *netdev)
 {
+	my_dbg(" [2545]  shl_add\n");
 	struct ether_priv *priv = (struct ether_priv *)netdev->priv;
 	struct eth_dev *dev = &priv->ethdev;
 	int ret;
@@ -2570,6 +2612,7 @@ static int usb_eth_recv(struct eth_device *netdev)
 
 void usb_eth_halt(struct eth_device *netdev)
 {
+	my_dbg(" [2572]  shl_add\n");
 	struct ether_priv *priv = (struct ether_priv *)netdev->priv;
 
 	_usb_eth_halt(priv);
@@ -2577,6 +2620,7 @@ void usb_eth_halt(struct eth_device *netdev)
 
 int usb_eth_initialize(bd_t *bi)
 {
+	my_dbg(" [2579]  shl_add\n");
 	struct eth_device *netdev = &l_priv->netdev;
 
 	strlcpy(netdev->name, USB_NET_NAME, sizeof(netdev->name));
@@ -2596,6 +2640,7 @@ int usb_eth_initialize(bd_t *bi)
 #else
 static int usb_eth_start(struct udevice *dev)
 {
+	my_dbg(" [2598]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 
 	return _usb_eth_init(priv);
@@ -2603,6 +2648,7 @@ static int usb_eth_start(struct udevice *dev)
 
 static int usb_eth_send(struct udevice *dev, void *packet, int length)
 {
+	my_dbg(" [2605]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 
 	return _usb_eth_send(priv, packet, length);
@@ -2610,6 +2656,7 @@ static int usb_eth_send(struct udevice *dev, void *packet, int length)
 
 static int usb_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 {
+	my_dbg(" [2612]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 	struct eth_dev *ethdev = &priv->ethdev;
 	int ret;
@@ -2636,6 +2683,7 @@ static int usb_eth_recv(struct udevice *dev, int flags, uchar **packetp)
 static int usb_eth_free_pkt(struct udevice *dev, uchar *packet,
 				   int length)
 {
+	my_dbg(" [2638]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 	struct eth_dev *ethdev = &priv->ethdev;
 
@@ -2646,6 +2694,7 @@ static int usb_eth_free_pkt(struct udevice *dev, uchar *packet,
 
 static void usb_eth_stop(struct udevice *dev)
 {
+	my_dbg(" [2648]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 
 	_usb_eth_halt(priv);
@@ -2653,6 +2702,7 @@ static void usb_eth_stop(struct udevice *dev)
 
 static int usb_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [2655]  shl_add\n");
 	struct ether_priv *priv = dev_get_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 
@@ -2675,6 +2725,7 @@ static const struct eth_ops usb_eth_ops = {
 
 int usb_ether_init(void)
 {
+	my_dbg(" [2677]  shl_add\n");
 	struct udevice *dev;
 	struct udevice *usb_dev;
 	int ret;
@@ -2704,3 +2755,4 @@ U_BOOT_DRIVER(eth_usb) = {
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif /* CONFIG_DM_ETH */
+

@@ -17,6 +17,7 @@
 
 static int utf8_to_utf16le(const char *s, __le16 *cp, unsigned len)
 {
+	my_dbg(" [19]  shl_add\n");
 	int	count = 0;
 	u8	c;
 	u16	uchar;
@@ -105,6 +106,7 @@ fail:
 int
 usb_gadget_get_string(struct usb_gadget_strings *table, int id, u8 *buf)
 {
+	my_dbg(" [107]  shl_add\n");
 	struct usb_string	*s;
 	int			len;
 
@@ -137,3 +139,4 @@ usb_gadget_get_string(struct usb_gadget_strings *table, int id, u8 *buf)
 	buf[1] = USB_DT_STRING;
 	return buf[0];
 }
+

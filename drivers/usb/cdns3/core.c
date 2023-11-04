@@ -39,12 +39,14 @@ struct cdns3_gadget_priv {
 static inline
 struct cdns3_role_driver *cdns3_get_current_role_driver(struct cdns3 *cdns)
 {
+	my_dbg(" [41]  shl_add\n");
 	WARN_ON(!cdns->roles[cdns->role]);
 	return cdns->roles[cdns->role];
 }
 
 static int cdns3_role_start(struct cdns3 *cdns, enum usb_role role)
 {
+	my_dbg(" [47]  shl_add\n");
 	int ret;
 
 	if (WARN_ON(role > USB_ROLE_DEVICE))
@@ -71,6 +73,7 @@ static int cdns3_role_start(struct cdns3 *cdns, enum usb_role role)
 
 static void cdns3_role_stop(struct cdns3 *cdns)
 {
+	my_dbg(" [73]  shl_add\n");
 	enum usb_role role = cdns->role;
 
 	if (WARN_ON(role > USB_ROLE_DEVICE))
@@ -87,6 +90,7 @@ static void cdns3_role_stop(struct cdns3 *cdns)
 
 static void cdns3_exit_roles(struct cdns3 *cdns)
 {
+	my_dbg(" [89]  shl_add\n");
 	cdns3_role_stop(cdns);
 	cdns3_drd_exit(cdns);
 }
@@ -101,6 +105,7 @@ static enum usb_role cdsn3_hw_role_state_machine(struct cdns3 *cdns);
  */
 static int cdns3_core_init_role(struct cdns3 *cdns)
 {
+	my_dbg(" [103]  shl_add\n");
 	struct udevice *dev = cdns->dev;
 	enum usb_dr_mode best_dr_mode;
 	enum usb_dr_mode dr_mode;
@@ -193,6 +198,7 @@ err:
  */
 static enum usb_role cdsn3_hw_role_state_machine(struct cdns3 *cdns)
 {
+	my_dbg(" [195]  shl_add\n");
 	enum usb_role role;
 	int id, vbus;
 
@@ -246,17 +252,20 @@ not_otg:
 
 static int cdns3_idle_role_start(struct cdns3 *cdns)
 {
+	my_dbg(" [248]  shl_add\n");
 	return 0;
 }
 
 static void cdns3_idle_role_stop(struct cdns3 *cdns)
 {
+	my_dbg(" [253]  shl_add\n");
 	/* Program Lane swap and bring PHY out of RESET */
 	generic_phy_reset(&cdns->usb3_phy);
 }
 
 static int cdns3_idle_init(struct cdns3 *cdns)
 {
+	my_dbg(" [259]  shl_add\n");
 	struct cdns3_role_driver *rdrv;
 
 	rdrv = devm_kzalloc(cdns->dev, sizeof(*rdrv), GFP_KERNEL);
@@ -281,6 +290,7 @@ static int cdns3_idle_init(struct cdns3 *cdns)
  */
 int cdns3_hw_role_switch(struct cdns3 *cdns)
 {
+	my_dbg(" [283]  shl_add\n");
 	enum usb_role real_role, current_role;
 	int ret = 0;
 
@@ -315,6 +325,7 @@ exit:
 
 static int cdns3_probe(struct cdns3 *cdns)
 {
+	my_dbg(" [317]  shl_add\n");
 	struct udevice *dev = cdns->dev;
 	int ret;
 
@@ -367,6 +378,7 @@ static int cdns3_probe(struct cdns3 *cdns)
 
 static int cdns3_remove(struct cdns3 *cdns)
 {
+	my_dbg(" [369]  shl_add\n");
 	cdns3_exit_roles(cdns);
 	generic_phy_power_off(&cdns->usb2_phy);
 	generic_phy_power_off(&cdns->usb3_phy);
@@ -382,6 +394,7 @@ static const struct udevice_id cdns3_ids[] = {
 
 int cdns3_bind(struct udevice *parent)
 {
+	my_dbg(" [384]  shl_add\n");
 	enum usb_dr_mode dr_mode;
 	struct udevice *dev;
 	const char *driver;
@@ -435,6 +448,7 @@ fail:
 #if CONFIG_IS_ENABLED(DM_USB_GADGET)
 static int cdns3_gadget_probe(struct udevice *dev)
 {
+	my_dbg(" [437]  shl_add\n");
 	struct cdns3_gadget_priv *priv = dev_get_priv(dev);
 	struct cdns3 *cdns = &priv->cdns;
 
@@ -445,6 +459,7 @@ static int cdns3_gadget_probe(struct udevice *dev)
 
 static int cdns3_gadget_remove(struct udevice *dev)
 {
+	my_dbg(" [447]  shl_add\n");
 	struct cdns3_gadget_priv *priv = dev_get_priv(dev);
 	struct cdns3 *cdns = &priv->cdns;
 
@@ -466,6 +481,7 @@ U_BOOT_DRIVER(cdns_usb3_peripheral) = {
 	(!defined(CONFIG_SPL_BUILD) && defined(CONFIG_USB_HOST))
 static int cdns3_host_probe(struct udevice *dev)
 {
+	my_dbg(" [468]  shl_add\n");
 	struct cdns3_host_priv *priv = dev_get_priv(dev);
 	struct cdns3 *cdns = &priv->cdns;
 
@@ -476,6 +492,7 @@ static int cdns3_host_probe(struct udevice *dev)
 
 static int cdns3_host_remove(struct udevice *dev)
 {
+	my_dbg(" [478]  shl_add\n");
 	struct cdns3_host_priv *priv = dev_get_priv(dev);
 	struct cdns3 *cdns = &priv->cdns;
 
@@ -493,3 +510,4 @@ U_BOOT_DRIVER(cdns_usb3_host) = {
 	.flags = DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif
+

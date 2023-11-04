@@ -29,6 +29,7 @@
 
 static int uniphier_pro4_dwc3_init(void __iomem *regs)
 {
+	my_dbg(" [31]  shl_add\n");
 	u32 tmp;
 
 	tmp = readl(regs + UNIPHIER_PRO4_DWC3_RESET);
@@ -41,6 +42,7 @@ static int uniphier_pro4_dwc3_init(void __iomem *regs)
 
 static int uniphier_pro5_dwc3_init(void __iomem *regs)
 {
+	my_dbg(" [43]  shl_add\n");
 	u32 tmp;
 
 	tmp = readl(regs + UNIPHIER_PRO5_DWC3_RESET);
@@ -54,6 +56,7 @@ static int uniphier_pro5_dwc3_init(void __iomem *regs)
 
 static int uniphier_pxs2_dwc3_init(void __iomem *regs)
 {
+	my_dbg(" [56]  shl_add\n");
 	u32 tmp;
 
 	tmp = readl(regs + UNIPHIER_PXS2_DWC3_RESET);
@@ -65,6 +68,7 @@ static int uniphier_pxs2_dwc3_init(void __iomem *regs)
 
 static int uniphier_dwc3_probe(struct udevice *dev)
 {
+	my_dbg(" [67]  shl_add\n");
 	fdt_addr_t base;
 	void __iomem *regs;
 	int (*init)(void __iomem *regs);
@@ -118,3 +122,4 @@ U_BOOT_DRIVER(usb_xhci) = {
 	.of_match = uniphier_dwc3_match,
 	.probe = uniphier_dwc3_probe,
 };
+

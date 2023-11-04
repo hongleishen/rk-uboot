@@ -26,16 +26,19 @@ union ehci_faraday_regs {
 
 static inline int ehci_is_fotg2xx(union ehci_faraday_regs *regs)
 {
+	my_dbg(" [28]  shl_add\n");
 	return !readl(&regs->usb.easstr);
 }
 
 void faraday_ehci_set_usbmode(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [33]  shl_add\n");
 	/* nothing needs to be done */
 }
 
 int faraday_ehci_get_port_speed(struct ehci_ctrl *ctrl, uint32_t reg)
 {
+	my_dbg(" [38]  shl_add\n");
 	int spd, ret = PORTSC_PSPD_HS;
 	union ehci_faraday_regs *regs;
 
@@ -65,6 +68,7 @@ int faraday_ehci_get_port_speed(struct ehci_ctrl *ctrl, uint32_t reg)
 
 uint32_t *faraday_ehci_get_portsc_register(struct ehci_ctrl *ctrl, int port)
 {
+	my_dbg(" [67]  shl_add\n");
 	/* Faraday EHCI has one and only one portsc register */
 	if (port) {
 		/* Printing the message would cause a scan failure! */
@@ -89,6 +93,7 @@ static const struct ehci_ops faraday_ehci_ops = {
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **ret_hccr, struct ehci_hcor **ret_hcor)
 {
+	my_dbg(" [91]  shl_add\n");
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	union ehci_faraday_regs *regs;
@@ -139,5 +144,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [141]  shl_add\n");
 	return 0;
 }
+

@@ -18,6 +18,7 @@
 
 static int __cdns3_host_init(struct cdns3 *cdns)
 {
+	my_dbg(" [20]  shl_add\n");
 	struct xhci_hcor *hcor;
 	struct xhci_hccr *hccr;
 
@@ -32,12 +33,14 @@ static int __cdns3_host_init(struct cdns3 *cdns)
 
 static void cdns3_host_exit(struct cdns3 *cdns)
 {
+	my_dbg(" [34]  shl_add\n");
 	xhci_deregister(cdns->dev);
 	cdns3_drd_switch_host(cdns, 0);
 }
 
 int cdns3_host_init(struct cdns3 *cdns)
 {
+	my_dbg(" [40]  shl_add\n");
 	struct cdns3_role_driver *rdrv;
 
 	rdrv = devm_kzalloc(cdns->dev, sizeof(*rdrv), GFP_KERNEL);
@@ -53,3 +56,4 @@ int cdns3_host_init(struct cdns3 *cdns)
 
 	return 0;
 }
+

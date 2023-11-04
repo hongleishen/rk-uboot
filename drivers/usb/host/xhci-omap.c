@@ -29,6 +29,7 @@ static struct omap_xhci omap;
 
 static int omap_xhci_core_init(struct omap_xhci *omap)
 {
+	my_dbg(" [31]  shl_add\n");
 	int ret = 0;
 
 	usb_phy_power(1);
@@ -48,11 +49,13 @@ static int omap_xhci_core_init(struct omap_xhci *omap)
 
 static void omap_xhci_core_exit(struct omap_xhci *omap)
 {
+	my_dbg(" [50]  shl_add\n");
 	usb_phy_power(0);
 }
 
 int xhci_hcd_init(int index, struct xhci_hccr **hccr, struct xhci_hcor **hcor)
 {
+	my_dbg(" [55]  shl_add\n");
 	struct omap_xhci *ctx = &omap;
 	int ret = 0;
 
@@ -86,8 +89,10 @@ int xhci_hcd_init(int index, struct xhci_hccr **hccr, struct xhci_hcor **hcor)
 
 void xhci_hcd_stop(int index)
 {
+	my_dbg(" [88]  shl_add\n");
 	struct omap_xhci *ctx = &omap;
 
 	omap_xhci_core_exit(ctx);
 	board_usb_cleanup(index, USB_INIT_HOST);
 }
+

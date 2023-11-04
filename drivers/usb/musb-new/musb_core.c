@@ -114,6 +114,7 @@ MODULE_ALIAS("platform:" MUSB_DRIVER_NAME);
 
 static inline struct musb *dev_to_musb(struct device *dev)
 {
+	my_dbg(" [116]  shl_add\n");
 	return dev_get_drvdata(dev);
 }
 
@@ -121,6 +122,7 @@ static inline struct musb *dev_to_musb(struct device *dev)
 
 static int musb_ulpi_read(struct usb_phy *phy, u32 offset)
 {
+	my_dbg(" [123]  shl_add\n");
 	void __iomem *addr = phy->io_priv;
 	int	i = 0;
 	u8	r;
@@ -165,6 +167,7 @@ out:
 
 static int musb_ulpi_write(struct usb_phy *phy, u32 offset, u32 data)
 {
+	my_dbg(" [167]  shl_add\n");
 	void __iomem *addr = phy->io_priv;
 	int	i = 0;
 	u8	r = 0;
@@ -216,6 +219,7 @@ static struct usb_phy_io_ops musb_ulpi_access = {
  */
 void musb_write_fifo(struct musb_hw_ep *hw_ep, u16 len, const u8 *src)
 {
+	my_dbg(" [218]  shl_add\n");
 	struct musb *musb = hw_ep->musb;
 	void __iomem *fifo = hw_ep->fifo;
 
@@ -258,6 +262,7 @@ void musb_write_fifo(struct musb_hw_ep *hw_ep, u16 len, const u8 *src)
  */
 void musb_read_fifo(struct musb_hw_ep *hw_ep, u16 len, u8 *dst)
 {
+	my_dbg(" [260]  shl_add\n");
 	struct musb *musb = hw_ep->musb;
 	void __iomem *fifo = hw_ep->fifo;
 
@@ -320,6 +325,7 @@ static const u8 musb_test_packet[53] = {
 
 void musb_load_testpacket(struct musb *musb)
 {
+	my_dbg(" [322]  shl_add\n");
 	void __iomem	*regs = musb->endpoints[0].regs;
 
 	musb_ep_select(musb->mregs, 0);
@@ -336,6 +342,7 @@ void musb_load_testpacket(struct musb *musb)
  */
 void musb_otg_timer_func(unsigned long data)
 {
+	my_dbg(" [338]  shl_add\n");
 	struct musb	*musb = (struct musb *)data;
 	unsigned long	flags;
 
@@ -367,6 +374,7 @@ void musb_otg_timer_func(unsigned long data)
  */
 void musb_hnp_stop(struct musb *musb)
 {
+	my_dbg(" [369]  shl_add\n");
 	struct usb_hcd	*hcd = musb_to_hcd(musb);
 	void __iomem	*mbase = musb->mregs;
 	u8	reg;
@@ -418,6 +426,7 @@ void musb_hnp_stop(struct musb *musb)
 static irqreturn_t musb_stage0_irq(struct musb *musb, u8 int_usb,
 				u8 devctl, u8 power)
 {
+	my_dbg(" [420]  shl_add\n");
 #ifndef __UBOOT__
 	struct usb_otg *otg = musb->xceiv->otg;
 #endif
@@ -901,6 +910,7 @@ void musb_start(struct musb *musb)
 int musb_start(struct musb *musb)
 #endif
 {
+	my_dbg(" [903]  shl_add\n");
 	void __iomem	*regs = musb->mregs;
 	u8		devctl = musb_readb(regs, MUSB_DEVCTL);
 #ifdef __UBOOT__
@@ -968,6 +978,7 @@ int musb_start(struct musb *musb)
 
 static void musb_generic_disable(struct musb *musb)
 {
+	my_dbg(" [970]  shl_add\n");
 	void __iomem	*mbase = musb->mregs;
 	u16	temp;
 
@@ -995,6 +1006,7 @@ static void musb_generic_disable(struct musb *musb)
  */
 void musb_stop(struct musb *musb)
 {
+	my_dbg(" [997]  shl_add\n");
 	/* stop IRQs, timers, ... */
 	musb_platform_disable(musb);
 	musb_generic_disable(musb);
@@ -1013,6 +1025,7 @@ void musb_stop(struct musb *musb)
 #ifndef __UBOOT__
 static void musb_shutdown(struct platform_device *pdev)
 {
+	my_dbg(" [1015]  shl_add\n");
 	struct musb	*musb = dev_to_musb(&pdev->dev);
 	unsigned long	flags;
 
@@ -1076,10 +1089,15 @@ MODULE_PARM_DESC(fifo_mode, "initial endpoint configuration");
 /* mode 0 - fits in 2KB */
 static struct musb_fifo_cfg __devinitdata mode_0_cfg[] = {
 { .hw_ep_num = 1, .style = FIFO_TX,   .maxpacket = 512, },
+	my_dbg(" [1078]  shl_add\n");
 { .hw_ep_num = 1, .style = FIFO_RX,   .maxpacket = 512, },
+	my_dbg(" [1079]  shl_add\n");
 { .hw_ep_num = 2, .style = FIFO_RXTX, .maxpacket = 512, },
+	my_dbg(" [1080]  shl_add\n");
 { .hw_ep_num = 3, .style = FIFO_RXTX, .maxpacket = 256, },
+	my_dbg(" [1081]  shl_add\n");
 { .hw_ep_num = 4, .style = FIFO_RXTX, .maxpacket = 256, },
+	my_dbg(" [1082]  shl_add\n");
 };
 
 /* mode 1 - fits in 4KB */
@@ -1183,6 +1201,7 @@ static int __devinit
 fifo_setup(struct musb *musb, struct musb_hw_ep  *hw_ep,
 		const struct musb_fifo_cfg *cfg, u16 offset)
 {
+	my_dbg(" [1185]  shl_add\n");
 	void __iomem	*mbase = musb->mregs;
 	int	size = 0;
 	u16	maxpacket = cfg->maxpacket;
@@ -1256,6 +1275,7 @@ static struct musb_fifo_cfg __devinitdata ep0_cfg = {
 
 static int __devinit ep_config_from_table(struct musb *musb)
 {
+	my_dbg(" [1258]  shl_add\n");
 	const struct musb_fifo_cfg	*cfg;
 	unsigned		i, n;
 	int			offset;
@@ -1344,6 +1364,7 @@ done:
  */
 static int __devinit ep_config_from_hw(struct musb *musb)
 {
+	my_dbg(" [1346]  shl_add\n");
 	u8 epnum = 0;
 	struct musb_hw_ep *hw_ep;
 	void *mbase = musb->mregs;
@@ -1391,6 +1412,7 @@ enum { MUSB_CONTROLLER_MHDRC, MUSB_CONTROLLER_HDRC, };
  */
 static int __devinit musb_core_init(u16 musb_type, struct musb *musb)
 {
+	my_dbg(" [1393]  shl_add\n");
 	u8 reg;
 	char *type;
 	char aInfo[90], aRevision[32], aDate[12];
@@ -1523,6 +1545,7 @@ static int __devinit musb_core_init(u16 musb_type, struct musb *musb)
 
 static irqreturn_t generic_interrupt(int irq, void *__hci)
 {
+	my_dbg(" [1525]  shl_add\n");
 	unsigned long	flags;
 	irqreturn_t	retval = IRQ_NONE;
 	struct musb	*musb = __hci;
@@ -1554,6 +1577,7 @@ static irqreturn_t generic_interrupt(int irq, void *__hci)
  */
 irqreturn_t musb_interrupt(struct musb *musb)
 {
+	my_dbg(" [1556]  shl_add\n");
 	irqreturn_t	retval = IRQ_NONE;
 	u8		devctl, power;
 	int		ep_num;
@@ -1640,6 +1664,7 @@ MODULE_PARM_DESC(use_dma, "enable/disable use of DMA");
 
 void musb_dma_completion(struct musb *musb, u8 epnum, u8 transmit)
 {
+	my_dbg(" [1642]  shl_add\n");
 	u8	devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
 
 	/* called with controller lock already held */
@@ -1689,6 +1714,7 @@ EXPORT_SYMBOL_GPL(musb_dma_completion);
 static ssize_t
 musb_mode_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
+	my_dbg(" [1691]  shl_add\n");
 	struct musb *musb = dev_to_musb(dev);
 	unsigned long flags;
 	int ret = -EINVAL;
@@ -1704,6 +1730,7 @@ static ssize_t
 musb_mode_store(struct device *dev, struct device_attribute *attr,
 		const char *buf, size_t n)
 {
+	my_dbg(" [1706]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	unsigned long	flags;
 	int		status;
@@ -1727,6 +1754,7 @@ static ssize_t
 musb_vbus_store(struct device *dev, struct device_attribute *attr,
 		const char *buf, size_t n)
 {
+	my_dbg(" [1729]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	unsigned long	flags;
 	unsigned long	val;
@@ -1750,6 +1778,7 @@ musb_vbus_store(struct device *dev, struct device_attribute *attr,
 static ssize_t
 musb_vbus_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
+	my_dbg(" [1752]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	unsigned long	flags;
 	unsigned long	val;
@@ -1775,6 +1804,7 @@ static ssize_t
 musb_srp_store(struct device *dev, struct device_attribute *attr,
 		const char *buf, size_t n)
 {
+	my_dbg(" [1777]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	unsigned short	srp;
 
@@ -1808,6 +1838,7 @@ static const struct attribute_group musb_attr_group = {
 /* Only used to provide driver mode change events */
 static void musb_irq_work(struct work_struct *data)
 {
+	my_dbg(" [1810]  shl_add\n");
 	struct musb *musb = container_of(data, struct musb, irq_work);
 	static int old_state;
 
@@ -1826,6 +1857,7 @@ static struct musb *__devinit
 allocate_instance(struct device *dev,
 		struct musb_hdrc_config *config, void __iomem *mbase)
 {
+	my_dbg(" [1828]  shl_add\n");
 	struct musb		*musb;
 	struct musb_hw_ep	*ep;
 	int			epnum;
@@ -1874,6 +1906,7 @@ allocate_instance(struct device *dev,
 
 static void musb_free(struct musb *musb)
 {
+	my_dbg(" [1876]  shl_add\n");
 	/* this has multiple entry modes. it handles fault cleanup after
 	 * probe(), where things may be partially set up, as well as rmmod
 	 * cleanup after everything's been de-activated.
@@ -1915,6 +1948,7 @@ musb_init_controller(struct musb_hdrc_platform_data *plat, struct device *dev,
 			     void *ctrl)
 #endif
 {
+	my_dbg(" [1917]  shl_add\n");
 	int			status;
 	struct musb		*musb;
 #ifndef __UBOOT__
@@ -2170,6 +2204,7 @@ static u64	*orig_dma_mask;
 #ifndef __UBOOT__
 static int __devinit musb_probe(struct platform_device *pdev)
 {
+	my_dbg(" [2172]  shl_add\n");
 	struct device	*dev = &pdev->dev;
 	int		irq = platform_get_irq_byname(pdev, "mc");
 	int		status;
@@ -2199,6 +2234,7 @@ static int __devinit musb_probe(struct platform_device *pdev)
 
 static int __devexit musb_remove(struct platform_device *pdev)
 {
+	my_dbg(" [2201]  shl_add\n");
 	struct musb	*musb = dev_to_musb(&pdev->dev);
 	void __iomem	*ctrl_base = musb->ctrl_base;
 
@@ -2223,6 +2259,7 @@ static int __devexit musb_remove(struct platform_device *pdev)
 
 static void musb_save_context(struct musb *musb)
 {
+	my_dbg(" [2225]  shl_add\n");
 	int i;
 	void __iomem *musb_base = musb->mregs;
 	void __iomem *epio;
@@ -2299,6 +2336,7 @@ static void musb_save_context(struct musb *musb)
 
 static void musb_restore_context(struct musb *musb)
 {
+	my_dbg(" [2301]  shl_add\n");
 	int i;
 	void __iomem *musb_base = musb->mregs;
 	void __iomem *ep_target_regs;
@@ -2380,6 +2418,7 @@ static void musb_restore_context(struct musb *musb)
 
 static int musb_suspend(struct device *dev)
 {
+	my_dbg(" [2382]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	unsigned long	flags;
 
@@ -2401,6 +2440,7 @@ static int musb_suspend(struct device *dev)
 
 static int musb_resume_noirq(struct device *dev)
 {
+	my_dbg(" [2403]  shl_add\n");
 	/* for static cmos like DaVinci, register values were preserved
 	 * unless for some reason the whole soc powered down or the USB
 	 * module got reset through the PSC (vs just being disabled).
@@ -2410,6 +2450,7 @@ static int musb_resume_noirq(struct device *dev)
 
 static int musb_runtime_suspend(struct device *dev)
 {
+	my_dbg(" [2412]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 
 	musb_save_context(musb);
@@ -2419,6 +2460,7 @@ static int musb_runtime_suspend(struct device *dev)
 
 static int musb_runtime_resume(struct device *dev)
 {
+	my_dbg(" [2421]  shl_add\n");
 	struct musb	*musb = dev_to_musb(dev);
 	static int	first = 1;
 
@@ -2466,6 +2508,7 @@ static struct platform_driver musb_driver = {
 
 static int __init musb_init(void)
 {
+	my_dbg(" [2468]  shl_add\n");
 	if (usb_disabled())
 		return 0;
 
@@ -2480,7 +2523,9 @@ module_init(musb_init);
 
 static void __exit musb_cleanup(void)
 {
+	my_dbg(" [2482]  shl_add\n");
 	platform_driver_unregister(&musb_driver);
 }
 module_exit(musb_cleanup);
 #endif
+

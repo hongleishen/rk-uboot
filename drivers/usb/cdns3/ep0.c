@@ -38,6 +38,7 @@ static void cdns3_ep0_run_transfer(struct cdns3_device *priv_dev,
 				   dma_addr_t dma_addr,
 				   unsigned int length, int erdy, int zlp)
 {
+	my_dbg(" [40]  shl_add\n");
 	struct cdns3_usb_regs __iomem *regs = priv_dev->regs;
 	struct cdns3_endpoint *priv_ep = priv_dev->eps[0];
 
@@ -92,6 +93,7 @@ static void cdns3_ep0_run_transfer(struct cdns3_device *priv_dev,
 static int cdns3_ep0_delegate_req(struct cdns3_device *priv_dev,
 				  struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [94]  shl_add\n");
 	int ret;
 
 	spin_unlock(&priv_dev->lock);
@@ -104,6 +106,7 @@ static int cdns3_ep0_delegate_req(struct cdns3_device *priv_dev,
 
 static void cdns3_prepare_setup_packet(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [106]  shl_add\n");
 	priv_dev->ep0_data_dir = 0;
 	priv_dev->ep0_stage = CDNS3_SETUP_STAGE;
 	cdns3_ep0_run_transfer(priv_dev, priv_dev->setup_dma,
@@ -113,6 +116,7 @@ static void cdns3_prepare_setup_packet(struct cdns3_device *priv_dev)
 static void cdns3_ep0_complete_setup(struct cdns3_device *priv_dev,
 				     u8 send_stall, u8 send_erdy)
 {
+	my_dbg(" [115]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = priv_dev->eps[0];
 	struct usb_request *request;
 
@@ -147,6 +151,7 @@ static void cdns3_ep0_complete_setup(struct cdns3_device *priv_dev,
 static int cdns3_req_ep0_set_configuration(struct cdns3_device *priv_dev,
 					   struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [149]  shl_add\n");
 	enum usb_device_state device_state = priv_dev->gadget.state;
 	struct cdns3_endpoint *priv_ep;
 	u32 config = le16_to_cpu(ctrl_req->wValue);
@@ -204,6 +209,7 @@ static int cdns3_req_ep0_set_configuration(struct cdns3_device *priv_dev,
 static int cdns3_req_ep0_set_address(struct cdns3_device *priv_dev,
 				     struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [206]  shl_add\n");
 	enum usb_device_state device_state = priv_dev->gadget.state;
 	u32 reg;
 	u32 addr;
@@ -244,6 +250,7 @@ static int cdns3_req_ep0_set_address(struct cdns3_device *priv_dev,
 static int cdns3_req_ep0_get_status(struct cdns3_device *priv_dev,
 				    struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [246]  shl_add\n");
 	__le16 *response_pkt;
 	u16 usb_status = 0;
 	u32 recip;
@@ -299,6 +306,7 @@ static int cdns3_ep0_feature_handle_device(struct cdns3_device *priv_dev,
 					   struct usb_ctrlrequest *ctrl,
 					   int set)
 {
+	my_dbg(" [301]  shl_add\n");
 	enum usb_device_state state;
 	enum usb_device_speed speed;
 	int ret = 0;
@@ -366,6 +374,7 @@ static int cdns3_ep0_feature_handle_intf(struct cdns3_device *priv_dev,
 					 struct usb_ctrlrequest *ctrl,
 					 int set)
 {
+	my_dbg(" [368]  shl_add\n");
 	u32 wValue;
 	int ret = 0;
 
@@ -385,6 +394,7 @@ static int cdns3_ep0_feature_handle_endpoint(struct cdns3_device *priv_dev,
 					     struct usb_ctrlrequest *ctrl,
 					     int set)
 {
+	my_dbg(" [387]  shl_add\n");
 	struct cdns3_endpoint *priv_ep;
 	int ret = 0;
 	u8 index;
@@ -424,6 +434,7 @@ static int cdns3_req_ep0_handle_feature(struct cdns3_device *priv_dev,
 					struct usb_ctrlrequest *ctrl,
 					int set)
 {
+	my_dbg(" [426]  shl_add\n");
 	int ret = 0;
 	u32 recip;
 
@@ -456,6 +467,7 @@ static int cdns3_req_ep0_handle_feature(struct cdns3_device *priv_dev,
 static int cdns3_req_ep0_set_sel(struct cdns3_device *priv_dev,
 				 struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [458]  shl_add\n");
 	if (priv_dev->gadget.state < USB_STATE_ADDRESS)
 		return -EINVAL;
 
@@ -480,6 +492,7 @@ static int cdns3_req_ep0_set_sel(struct cdns3_device *priv_dev,
 static int cdns3_req_ep0_set_isoch_delay(struct cdns3_device *priv_dev,
 					 struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [482]  shl_add\n");
 	if (ctrl_req->wIndex || ctrl_req->wLength)
 		return -EINVAL;
 
@@ -498,6 +511,7 @@ static int cdns3_req_ep0_set_isoch_delay(struct cdns3_device *priv_dev,
 static int cdns3_ep0_standard_request(struct cdns3_device *priv_dev,
 				      struct usb_ctrlrequest *ctrl_req)
 {
+	my_dbg(" [500]  shl_add\n");
 	int ret;
 
 	switch (ctrl_req->bRequest) {
@@ -532,6 +546,7 @@ static int cdns3_ep0_standard_request(struct cdns3_device *priv_dev,
 
 static void __pending_setup_status_handler(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [534]  shl_add\n");
 	struct usb_request *request = priv_dev->pending_status_request;
 
 	if (priv_dev->status_completion_no_call && request &&
@@ -543,6 +558,7 @@ static void __pending_setup_status_handler(struct cdns3_device *priv_dev)
 
 void cdns3_pending_setup_status_handler(struct work_struct *work)
 {
+	my_dbg(" [545]  shl_add\n");
 	struct cdns3_device *priv_dev = container_of(work, struct cdns3_device,
 			pending_status_wq);
 	unsigned long flags;
@@ -558,6 +574,7 @@ void cdns3_pending_setup_status_handler(struct work_struct *work)
  */
 static void cdns3_ep0_setup_phase(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [560]  shl_add\n");
 	struct usb_ctrlrequest *ctrl = priv_dev->setup_buf;
 	struct cdns3_endpoint *priv_ep = priv_dev->eps[0];
 	int result;
@@ -596,6 +613,7 @@ static void cdns3_ep0_setup_phase(struct cdns3_device *priv_dev)
 
 static void cdns3_transfer_completed(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [598]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = priv_dev->eps[0];
 
 	if (!list_empty(&priv_ep->pending_req_list)) {
@@ -628,6 +646,7 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev)
  */
 static bool cdns3_check_new_setup(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [630]  shl_add\n");
 	u32 ep_sts_reg;
 
 	cdns3_select_ep(priv_dev, 0 | USB_DIR_OUT);
@@ -643,6 +662,7 @@ static bool cdns3_check_new_setup(struct cdns3_device *priv_dev)
  */
 void cdns3_check_ep0_interrupt_proceed(struct cdns3_device *priv_dev, int dir)
 {
+	my_dbg(" [645]  shl_add\n");
 	u32 ep_sts_reg;
 
 	cdns3_select_ep(priv_dev, dir);
@@ -680,6 +700,7 @@ void cdns3_check_ep0_interrupt_proceed(struct cdns3_device *priv_dev, int dir)
 static int cdns3_gadget_ep0_enable(struct usb_ep *ep,
 				   const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [682]  shl_add\n");
 	return -EINVAL;
 }
 
@@ -690,6 +711,7 @@ static int cdns3_gadget_ep0_enable(struct usb_ep *ep,
  */
 static int cdns3_gadget_ep0_disable(struct usb_ep *ep)
 {
+	my_dbg(" [692]  shl_add\n");
 	return -EINVAL;
 }
 
@@ -702,6 +724,7 @@ static int cdns3_gadget_ep0_disable(struct usb_ep *ep)
  */
 static int cdns3_gadget_ep0_set_halt(struct usb_ep *ep, int value)
 {
+	my_dbg(" [704]  shl_add\n");
 	/* TODO */
 	return 0;
 }
@@ -718,6 +741,7 @@ static int cdns3_gadget_ep0_queue(struct usb_ep *ep,
 				  struct usb_request *request,
 				  gfp_t gfp_flags)
 {
+	my_dbg(" [720]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
 	unsigned long flags;
@@ -800,6 +824,7 @@ static int cdns3_gadget_ep0_queue(struct usb_ep *ep,
  */
 int cdns3_gadget_ep_set_wedge(struct usb_ep *ep)
 {
+	my_dbg(" [802]  shl_add\n");
 	struct cdns3_endpoint *priv_ep = ep_to_cdns3_ep(ep);
 
 	dev_dbg(priv_dev->dev, "Wedge for %s\n", ep->name);
@@ -828,6 +853,7 @@ const struct usb_ep_ops cdns3_gadget_ep0_ops = {
  */
 void cdns3_ep0_config(struct cdns3_device *priv_dev)
 {
+	my_dbg(" [830]  shl_add\n");
 	struct cdns3_usb_regs __iomem *regs;
 	struct cdns3_endpoint *priv_ep;
 	u32 max_packet_size = 64;
@@ -889,6 +915,7 @@ void cdns3_ep0_config(struct cdns3_device *priv_dev)
 int cdns3_init_ep0(struct cdns3_device *priv_dev,
 		   struct cdns3_endpoint *priv_ep)
 {
+	my_dbg(" [891]  shl_add\n");
 	sprintf(priv_ep->name, "ep0");
 
 	/* fill linux fields */
@@ -909,3 +936,4 @@ int cdns3_init_ep0(struct cdns3_device *priv_dev,
 
 	return cdns3_allocate_trb_pool(priv_ep);
 }
+

@@ -34,6 +34,7 @@
  */
 void xhci_flush_cache(uintptr_t addr, u32 len)
 {
+	my_dbg(" [36]  shl_add\n");
 	BUG_ON((void *)addr == NULL || len == 0);
 
 	flush_dcache_range(addr & ~(CACHELINE_SIZE - 1),
@@ -49,6 +50,7 @@ void xhci_flush_cache(uintptr_t addr, u32 len)
  */
 void xhci_inval_cache(uintptr_t addr, u32 len)
 {
+	my_dbg(" [51]  shl_add\n");
 	BUG_ON((void *)addr == NULL || len == 0);
 
 	invalidate_dcache_range(addr & ~(CACHELINE_SIZE - 1),
@@ -64,6 +66,7 @@ void xhci_inval_cache(uintptr_t addr, u32 len)
  */
 static void xhci_segment_free(struct xhci_segment *seg)
 {
+	my_dbg(" [66]  shl_add\n");
 	free(seg->trbs);
 	seg->trbs = NULL;
 
@@ -78,6 +81,7 @@ static void xhci_segment_free(struct xhci_segment *seg)
  */
 static void xhci_ring_free(struct xhci_ring *ring)
 {
+	my_dbg(" [80]  shl_add\n");
 	struct xhci_segment *seg;
 	struct xhci_segment *first_seg;
 
@@ -103,6 +107,7 @@ static void xhci_ring_free(struct xhci_ring *ring)
  */
 static void xhci_scratchpad_free(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [105]  shl_add\n");
 	if (!ctrl->scratchpad)
 		return;
 
@@ -122,6 +127,7 @@ static void xhci_scratchpad_free(struct xhci_ctrl *ctrl)
  */
 static void xhci_free_container_ctx(struct xhci_container_ctx *ctx)
 {
+	my_dbg(" [124]  shl_add\n");
 	free(ctx->bytes);
 	free(ctx);
 }
@@ -134,6 +140,7 @@ static void xhci_free_container_ctx(struct xhci_container_ctx *ctx)
  */
 static void xhci_free_virt_devices(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [136]  shl_add\n");
 	int i;
 	int slot_id;
 	struct xhci_virt_device *virt_dev;
@@ -172,6 +179,7 @@ static void xhci_free_virt_devices(struct xhci_ctrl *ctrl)
  */
 void xhci_cleanup(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [174]  shl_add\n");
 	xhci_ring_free(ctrl->event_ring);
 	xhci_ring_free(ctrl->cmd_ring);
 	xhci_scratchpad_free(ctrl);
@@ -189,6 +197,7 @@ void xhci_cleanup(struct xhci_ctrl *ctrl)
  */
 static void *xhci_malloc(unsigned int size)
 {
+	my_dbg(" [191]  shl_add\n");
 	void *ptr;
 	size_t cacheline_size = max(XHCI_ALIGNMENT, CACHELINE_SIZE);
 
@@ -215,6 +224,7 @@ static void *xhci_malloc(unsigned int size)
 static void xhci_link_segments(struct xhci_segment *prev,
 				struct xhci_segment *next, bool link_trbs)
 {
+	my_dbg(" [217]  shl_add\n");
 	u32 val;
 	u64 val_64 = 0;
 
@@ -245,6 +255,7 @@ static void xhci_link_segments(struct xhci_segment *prev,
  */
 static void xhci_initialize_ring_info(struct xhci_ring *ring)
 {
+	my_dbg(" [247]  shl_add\n");
 	/*
 	 * The ring is empty, so the enqueue pointer == dequeue pointer
 	 */
@@ -273,6 +284,7 @@ static void xhci_initialize_ring_info(struct xhci_ring *ring)
  */
 static struct xhci_segment *xhci_segment_alloc(void)
 {
+	my_dbg(" [275]  shl_add\n");
 	struct xhci_segment *seg;
 
 	seg = (struct xhci_segment *)malloc(sizeof(struct xhci_segment));
@@ -302,6 +314,7 @@ static struct xhci_segment *xhci_segment_alloc(void)
  */
 struct xhci_ring *xhci_ring_alloc(unsigned int num_segs, bool link_trbs)
 {
+	my_dbg(" [304]  shl_add\n");
 	struct xhci_ring *ring;
 	struct xhci_segment *prev;
 
@@ -347,6 +360,7 @@ struct xhci_ring *xhci_ring_alloc(unsigned int num_segs, bool link_trbs)
  */
 static int xhci_scratchpad_alloc(struct xhci_ctrl *ctrl)
 {
+	my_dbg(" [349]  shl_add\n");
 	struct xhci_hccr *hccr = ctrl->hccr;
 	struct xhci_hcor *hcor = ctrl->hcor;
 	struct xhci_scratchpad *scratchpad;
@@ -416,6 +430,7 @@ fail_sp:
 static struct xhci_container_ctx
 		*xhci_alloc_container_ctx(struct xhci_ctrl *ctrl, int type)
 {
+	my_dbg(" [418]  shl_add\n");
 	struct xhci_container_ctx *ctx;
 
 	ctx = (struct xhci_container_ctx *)
@@ -442,6 +457,7 @@ static struct xhci_container_ctx
  */
 int xhci_alloc_virt_device(struct xhci_ctrl *ctrl, unsigned int slot_id)
 {
+	my_dbg(" [444]  shl_add\n");
 	u64 byte_64 = 0;
 	struct xhci_virt_device *virt_dev;
 
@@ -503,6 +519,7 @@ int xhci_alloc_virt_device(struct xhci_ctrl *ctrl, unsigned int slot_id)
 int xhci_mem_init(struct xhci_ctrl *ctrl, struct xhci_hccr *hccr,
 					struct xhci_hcor *hcor)
 {
+	my_dbg(" [505]  shl_add\n");
 	uint64_t val_64;
 	uint64_t trb_64;
 	uint32_t val;
@@ -612,6 +629,7 @@ int xhci_mem_init(struct xhci_ctrl *ctrl, struct xhci_hccr *hccr,
 struct xhci_input_control_ctx
 		*xhci_get_input_control_ctx(struct xhci_container_ctx *ctx)
 {
+	my_dbg(" [614]  shl_add\n");
 	BUG_ON(ctx->type != XHCI_CTX_TYPE_INPUT);
 	return (struct xhci_input_control_ctx *)ctx->bytes;
 }
@@ -626,6 +644,7 @@ struct xhci_input_control_ctx
 struct xhci_slot_ctx *xhci_get_slot_ctx(struct xhci_ctrl *ctrl,
 				struct xhci_container_ctx *ctx)
 {
+	my_dbg(" [628]  shl_add\n");
 	if (ctx->type == XHCI_CTX_TYPE_DEVICE)
 		return (struct xhci_slot_ctx *)ctx->bytes;
 
@@ -645,6 +664,7 @@ struct xhci_ep_ctx *xhci_get_ep_ctx(struct xhci_ctrl *ctrl,
 				    struct xhci_container_ctx *ctx,
 				    unsigned int ep_index)
 {
+	my_dbg(" [647]  shl_add\n");
 	/* increment ep index by offset of start of ep ctx array */
 	ep_index++;
 	if (ctx->type == XHCI_CTX_TYPE_INPUT)
@@ -671,6 +691,7 @@ void xhci_endpoint_copy(struct xhci_ctrl *ctrl,
 			struct xhci_container_ctx *out_ctx,
 			unsigned int ep_index)
 {
+	my_dbg(" [673]  shl_add\n");
 	struct xhci_ep_ctx *out_ep_ctx;
 	struct xhci_ep_ctx *in_ep_ctx;
 
@@ -698,6 +719,7 @@ void xhci_endpoint_copy(struct xhci_ctrl *ctrl,
 void xhci_slot_copy(struct xhci_ctrl *ctrl, struct xhci_container_ctx *in_ctx,
 					struct xhci_container_ctx *out_ctx)
 {
+	my_dbg(" [700]  shl_add\n");
 	struct xhci_slot_ctx *in_slot_ctx;
 	struct xhci_slot_ctx *out_slot_ctx;
 
@@ -719,6 +741,7 @@ void xhci_slot_copy(struct xhci_ctrl *ctrl, struct xhci_container_ctx *in_ctx,
 void xhci_setup_addressable_virt_dev(struct xhci_ctrl *ctrl,
 				     struct usb_device *udev, int hop_portnr)
 {
+	my_dbg(" [721]  shl_add\n");
 	struct xhci_virt_device *virt_dev;
 	struct xhci_ep_ctx *ep0_ctx;
 	struct xhci_slot_ctx *slot_ctx;
@@ -864,3 +887,4 @@ void xhci_setup_addressable_virt_dev(struct xhci_ctrl *ctrl,
 	xhci_flush_cache((uintptr_t)ep0_ctx, sizeof(struct xhci_ep_ctx));
 	xhci_flush_cache((uintptr_t)slot_ctx, sizeof(struct xhci_slot_ctx));
 }
+

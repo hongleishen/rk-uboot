@@ -107,6 +107,7 @@ static int enabled;
 #ifdef MUSB_DEBUG
 static void musb_db_regs(void)
 {
+	my_dbg(" [109]  shl_add\n");
 	u8 b;
 	u16 w;
 
@@ -149,6 +150,7 @@ static void musb_db_regs(void)
 
 static void musb_peri_softconnect(void)
 {
+	my_dbg(" [151]  shl_add\n");
 	u8 power, devctl;
 
 	/* Power off MUSB */
@@ -188,6 +190,7 @@ static void musb_peri_softconnect(void)
 
 static void musb_peri_reset(void)
 {
+	my_dbg(" [190]  shl_add\n");
 	if ((debug_setup) && (debug_level > 1))
 		serial_printf("INFO : %s reset\n", __PRETTY_FUNCTION__);
 
@@ -202,11 +205,13 @@ static void musb_peri_reset(void)
 
 static void musb_peri_resume(void)
 {
+	my_dbg(" [204]  shl_add\n");
 	/* noop */
 }
 
 static void musb_peri_ep0_stall(void)
 {
+	my_dbg(" [209]  shl_add\n");
 	u16 csr0;
 
 	csr0 = readw(&musbr->ep[0].ep0.csr0);
@@ -218,6 +223,7 @@ static void musb_peri_ep0_stall(void)
 
 static void musb_peri_ep0_ack_req(void)
 {
+	my_dbg(" [220]  shl_add\n");
 	u16 csr0;
 
 	csr0 = readw(&musbr->ep[0].ep0.csr0);
@@ -227,6 +233,7 @@ static void musb_peri_ep0_ack_req(void)
 
 static void musb_ep0_tx_ready(void)
 {
+	my_dbg(" [229]  shl_add\n");
 	u16 csr0;
 
 	csr0 = readw(&musbr->ep[0].ep0.csr0);
@@ -236,6 +243,7 @@ static void musb_ep0_tx_ready(void)
 
 static void musb_ep0_tx_ready_and_last(void)
 {
+	my_dbg(" [238]  shl_add\n");
 	u16 csr0;
 
 	csr0 = readw(&musbr->ep[0].ep0.csr0);
@@ -245,6 +253,7 @@ static void musb_ep0_tx_ready_and_last(void)
 
 static void musb_peri_ep0_last(void)
 {
+	my_dbg(" [247]  shl_add\n");
 	u16 csr0;
 
 	csr0 = readw(&musbr->ep[0].ep0.csr0);
@@ -254,6 +263,7 @@ static void musb_peri_ep0_last(void)
 
 static void musb_peri_ep0_set_address(void)
 {
+	my_dbg(" [256]  shl_add\n");
 	u8 faddr;
 	writeb(udc_device->address, &musbr->faddr);
 
@@ -276,6 +286,7 @@ static void musb_peri_ep0_set_address(void)
 
 static void musb_peri_rx_ack(unsigned int ep)
 {
+	my_dbg(" [278]  shl_add\n");
 	u16 peri_rxcsr;
 
 	peri_rxcsr = readw(&musbr->ep[ep].epN.rxcsr);
@@ -285,6 +296,7 @@ static void musb_peri_rx_ack(unsigned int ep)
 
 static void musb_peri_tx_ready(unsigned int ep)
 {
+	my_dbg(" [287]  shl_add\n");
 	u16 peri_txcsr;
 
 	peri_txcsr = readw(&musbr->ep[ep].epN.txcsr);
@@ -294,6 +306,7 @@ static void musb_peri_tx_ready(unsigned int ep)
 
 static void musb_peri_ep0_zero_data_request(int err)
 {
+	my_dbg(" [296]  shl_add\n");
 	musb_peri_ep0_ack_req();
 
 	if (err) {
@@ -330,6 +343,7 @@ static void musb_peri_ep0_zero_data_request(int err)
 
 static void musb_peri_ep0_rx_data_request(void)
 {
+	my_dbg(" [332]  shl_add\n");
 	/*
 	 * This is the completion of the data OUT / RX
 	 *
@@ -347,6 +361,7 @@ static void musb_peri_ep0_rx_data_request(void)
 
 static void musb_peri_ep0_tx_data_request(int err)
 {
+	my_dbg(" [349]  shl_add\n");
 	if (err) {
 		musb_peri_ep0_stall();
 		SET_EP0_STATE(IDLE);
@@ -361,6 +376,7 @@ static void musb_peri_ep0_tx_data_request(int err)
 
 static void musb_peri_ep0_idle(void)
 {
+	my_dbg(" [363]  shl_add\n");
 	u16 count0;
 	int err;
 	u16 csr0;
@@ -442,6 +458,7 @@ end:
 
 static void musb_peri_ep0_rx(void)
 {
+	my_dbg(" [444]  shl_add\n");
 	/*
 	 * This is the completion of the data OUT / RX
 	 *
@@ -532,6 +549,7 @@ static void musb_peri_ep0_rx(void)
 
 static void musb_peri_ep0_tx(void)
 {
+	my_dbg(" [534]  shl_add\n");
 	u16 csr0;
 	int transfer_size = 0;
 	unsigned int p, pm;
@@ -593,6 +611,7 @@ end:
 
 static void musb_peri_ep0(void)
 {
+	my_dbg(" [595]  shl_add\n");
 	u16 csr0;
 
 	if (SET_ADDRESS == ep0_state)
@@ -628,6 +647,7 @@ static void musb_peri_ep0(void)
 
 static void musb_peri_rx_ep(unsigned int ep)
 {
+	my_dbg(" [630]  shl_add\n");
 	u16 peri_rxcount;
 	u8 peri_rxcsr = readw(&musbr->ep[ep].epN.rxcsr);
 
@@ -694,6 +714,7 @@ static void musb_peri_rx_ep(unsigned int ep)
 
 static void musb_peri_rx(u16 intr)
 {
+	my_dbg(" [696]  shl_add\n");
 	unsigned int ep;
 
 	/* Check for EP0 */
@@ -708,6 +729,7 @@ static void musb_peri_rx(u16 intr)
 
 static void musb_peri_tx(u16 intr)
 {
+	my_dbg(" [710]  shl_add\n");
 	/* Check for EP0 */
 	if (0x01 & intr)
 		musb_peri_ep0_tx();
@@ -727,6 +749,7 @@ static void musb_peri_tx(u16 intr)
 
 void udc_irq(void)
 {
+	my_dbg(" [729]  shl_add\n");
 	/* This is a high freq called function */
 	if (enabled) {
 		u8 intrusb;
@@ -797,16 +820,19 @@ void udc_irq(void)
 
 void udc_set_nak(int ep_num)
 {
+	my_dbg(" [799]  shl_add\n");
 	/* noop */
 }
 
 void udc_unset_nak(int ep_num)
 {
+	my_dbg(" [804]  shl_add\n");
 	/* noop */
 }
 
 int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [809]  shl_add\n");
 	int ret = 0;
 
 	/* Transmit only if the hardware is available */
@@ -864,6 +890,7 @@ int udc_endpoint_write(struct usb_endpoint_instance *endpoint)
 void udc_setup_ep(struct usb_device_instance *device, unsigned int id,
 		  struct usb_endpoint_instance *endpoint)
 {
+	my_dbg(" [866]  shl_add\n");
 	if (0 == id) {
 		/* EP0 */
 		ep0_endpoint = endpoint;
@@ -893,16 +920,19 @@ void udc_setup_ep(struct usb_device_instance *device, unsigned int id,
 
 void udc_connect(void)
 {
+	my_dbg(" [895]  shl_add\n");
 	/* noop */
 }
 
 void udc_disconnect(void)
 {
+	my_dbg(" [900]  shl_add\n");
 	/* noop */
 }
 
 void udc_enable(struct usb_device_instance *device)
 {
+	my_dbg(" [905]  shl_add\n");
 	/* Save the device structure pointer */
 	udc_device = device;
 
@@ -911,11 +941,13 @@ void udc_enable(struct usb_device_instance *device)
 
 void udc_disable(void)
 {
+	my_dbg(" [913]  shl_add\n");
 	enabled = 0;
 }
 
 void udc_startup_events(struct usb_device_instance *device)
 {
+	my_dbg(" [918]  shl_add\n");
 	/* The DEVICE_INIT event puts the USB device in the state STATE_INIT. */
 	usbd_device_event_irq(device, DEVICE_INIT, 0);
 
@@ -933,6 +965,7 @@ void udc_startup_events(struct usb_device_instance *device)
 
 int udc_init(void)
 {
+	my_dbg(" [935]  shl_add\n");
 	int ret;
 	int ep_loop;
 
@@ -957,3 +990,4 @@ end:
 
 	return ret;
 }
+

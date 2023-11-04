@@ -28,6 +28,7 @@ struct generic_ohci {
 
 static int ohci_setup_phy(struct udevice *dev, int index)
 {
+	my_dbg(" [30]  shl_add\n");
 	struct generic_ohci *priv = dev_get_priv(dev);
 	int ret;
 
@@ -56,6 +57,7 @@ static int ohci_setup_phy(struct udevice *dev, int index)
 
 static int ohci_shutdown_phy(struct udevice *dev)
 {
+	my_dbg(" [58]  shl_add\n");
 	struct generic_ohci *priv = dev_get_priv(dev);
 	int ret = 0;
 
@@ -78,6 +80,7 @@ static int ohci_shutdown_phy(struct udevice *dev)
 
 static int ohci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [80]  shl_add\n");
 	struct ohci_regs *regs;
 	struct generic_ohci *priv = dev_get_priv(dev);
 	int i, err, ret, clock_nb, reset_nb;
@@ -166,6 +169,7 @@ clk_err:
 
 static int ohci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [168]  shl_add\n");
 	struct generic_ohci *priv = dev_get_priv(dev);
 	int ret;
 
@@ -199,3 +203,4 @@ U_BOOT_DRIVER(ohci_generic) = {
 	.priv_auto_alloc_size = sizeof(struct generic_ohci),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

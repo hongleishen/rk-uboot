@@ -39,6 +39,7 @@
 static int lan75xx_phy_gig_workaround(struct usb_device *udev,
 				      struct ueth_data *dev)
 {
+	my_dbg(" [41]  shl_add\n");
 	int ret = 0;
 
 	/* Only internal phy */
@@ -60,6 +61,7 @@ static int lan75xx_phy_gig_workaround(struct usb_device *udev,
 static int lan75xx_update_flowcontrol(struct usb_device *udev,
 				      struct ueth_data *dev)
 {
+	my_dbg(" [62]  shl_add\n");
 	uint32_t flow = 0, fct_flow = 0;
 	int ret;
 
@@ -75,6 +77,7 @@ static int lan75xx_update_flowcontrol(struct usb_device *udev,
 
 static int lan75xx_set_receive_filter(struct usb_device *udev)
 {
+	my_dbg(" [77]  shl_add\n");
 	/* No multicast in u-boot */
 	return lan7x_write_reg(udev, LAN75XX_RFE_CTL,
 			       RFE_CTL_BCAST_EN | RFE_CTL_DA_PERFECT);
@@ -83,6 +86,7 @@ static int lan75xx_set_receive_filter(struct usb_device *udev)
 /* starts the TX path */
 static void lan75xx_start_tx_path(struct usb_device *udev)
 {
+	my_dbg(" [85]  shl_add\n");
 	/* Enable Tx at MAC */
 	lan7x_write_reg(udev, MAC_TX, MAC_TX_TXEN);
 
@@ -93,6 +97,7 @@ static void lan75xx_start_tx_path(struct usb_device *udev)
 /* Starts the Receive path */
 static void lan75xx_start_rx_path(struct usb_device *udev)
 {
+	my_dbg(" [95]  shl_add\n");
 	/* Enable Rx at MAC */
 	lan7x_write_reg(udev, MAC_RX,
 			LAN7X_MAC_RX_MAX_SIZE_DEFAULT |
@@ -106,6 +111,7 @@ static int lan75xx_basic_reset(struct usb_device *udev,
 			       struct ueth_data *dev,
 			       struct lan7x_private *priv)
 {
+	my_dbg(" [108]  shl_add\n");
 	int ret;
 	u32 val;
 
@@ -131,6 +137,7 @@ static int lan75xx_basic_reset(struct usb_device *udev,
 
 int lan75xx_write_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [133]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	unsigned char *enetaddr = pdata->enetaddr;
@@ -163,6 +170,7 @@ int lan75xx_write_hwaddr(struct udevice *dev)
 
 static int lan75xx_eth_start(struct udevice *dev)
 {
+	my_dbg(" [165]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct lan7x_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
@@ -240,6 +248,7 @@ static int lan75xx_eth_start(struct udevice *dev)
 
 int lan75xx_read_rom_hwaddr(struct udevice *dev)
 {
+	my_dbg(" [242]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	int ret;
@@ -257,6 +266,7 @@ int lan75xx_read_rom_hwaddr(struct udevice *dev)
 
 static int lan75xx_eth_probe(struct udevice *dev)
 {
+	my_dbg(" [259]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	struct lan7x_private *priv = dev_get_priv(dev);
 	struct ueth_data *ueth = &priv->ueth;
@@ -313,3 +323,4 @@ static const struct usb_device_id lan75xx_eth_id_table[] = {
 };
 
 U_BOOT_USB_DEVICE(lan75xx_eth, lan75xx_eth_id_table);
+

@@ -68,6 +68,7 @@ static const char ep0name[] = "ep0";
 /* Watchdog */
 static inline void start_watchdog(struct pxa25x_udc *udc)
 {
+	my_dbg(" [70]  shl_add\n");
 	debug("Started watchdog\n");
 	udc->watchdog.base = get_timer(0);
 	udc->watchdog.running = 1;
@@ -75,12 +76,14 @@ static inline void start_watchdog(struct pxa25x_udc *udc)
 
 static inline void stop_watchdog(struct pxa25x_udc *udc)
 {
+	my_dbg(" [77]  shl_add\n");
 	udc->watchdog.running = 0;
 	debug("Stopped watchdog\n");
 }
 
 static inline void test_watchdog(struct pxa25x_udc *udc)
 {
+	my_dbg(" [83]  shl_add\n");
 	if (!udc->watchdog.running)
 		return;
 
@@ -95,6 +98,7 @@ static inline void test_watchdog(struct pxa25x_udc *udc)
 
 static void udc_watchdog(struct pxa25x_udc *dev)
 {
+	my_dbg(" [97]  shl_add\n");
 	uint32_t udccs0 = readl(&dev->regs->udccs[0]);
 
 	debug("Fired up udc_watchdog\n");
@@ -121,6 +125,7 @@ static const char * const state_name[] = {
 static void
 dump_udccr(const char *label)
 {
+	my_dbg(" [123]  shl_add\n");
 	u32 udccr = readl(&UDC_REGS->udccr);
 	debug("%s %02X =%s%s%s%s%s%s%s%s\n",
 		label, udccr,
@@ -137,6 +142,7 @@ dump_udccr(const char *label)
 static void
 dump_udccs0(const char *label)
 {
+	my_dbg(" [139]  shl_add\n");
 	u32 udccs0 = readl(&UDC_REGS->udccs[0]);
 
 	debug("%s %s %02X =%s%s%s%s%s%s%s%s\n",
@@ -154,6 +160,7 @@ dump_udccs0(const char *label)
 static void
 dump_state(struct pxa25x_udc *dev)
 {
+	my_dbg(" [156]  shl_add\n");
 	u32 tmp;
 	unsigned i;
 
@@ -209,6 +216,7 @@ static void nuke(struct pxa25x_ep *, int status);
 /* one GPIO should control a D+ pullup, so host sees this device (or not) */
 static void pullup_off(void)
 {
+	my_dbg(" [211]  shl_add\n");
 	struct pxa2xx_udc_mach_info *mach = the_controller->mach;
 
 	if (mach->udc_command)
@@ -217,6 +225,7 @@ static void pullup_off(void)
 
 static void pullup_on(void)
 {
+	my_dbg(" [219]  shl_add\n");
 	struct pxa2xx_udc_mach_info *mach = the_controller->mach;
 
 	if (mach->udc_command)
@@ -225,6 +234,7 @@ static void pullup_on(void)
 
 static void pio_irq_enable(int bEndpointAddress)
 {
+	my_dbg(" [227]  shl_add\n");
 	bEndpointAddress &= 0xf;
 	if (bEndpointAddress < 8) {
 		clrbits_le32(&the_controller->regs->uicr0,
@@ -238,6 +248,7 @@ static void pio_irq_enable(int bEndpointAddress)
 
 static void pio_irq_disable(int bEndpointAddress)
 {
+	my_dbg(" [240]  shl_add\n");
 	bEndpointAddress &= 0xf;
 	if (bEndpointAddress < 8) {
 		setbits_le32(&the_controller->regs->uicr0,
@@ -251,6 +262,7 @@ static void pio_irq_disable(int bEndpointAddress)
 
 static inline void udc_set_mask_UDCCR(int mask)
 {
+	my_dbg(" [253]  shl_add\n");
 	/*
 	 * The UDCCR reg contains mask and interrupt status bits,
 	 * so using '|=' isn't safe as it may ack an interrupt.
@@ -263,6 +275,7 @@ static inline void udc_set_mask_UDCCR(int mask)
 
 static inline void udc_clear_mask_UDCCR(int mask)
 {
+	my_dbg(" [265]  shl_add\n");
 	const uint32_t mask_bits = UDCCR_REM | UDCCR_SRM | UDCCR_UDE;
 
 	mask = ~mask & mask_bits;
@@ -271,6 +284,7 @@ static inline void udc_clear_mask_UDCCR(int mask)
 
 static inline void udc_ack_int_UDCCR(int mask)
 {
+	my_dbg(" [273]  shl_add\n");
 	const uint32_t mask_bits = UDCCR_REM | UDCCR_SRM | UDCCR_UDE;
 
 	mask &= ~mask_bits;
@@ -294,6 +308,7 @@ static inline void udc_ack_int_UDCCR(int mask)
 static int pxa25x_ep_enable(struct usb_ep *_ep,
 		const struct usb_endpoint_descriptor *desc)
 {
+	my_dbg(" [296]  shl_add\n");
 	struct pxa25x_ep *ep;
 	struct pxa25x_udc *dev;
 
@@ -346,6 +361,7 @@ static int pxa25x_ep_enable(struct usb_ep *_ep,
 
 static int pxa25x_ep_disable(struct usb_ep *_ep)
 {
+	my_dbg(" [348]  shl_add\n");
 	struct pxa25x_ep *ep;
 	unsigned long flags;
 
@@ -384,6 +400,7 @@ static int pxa25x_ep_disable(struct usb_ep *_ep)
 static struct usb_request *
 pxa25x_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 {
+	my_dbg(" [386]  shl_add\n");
 	struct pxa25x_request *req;
 
 	req = kzalloc(sizeof(*req), gfp_flags);
@@ -401,6 +418,7 @@ pxa25x_ep_alloc_request(struct usb_ep *_ep, gfp_t gfp_flags)
 static void
 pxa25x_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [403]  shl_add\n");
 	struct pxa25x_request	*req;
 
 	req = container_of(_req, struct pxa25x_request, req);
@@ -415,6 +433,7 @@ pxa25x_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
  */
 static void done(struct pxa25x_ep *ep, struct pxa25x_request *req, int status)
 {
+	my_dbg(" [417]  shl_add\n");
 	unsigned stopped = ep->stopped;
 
 	list_del_init(&req->queue);
@@ -438,12 +457,14 @@ static void done(struct pxa25x_ep *ep, struct pxa25x_request *req, int status)
 
 static inline void ep0_idle(struct pxa25x_udc *dev)
 {
+	my_dbg(" [440]  shl_add\n");
 	dev->ep0state = EP0_IDLE;
 }
 
 static int
 write_packet(u32 *uddr, struct pxa25x_request *req, unsigned max)
 {
+	my_dbg(" [446]  shl_add\n");
 	u8 *buf;
 	unsigned length, count;
 
@@ -471,6 +492,7 @@ write_packet(u32 *uddr, struct pxa25x_request *req, unsigned max)
 static int
 write_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 {
+	my_dbg(" [473]  shl_add\n");
 	unsigned max;
 
 	max = le16_to_cpu(get_unaligned(&ep->desc->wMaxPacketSize));
@@ -532,6 +554,7 @@ write_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 static inline
 void ep0start(struct pxa25x_udc *dev, u32 flags, const char *tag)
 {
+	my_dbg(" [534]  shl_add\n");
 	writel(flags|UDCCS0_SA|UDCCS0_OPR, &dev->regs->udccs[0]);
 	writel(USIR0_IR0, &dev->regs->usir0);
 	dev->req_pending = 0;
@@ -543,6 +566,7 @@ void ep0start(struct pxa25x_udc *dev, u32 flags, const char *tag)
 static int
 write_ep0_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 {
+	my_dbg(" [545]  shl_add\n");
 	unsigned count;
 	int is_short;
 
@@ -604,6 +628,7 @@ write_ep0_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 static int
 read_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 {
+	my_dbg(" [606]  shl_add\n");
 	u32 udccs;
 	u8 *buf;
 	unsigned bufferspace, count, is_short;
@@ -683,6 +708,7 @@ read_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 static int
 read_ep0_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 {
+	my_dbg(" [685]  shl_add\n");
 	u8 *buf, byte;
 	unsigned bufferspace;
 
@@ -723,6 +749,7 @@ read_ep0_fifo(struct pxa25x_ep *ep, struct pxa25x_request *req)
 static int
 pxa25x_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
 {
+	my_dbg(" [725]  shl_add\n");
 	struct pxa25x_request *req;
 	struct pxa25x_ep *ep;
 	struct pxa25x_udc *dev;
@@ -839,6 +866,7 @@ pxa25x_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
  */
 static void nuke(struct pxa25x_ep *ep, int status)
 {
+	my_dbg(" [841]  shl_add\n");
 	struct pxa25x_request *req;
 
 	/* called with irqs blocked */
@@ -856,6 +884,7 @@ static void nuke(struct pxa25x_ep *ep, int status)
 /* dequeue JUST ONE request */
 static int pxa25x_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 {
+	my_dbg(" [858]  shl_add\n");
 	struct pxa25x_ep *ep;
 	struct pxa25x_request *req;
 	unsigned long flags;
@@ -886,6 +915,7 @@ static int pxa25x_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
 
 static int pxa25x_ep_set_halt(struct usb_ep *_ep, int value)
 {
+	my_dbg(" [888]  shl_add\n");
 	struct pxa25x_ep *ep;
 	unsigned long flags;
 
@@ -942,6 +972,7 @@ static int pxa25x_ep_set_halt(struct usb_ep *_ep, int value)
 
 static int pxa25x_ep_fifo_status(struct usb_ep *_ep)
 {
+	my_dbg(" [944]  shl_add\n");
 	struct pxa25x_ep        *ep;
 
 	ep = container_of(_ep, struct pxa25x_ep, ep);
@@ -961,6 +992,7 @@ static int pxa25x_ep_fifo_status(struct usb_ep *_ep)
 
 static void pxa25x_ep_fifo_flush(struct usb_ep *_ep)
 {
+	my_dbg(" [963]  shl_add\n");
 	struct pxa25x_ep        *ep;
 
 	ep = container_of(_ep, struct pxa25x_ep, ep);
@@ -1008,12 +1040,14 @@ static struct usb_ep_ops pxa25x_ep_ops = {
 
 static int pxa25x_udc_get_frame(struct usb_gadget *_gadget)
 {
+	my_dbg(" [1010]  shl_add\n");
 	return ((readl(&the_controller->regs->ufnrh) & 0x07) << 8) |
 		(readl(&the_controller->regs->ufnrl) & 0xff);
 }
 
 static int pxa25x_udc_wakeup(struct usb_gadget *_gadget)
 {
+	my_dbg(" [1016]  shl_add\n");
 	/* host may not have enabled remote wakeup */
 	if ((readl(&the_controller->regs->udccs[0]) & UDCCS0_DRWF) == 0)
 		return -EHOSTUNREACH;
@@ -1031,6 +1065,7 @@ static void udc_disable(struct pxa25x_udc *);
  */
 static int pullup(struct pxa25x_udc *udc)
 {
+	my_dbg(" [1033]  shl_add\n");
 	if (udc->pullup)
 		pullup_on();
 	else
@@ -1058,6 +1093,7 @@ static int pullup(struct pxa25x_udc *udc)
 /* VBUS reporting logically comes from a transceiver */
 static int pxa25x_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
 {
+	my_dbg(" [1060]  shl_add\n");
 	struct pxa25x_udc *udc;
 
 	udc = container_of(_gadget, struct pxa25x_udc, gadget);
@@ -1069,6 +1105,7 @@ static int pxa25x_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
 /* drivers may have software control over D+ pullup */
 static int pxa25x_udc_pullup(struct usb_gadget *_gadget, int is_active)
 {
+	my_dbg(" [1071]  shl_add\n");
 	struct pxa25x_udc	*udc;
 
 	udc = container_of(_gadget, struct pxa25x_udc, gadget);
@@ -1089,6 +1126,7 @@ static int pxa25x_udc_pullup(struct usb_gadget *_gadget, int is_active)
  */
 static int pxa25x_udc_vbus_draw(struct usb_gadget *_gadget, unsigned mA)
 {
+	my_dbg(" [1091]  shl_add\n");
 	return -EOPNOTSUPP;
 }
 
@@ -1107,6 +1145,7 @@ static const struct usb_gadget_ops pxa25x_udc_ops = {
  */
 static void udc_disable(struct pxa25x_udc *dev)
 {
+	my_dbg(" [1109]  shl_add\n");
 	/* block all irqs */
 	udc_set_mask_UDCCR(UDCCR_SRM|UDCCR_REM);
 	writel(0xff, &dev->regs->uicr0);
@@ -1127,6 +1166,7 @@ static void udc_disable(struct pxa25x_udc *dev)
  */
 static void udc_reinit(struct pxa25x_udc *dev)
 {
+	my_dbg(" [1129]  shl_add\n");
 	u32 i;
 
 	/* device/ep0 records init */
@@ -1156,6 +1196,7 @@ static void udc_reinit(struct pxa25x_udc *dev)
  */
 static void udc_enable(struct pxa25x_udc *dev)
 {
+	my_dbg(" [1158]  shl_add\n");
 	debug("udc: enabling udc\n");
 
 	udc_clear_mask_UDCCR(UDCCR_UDE);
@@ -1201,6 +1242,7 @@ static void udc_enable(struct pxa25x_udc *dev)
 
 static inline void clear_ep_state(struct pxa25x_udc *dev)
 {
+	my_dbg(" [1203]  shl_add\n");
 	unsigned i;
 
 	/*
@@ -1213,6 +1255,7 @@ static inline void clear_ep_state(struct pxa25x_udc *dev)
 
 static void handle_ep0(struct pxa25x_udc *dev)
 {
+	my_dbg(" [1215]  shl_add\n");
 	u32 udccs0 = readl(&dev->regs->udccs[0]);
 	struct pxa25x_ep *ep = &dev->ep[0];
 	struct pxa25x_request *req;
@@ -1460,6 +1503,7 @@ stall:
 
 static void handle_ep(struct pxa25x_ep *ep)
 {
+	my_dbg(" [1462]  shl_add\n");
 	struct pxa25x_request	*req;
 	int			is_in = ep->bEndpointAddress & USB_DIR_IN;
 	int			completed;
@@ -1516,6 +1560,7 @@ static struct pxa25x_udc memory;
 static int
 pxa25x_udc_irq(void)
 {
+	my_dbg(" [1518]  shl_add\n");
 	struct pxa25x_udc *dev = &memory;
 	int handled;
 
@@ -1860,6 +1905,7 @@ static struct pxa25x_udc memory = {
 
 static void udc_command(int cmd)
 {
+	my_dbg(" [1862]  shl_add\n");
 	switch (cmd) {
 	case PXA2XX_UDC_CMD_CONNECT:
 		setbits_le32(GPDR(CONFIG_USB_DEV_PULLUP_GPIO),
@@ -1899,6 +1945,7 @@ static struct pxa2xx_udc_mach_info mach_info = {
  */
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1901]  shl_add\n");
 	struct pxa25x_udc *dev = &memory;
 	int retval;
 	uint32_t chiprev;
@@ -1977,6 +2024,7 @@ int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 static void
 stop_activity(struct pxa25x_udc *dev, struct usb_gadget_driver *driver)
 {
+	my_dbg(" [1979]  shl_add\n");
 	int i;
 
 	/* don't disconnect drivers more than once */
@@ -2003,6 +2051,7 @@ stop_activity(struct pxa25x_udc *dev, struct usb_gadget_driver *driver)
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
+	my_dbg(" [2005]  shl_add\n");
 	struct pxa25x_udc	*dev = the_controller;
 
 	if (!dev)
@@ -2031,6 +2080,7 @@ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 
 extern void udc_disconnect(void)
 {
+	my_dbg(" [2033]  shl_add\n");
 	setbits_le32(CKEN, CKEN11_USB);
 	udc_clear_mask_UDCCR(UDCCR_UDE);
 	udc_command(PXA2XX_UDC_CMD_DISCONNECT);
@@ -2042,5 +2092,7 @@ extern void udc_disconnect(void)
 extern int
 usb_gadget_handle_interrupts(int index)
 {
+	my_dbg(" [2044]  shl_add\n");
 	return pxa25x_udc_irq();
 }
+

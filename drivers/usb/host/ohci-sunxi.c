@@ -35,6 +35,7 @@ struct ohci_sunxi_priv {
 
 static int ohci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [37]  shl_add\n");
 	struct usb_bus_priv *bus_priv = dev_get_uclass_priv(dev);
 	struct ohci_sunxi_priv *priv = dev_get_priv(dev);
 	struct ohci_regs *regs = (struct ohci_regs *)devfdt_get_addr(dev);
@@ -77,6 +78,7 @@ static int ohci_usb_probe(struct udevice *dev)
 
 static int ohci_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [79]  shl_add\n");
 	struct ohci_sunxi_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -119,3 +121,4 @@ U_BOOT_DRIVER(usb_ohci) = {
 	.priv_auto_alloc_size = sizeof(struct ohci_sunxi_priv),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

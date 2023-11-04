@@ -92,6 +92,7 @@ static void am35x_musb_enable(struct musb *musb)
 static int am35x_musb_enable(struct musb *musb)
 #endif
 {
+	my_dbg(" [94]  shl_add\n");
 	void __iomem *reg_base = musb->ctrl_base;
 	u32 epmask;
 
@@ -116,6 +117,7 @@ static int am35x_musb_enable(struct musb *musb)
  */
 static void am35x_musb_disable(struct musb *musb)
 {
+	my_dbg(" [118]  shl_add\n");
 	void __iomem *reg_base = musb->ctrl_base;
 
 	musb_writel(reg_base, CORE_INTR_MASK_CLEAR_REG, AM35X_INTR_USB_MASK);
@@ -130,6 +132,7 @@ static void am35x_musb_disable(struct musb *musb)
 
 static void am35x_musb_set_vbus(struct musb *musb, int is_on)
 {
+	my_dbg(" [132]  shl_add\n");
 	WARN_ON(is_on && is_peripheral_active(musb));
 }
 
@@ -139,6 +142,7 @@ static struct timer_list otg_workaround;
 
 static void otg_timer(unsigned long _musb)
 {
+	my_dbg(" [141]  shl_add\n");
 	struct musb		*musb = (void *)_musb;
 	void __iomem		*mregs = musb->mregs;
 	u8			devctl;
@@ -190,6 +194,7 @@ static void otg_timer(unsigned long _musb)
 
 static void am35x_musb_try_idle(struct musb *musb, unsigned long timeout)
 {
+	my_dbg(" [192]  shl_add\n");
 	static unsigned long last_timer;
 
 	if (!is_otg_enabled(musb))
@@ -223,6 +228,7 @@ static void am35x_musb_try_idle(struct musb *musb, unsigned long timeout)
 
 static irqreturn_t am35x_musb_interrupt(int irq, void *hci)
 {
+	my_dbg(" [225]  shl_add\n");
 	struct musb  *musb = hci;
 	void __iomem *reg_base = musb->ctrl_base;
 #ifndef __UBOOT__
@@ -355,6 +361,7 @@ eoi:
 #ifndef __UBOOT__
 static int am35x_musb_set_mode(struct musb *musb, u8 musb_mode)
 {
+	my_dbg(" [357]  shl_add\n");
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 	struct omap_musb_board_data *data = plat->board_data;
@@ -371,6 +378,7 @@ static int am35x_musb_set_mode(struct musb *musb, u8 musb_mode)
 
 static int am35x_musb_init(struct musb *musb)
 {
+	my_dbg(" [373]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
@@ -423,6 +431,7 @@ static int am35x_musb_init(struct musb *musb)
 
 static int am35x_musb_exit(struct musb *musb)
 {
+	my_dbg(" [425]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
@@ -452,6 +461,7 @@ static int am35x_musb_exit(struct musb *musb)
 /* AM35x supports only 32bit read operation */
 void musb_read_fifo(struct musb_hw_ep *hw_ep, u16 len, u8 *dst)
 {
+	my_dbg(" [454]  shl_add\n");
 	void __iomem *fifo = hw_ep->fifo;
 	u32		val;
 	int		i;
@@ -503,6 +513,7 @@ static u64 am35x_dmamask = DMA_BIT_MASK(32);
 
 static int __devinit am35x_probe(struct platform_device *pdev)
 {
+	my_dbg(" [505]  shl_add\n");
 	struct musb_hdrc_platform_data	*pdata = pdev->dev.platform_data;
 	struct platform_device		*musb;
 	struct am35x_glue		*glue;
@@ -608,6 +619,7 @@ err0:
 
 static int __devexit am35x_remove(struct platform_device *pdev)
 {
+	my_dbg(" [610]  shl_add\n");
 	struct am35x_glue	*glue = platform_get_drvdata(pdev);
 
 	platform_device_del(glue->musb);
@@ -624,6 +636,7 @@ static int __devexit am35x_remove(struct platform_device *pdev)
 #ifdef CONFIG_PM
 static int am35x_suspend(struct device *dev)
 {
+	my_dbg(" [626]  shl_add\n");
 	struct am35x_glue	*glue = dev_get_drvdata(dev);
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 	struct omap_musb_board_data *data = plat->board_data;
@@ -640,6 +653,7 @@ static int am35x_suspend(struct device *dev)
 
 static int am35x_resume(struct device *dev)
 {
+	my_dbg(" [642]  shl_add\n");
 	struct am35x_glue	*glue = dev_get_drvdata(dev);
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 	struct omap_musb_board_data *data = plat->board_data;
@@ -689,13 +703,16 @@ MODULE_LICENSE("GPL v2");
 
 static int __init am35x_init(void)
 {
+	my_dbg(" [691]  shl_add\n");
 	return platform_driver_register(&am35x_driver);
 }
 module_init(am35x_init);
 
 static void __exit am35x_exit(void)
 {
+	my_dbg(" [697]  shl_add\n");
 	platform_driver_unregister(&am35x_driver);
 }
 module_exit(am35x_exit);
 #endif
+

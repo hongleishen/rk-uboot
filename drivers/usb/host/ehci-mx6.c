@@ -75,6 +75,7 @@ static const unsigned phy_bases[] = {
 
 static void usb_internal_phy_clock_gate(int index, int on)
 {
+	my_dbg(" [77]  shl_add\n");
 	void __iomem *phy_reg;
 
 	if (index >= ARRAY_SIZE(phy_bases))
@@ -87,6 +88,7 @@ static void usb_internal_phy_clock_gate(int index, int on)
 
 static void usb_power_config(int index)
 {
+	my_dbg(" [89]  shl_add\n");
 #if defined(CONFIG_MX7ULP)
 	struct usbphy_regs __iomem *usbphy =
 		(struct usbphy_regs __iomem *)USB_PHY0_BASE_ADDR;
@@ -147,6 +149,7 @@ static void usb_power_config(int index)
 /* Return 0 : host node, <>0 : device mode */
 static int usb_phy_enable(int index, struct usb_ehci *ehci)
 {
+	my_dbg(" [149]  shl_add\n");
 	void __iomem *phy_reg;
 	void __iomem *phy_ctrl;
 	void __iomem *usb_cmd;
@@ -189,6 +192,7 @@ static int usb_phy_enable(int index, struct usb_ehci *ehci)
 
 int usb_phy_mode(int port)
 {
+	my_dbg(" [191]  shl_add\n");
 	void __iomem *phy_reg;
 	void __iomem *phy_ctrl;
 	u32 val;
@@ -239,6 +243,7 @@ struct usbnc_regs {
 
 static void usb_power_config(int index)
 {
+	my_dbg(" [241]  shl_add\n");
 	struct usbnc_regs *usbnc = (struct usbnc_regs *)(USB_BASE_ADDR +
 			(0x10000 * index) + USBNC_OFFSET);
 	void __iomem *phy_cfg2 = (void __iomem *)(&usbnc->phy_cfg2);
@@ -252,6 +257,7 @@ static void usb_power_config(int index)
 
 int usb_phy_mode(int port)
 {
+	my_dbg(" [254]  shl_add\n");
 	struct usbnc_regs *usbnc = (struct usbnc_regs *)(USB_BASE_ADDR +
 			(0x10000 * port) + USBNC_OFFSET);
 	void __iomem *status = (void __iomem *)(&usbnc->phy_status);
@@ -268,6 +274,7 @@ int usb_phy_mode(int port)
 
 static void usb_oc_config(int index)
 {
+	my_dbg(" [270]  shl_add\n");
 #if defined(CONFIG_MX6)
 	struct usbnc_regs *usbnc = (struct usbnc_regs *)(USB_BASE_ADDR +
 			USB_OTHERREGS_OFFSET);
@@ -309,6 +316,7 @@ static void usb_oc_config(int index)
  */
 int __weak board_usb_phy_mode(int port)
 {
+	my_dbg(" [311]  shl_add\n");
 	return usb_phy_mode(port);
 }
 
@@ -323,6 +331,7 @@ int __weak board_usb_phy_mode(int port)
  */
 int __weak board_ehci_hcd_init(int port)
 {
+	my_dbg(" [325]  shl_add\n");
 	return 0;
 }
 
@@ -338,11 +347,13 @@ int __weak board_ehci_hcd_init(int port)
  */
 int __weak board_ehci_power(int port, int on)
 {
+	my_dbg(" [340]  shl_add\n");
 	return 0;
 }
 
 int ehci_mx6_common_init(struct usb_ehci *ehci, int index)
 {
+	my_dbg(" [345]  shl_add\n");
 	int ret;
 
 	enable_usboh3_clk(1);
@@ -368,6 +379,7 @@ int ehci_mx6_common_init(struct usb_ehci *ehci, int index)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [370]  shl_add\n");
 	enum usb_init_type type;
 #if defined(CONFIG_MX6)
 	u32 controller_spacing = 0x200;
@@ -411,6 +423,7 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [413]  shl_add\n");
 	return 0;
 }
 #else
@@ -424,6 +437,7 @@ struct ehci_mx6_priv_data {
 
 static int mx6_init_after_reset(struct ehci_ctrl *dev)
 {
+	my_dbg(" [426]  shl_add\n");
 	struct ehci_mx6_priv_data *priv = dev->priv;
 	enum usb_init_type type = priv->init_type;
 	struct usb_ehci *ehci = priv->ehci;
@@ -463,6 +477,7 @@ static const struct ehci_ops mx6_ehci_ops = {
 
 static int ehci_usb_phy_mode(struct udevice *dev)
 {
+	my_dbg(" [465]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	void *__iomem addr = (void *__iomem)devfdt_get_addr(dev);
 	void *__iomem phy_ctrl, *__iomem phy_status;
@@ -511,6 +526,7 @@ static int ehci_usb_phy_mode(struct udevice *dev)
 
 static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [513]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	enum usb_dr_mode dr_mode;
 
@@ -533,6 +549,7 @@ static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int ehci_usb_bind(struct udevice *dev)
 {
+	my_dbg(" [535]  shl_add\n");
 	/*
 	 * TODO:
 	 * This driver is only partly converted to DT probing and still uses
@@ -570,6 +587,7 @@ static int ehci_usb_bind(struct udevice *dev)
 
 static int ehci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [572]  shl_add\n");
 	struct usb_platdata *plat = dev_get_platdata(dev);
 	struct usb_ehci *ehci = (struct usb_ehci *)devfdt_get_addr(dev);
 	struct ehci_mx6_priv_data *priv = dev_get_priv(dev);
@@ -638,3 +656,4 @@ U_BOOT_DRIVER(usb_mx6) = {
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif
+

@@ -78,6 +78,7 @@ struct f_fastboot {
 
 static inline struct f_fastboot *func_to_fastboot(struct usb_function *f)
 {
+	my_dbg(" [80]  shl_add\n");
 	return container_of(f, struct f_fastboot, usb_function);
 }
 
@@ -189,6 +190,7 @@ fb_ep_desc(struct usb_gadget *g, struct usb_endpoint_descriptor *fs,
 	   struct usb_ss_ep_comp_descriptor *comp_desc,
 	   struct usb_ep *ep)
 {
+	my_dbg(" [191]  shl_add\n");
 	struct usb_endpoint_descriptor *speed_desc = NULL;
 
 	/* select desired speed */
@@ -237,11 +239,13 @@ static void rx_handler_command(struct usb_ep *ep, struct usb_request *req);
 static int strcmp_l1(const char *s1, const char *s2);
 static void wakeup_thread(void)
 {
+	my_dbg(" [239]  shl_add\n");
 	intthread_wakeup_needed = false;
 }
 
 static void busy_indicator(void)
 {
+	my_dbg(" [244]  shl_add\n");
 	static int state;
 
 	switch (state) {
@@ -271,6 +275,7 @@ static void busy_indicator(void)
 static int fb_get_fstype(const char *ifname, const int part_num,
 			 const char **fs_type)
 {
+	my_dbg(" [273]  shl_add\n");
 	char part_num_str[MAX_PART_NUM_STR_SIZE] = {0};
 
 	snprintf(part_num_str, ARRAY_SIZE(part_num_str), ":%x", part_num);
@@ -286,6 +291,7 @@ static int fb_get_fstype(const char *ifname, const int part_num,
 
 static int sleep_thread(void)
 {
+	my_dbg(" [288]  shl_add\n");
 	int rc = 0;
 	int i = 0, k = 0;
 
@@ -320,6 +326,7 @@ static int sleep_thread(void)
 
 static void fastboot_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [322]  shl_add\n");
 	int status = req->status;
 
 	wakeup_thread();
@@ -330,6 +337,7 @@ static void fastboot_complete(struct usb_ep *ep, struct usb_request *req)
 
 static int fastboot_bind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [332]  shl_add\n");
 	int id;
 	struct usb_gadget *gadget = c->cdev->gadget;
 	struct f_fastboot *f_fb = func_to_fastboot(f);
@@ -384,11 +392,13 @@ static int fastboot_bind(struct usb_configuration *c, struct usb_function *f)
 
 static void fastboot_unbind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [386]  shl_add\n");
 	memset(fastboot_func, 0, sizeof(*fastboot_func));
 }
 
 static void fastboot_disable(struct usb_function *f)
 {
+	my_dbg(" [391]  shl_add\n");
 	struct f_fastboot *f_fb = func_to_fastboot(f);
 
 	usb_ep_disable(f_fb->out_ep);
@@ -408,6 +418,7 @@ static void fastboot_disable(struct usb_function *f)
 
 static struct usb_request *fastboot_start_ep(struct usb_ep *ep)
 {
+	my_dbg(" [410]  shl_add\n");
 	struct usb_request *req;
 
 	req = usb_ep_alloc_request(ep, 0);
@@ -428,6 +439,7 @@ static struct usb_request *fastboot_start_ep(struct usb_ep *ep)
 static int fastboot_set_alt(struct usb_function *f,
 			    unsigned interface, unsigned alt)
 {
+	my_dbg(" [430]  shl_add\n");
 	int ret;
 	struct usb_composite_dev *cdev = f->config->cdev;
 	struct usb_gadget *gadget = cdev->gadget;
@@ -481,6 +493,7 @@ err:
 
 static int fastboot_add(struct usb_configuration *c)
 {
+	my_dbg(" [483]  shl_add\n");
 	struct f_fastboot *f_fb = fastboot_func;
 	int status;
 
@@ -514,6 +527,7 @@ DECLARE_GADGET_BIND_CALLBACK(usb_dnl_fastboot, fastboot_add);
 
 static int fastboot_tx_write(const char *buffer, unsigned int buffer_size)
 {
+	my_dbg(" [516]  shl_add\n");
 	struct usb_request *in_req = fastboot_func->in_req;
 	int ret;
 
@@ -530,6 +544,7 @@ static int fastboot_tx_write(const char *buffer, unsigned int buffer_size)
 
 static int fastboot_tx_write_str(const char *buffer)
 {
+	my_dbg(" [532]  shl_add\n");
 	int ret;
 
 	ret = sleep_thread();
@@ -541,16 +556,19 @@ static int fastboot_tx_write_str(const char *buffer)
 
 static void compl_do_reset(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [543]  shl_add\n");
 	do_reset(NULL, 0, 0, NULL);
 }
 
 int __weak fb_set_reboot_flag(void)
 {
+	my_dbg(" [548]  shl_add\n");
 	return -ENOSYS;
 }
 
 static void cb_reboot(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [553]  shl_add\n");
 	char *cmd = req->buf;
 
 	if (!strcmp_l1("reboot-bootloader", cmd)) {
@@ -580,6 +598,7 @@ static void cb_reboot(struct usb_ep *ep, struct usb_request *req)
 
 static int strcmp_l1(const char *s1, const char *s2)
 {
+	my_dbg(" [582]  shl_add\n");
 	if (!s1 || !s2)
 		return -1;
 	return strncmp(s1, s2, strlen(s1));
@@ -597,6 +616,7 @@ struct name_string {
 static size_t name_check_match(const char *str, size_t len,
 			       const struct name_string *name)
 {
+	my_dbg(" [599]  shl_add\n");
 	size_t str_len = strlen(name->str);
 
 	/* If name len is greater than input, return 0. */
@@ -627,6 +647,7 @@ static size_t name_check_match(const char *str, size_t len,
 static void fb_add_string(char *dst, size_t chars_left,
 			  const char *str, const char *args)
 {
+	my_dbg(" [629]  shl_add\n");
 	if (!str)
 		return;
 
@@ -639,6 +660,7 @@ static void fb_add_string(char *dst, size_t chars_left,
 static void fb_add_number(char *dst, size_t chars_left,
 			  const char *format, size_t num)
 {
+	my_dbg(" [641]  shl_add\n");
 	if (!format)
 		return;
 
@@ -651,6 +673,7 @@ static void fb_add_number(char *dst, size_t chars_left,
 static int fb_read_var(char *cmd, char *response,
 		       fb_getvar_t var, size_t chars_left)
 {
+	my_dbg(" [653]  shl_add\n");
 	const char *s;
 	int ret = 0;
 
@@ -1142,6 +1165,7 @@ static const struct {
 
 static int fb_getvar_single(char *cmd, char *response, size_t chars_left)
 {
+	my_dbg(" [1144]  shl_add\n");
 	int i;
 	size_t match_len = 0;
 	size_t len = strlen(cmd);
@@ -1165,6 +1189,7 @@ static int fb_getvar_single(char *cmd, char *response, size_t chars_left)
 
 static void fb_getvar_all(void)
 {
+	my_dbg(" [1167]  shl_add\n");
 	char response[FASTBOOT_RESPONSE_LEN] = {0};
 	char resp_tmp[FASTBOOT_RESPONSE_LEN] = {0};
 	char *actual_resp;
@@ -1435,6 +1460,7 @@ static void fb_getvar_all(void)
 #ifdef CONFIG_ANDROID_AB
 static int get_current_slot(void)
 {
+	my_dbg(" [1437]  shl_add\n");
 #ifdef CONFIG_RK_AVB_LIBAVB_USER
 	char cmd[8] = {0};
 	unsigned int slot_number = -1;
@@ -1460,6 +1486,7 @@ static int get_current_slot(void)
 #ifdef CONFIG_FASTBOOT_FLASH
 static int should_prevent_userdata_wipe(void)
 {
+	my_dbg(" [1462]  shl_add\n");
 	struct misc_virtual_ab_message state;
 
 	memset(&state, 0x0, sizeof(state));
@@ -1485,6 +1512,7 @@ static int should_prevent_userdata_wipe(void)
 
 static int get_virtual_ab_merge_status(void)
 {
+	my_dbg(" [1487]  shl_add\n");
 	struct misc_virtual_ab_message state;
 
 	memset(&state, 0x0, sizeof(state));
@@ -1504,6 +1532,7 @@ static int get_virtual_ab_merge_status(void)
 
 static void cb_getvar(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1506]  shl_add\n");
 	char *cmd = req->buf;
 	char response[FASTBOOT_RESPONSE_LEN] = {0};
 	const char *str_read_all = "all";
@@ -1541,6 +1570,7 @@ static void cb_getvar(struct usb_ep *ep, struct usb_request *req)
 
 static unsigned int rx_bytes_expected(struct usb_ep *ep)
 {
+	my_dbg(" [1543]  shl_add\n");
 	int rx_remain = download_size - download_bytes;
 	unsigned int rem;
 	unsigned int maxpacket = ep->maxpacket;
@@ -1566,6 +1596,7 @@ static unsigned int rx_bytes_expected(struct usb_ep *ep)
 #define BYTES_PER_DOT	0x20000
 static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1568]  shl_add\n");
 	char response[FASTBOOT_RESPONSE_LEN];
 	unsigned int transfer_size = download_size - download_bytes;
 	const unsigned char *buffer = req->buf;
@@ -1617,6 +1648,7 @@ static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
 
 static void cb_download(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1619]  shl_add\n");
 	char *cmd = req->buf;
 	char response[FASTBOOT_RESPONSE_LEN];
 
@@ -1642,6 +1674,7 @@ static void cb_download(struct usb_ep *ep, struct usb_request *req)
 
 static void tx_handler_ul(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1644]  shl_add\n");
 	unsigned int xfer_size = 0;
 	unsigned int pre_dot_num, now_dot_num;
 	unsigned int remain_size = 0;
@@ -1696,6 +1729,7 @@ static void tx_handler_ul(struct usb_ep *ep, struct usb_request *req)
 
 static void cb_upload(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1698]  shl_add\n");
 	char response[FASTBOOT_RESPONSE_LEN];
 
 	printf("Starting upload of %d bytes\n", upload_size);
@@ -1713,6 +1747,7 @@ static void cb_upload(struct usb_ep *ep, struct usb_request *req)
 
 static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1715]  shl_add\n");
 	char boot_addr_start[12];
 	char *bootm_args[] = { "bootm", boot_addr_start, NULL };
 
@@ -1727,23 +1762,27 @@ static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void cb_boot(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1729]  shl_add\n");
 	fastboot_func->in_req->complete = do_bootm_on_complete;
 	fastboot_tx_write_str("OKAY");
 }
 
 static void do_exit_on_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1735]  shl_add\n");
 	g_dnl_trigger_detach();
 }
 
 static void cb_continue(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1740]  shl_add\n");
 	fastboot_func->in_req->complete = do_exit_on_complete;
 	fastboot_tx_write_str("OKAY");
 }
 
 static void cb_set_active(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1746]  shl_add\n");
 	char *cmd = req->buf;
 
 	debug("%s: %s\n", __func__, cmd);
@@ -1785,6 +1824,7 @@ static void cb_set_active(struct usb_ep *ep, struct usb_request *req)
 #ifdef CONFIG_FASTBOOT_FLASH
 static void cb_flash(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1787]  shl_add\n");
 	char *cmd = req->buf;
 	char response[FASTBOOT_RESPONSE_LEN] = {0};
 #ifdef CONFIG_RK_AVB_LIBAVB_USER
@@ -1837,6 +1877,7 @@ static void cb_flash(struct usb_ep *ep, struct usb_request *req)
 
 static void cb_flashing(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [1839]  shl_add\n");
 	char *cmd = req->buf;
 
 	if (strncmp("lock", cmd + 9, 4) == 0) {
@@ -1883,6 +1924,7 @@ static void cb_flashing(struct usb_ep *ep, struct usb_request *req)
 
 static void cb_oem_perm_attr(void)
 {
+	my_dbg(" [1885]  shl_add\n");
 #ifdef CONFIG_RK_AVB_LIBAVB_USER
 #ifndef CONFIG_ROCKCHIP_PRELOADER_PUB_KEY
 	sha256_context ctx;
@@ -1986,6 +2028,7 @@ static void cb_oem_perm_attr(void)
 
 static void cb_oem_perm_attr_rsa_cer(void)
 {
+	my_dbg(" [1988]  shl_add\n");
 #ifdef CONFIG_RK_AVB_LIBAVB_USER
 	if (download_bytes != 256) {
 		printf("Permanent attribute rsahash size is not equal!\n");
@@ -2007,6 +2050,7 @@ static void cb_oem_perm_attr_rsa_cer(void)
 
 static void cb_oem(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [2009]  shl_add\n");
 	char *cmd = req->buf;
 
 #ifdef CONFIG_FASTBOOT_FLASH_MMC_DEV
@@ -2288,6 +2332,7 @@ static void cb_oem(struct usb_ep *ep, struct usb_request *req)
 #ifdef CONFIG_FASTBOOT_FLASH
 static void cb_erase(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [2290]  shl_add\n");
 	char *cmd = req->buf;
 	char response[FASTBOOT_RESPONSE_LEN] = {0};
 
@@ -2366,6 +2411,7 @@ static const struct cmd_dispatch_info cmd_dispatch_info[] = {
 
 static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [2368]  shl_add\n");
 	char *cmdbuf = req->buf;
 	void (*func_cb)(struct usb_ep *ep, struct usb_request *req) = NULL;
 	int i;
@@ -2398,3 +2444,4 @@ static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
 	req->actual = 0;
 	usb_ep_queue(ep, req, 0);
 }
+

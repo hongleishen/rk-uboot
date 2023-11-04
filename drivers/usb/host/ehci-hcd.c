@@ -112,6 +112,7 @@ static struct descriptor {
 
 static struct ehci_ctrl *ehci_get_ctrl(struct usb_device *udev)
 {
+	my_dbg(" [114]  shl_add\n");
 #if CONFIG_IS_ENABLED(DM_USB)
 	return dev_get_priv(usb_get_bus(udev->dev));
 #else
@@ -121,11 +122,13 @@ static struct ehci_ctrl *ehci_get_ctrl(struct usb_device *udev)
 
 static int ehci_get_port_speed(struct ehci_ctrl *ctrl, uint32_t reg)
 {
+	my_dbg(" [123]  shl_add\n");
 	return PORTSC_PSPD(reg);
 }
 
 static void ehci_set_usbmode(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [128]  shl_add\n");
 	uint32_t tmp;
 	uint32_t *reg_ptr;
 
@@ -143,11 +146,13 @@ static void ehci_set_usbmode(struct ehci_ctrl *ctrl)
 static void ehci_powerup_fixup(struct ehci_ctrl *ctrl, uint32_t *status_reg,
 			       uint32_t *reg)
 {
+	my_dbg(" [145]  shl_add\n");
 	mdelay(50);
 }
 
 static uint32_t *ehci_get_portsc_register(struct ehci_ctrl *ctrl, int port)
 {
+	my_dbg(" [150]  shl_add\n");
 	int max_ports = HCS_N_PORTS(ehci_readl(&ctrl->hccr->cr_hcsparams));
 
 	if (port < 0 || port >= max_ports) {
@@ -162,6 +167,7 @@ static uint32_t *ehci_get_portsc_register(struct ehci_ctrl *ctrl, int port)
 
 static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
 {
+	my_dbg(" [164]  shl_add\n");
 	uint32_t result;
 	do {
 		result = ehci_readl(ptr);
@@ -178,6 +184,7 @@ static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
 
 static int ehci_reset(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [180]  shl_add\n");
 	uint32_t cmd;
 	int ret = 0;
 
@@ -206,6 +213,7 @@ out:
 
 static int ehci_shutdown(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [208]  shl_add\n");
 	int i, ret = 0;
 	uint32_t cmd, reg;
 	int max_ports = HCS_N_PORTS(ehci_readl(&ctrl->hccr->cr_hcsparams));
@@ -240,6 +248,7 @@ static int ehci_shutdown(struct ehci_ctrl *ctrl)
 
 static int ehci_td_buffer(struct qTD *td, void *buf, size_t sz)
 {
+	my_dbg(" [242]  shl_add\n");
 	uint32_t delta, next;
 	unsigned long addr = (unsigned long)buf;
 	int idx;
@@ -272,6 +281,7 @@ static int ehci_td_buffer(struct qTD *td, void *buf, size_t sz)
 
 static inline u8 ehci_encode_speed(enum usb_device_speed speed)
 {
+	my_dbg(" [274]  shl_add\n");
 	#define QH_HIGH_SPEED	2
 	#define QH_FULL_SPEED	0
 	#define QH_LOW_SPEED	1
@@ -285,6 +295,7 @@ static inline u8 ehci_encode_speed(enum usb_device_speed speed)
 static void ehci_update_endpt2_dev_n_port(struct usb_device *udev,
 					  struct QH *qh)
 {
+	my_dbg(" [287]  shl_add\n");
 	uint8_t portnr = 0;
 	uint8_t hubaddr = 0;
 
@@ -301,6 +312,7 @@ static int
 ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
 		   int length, struct devrequest *req)
 {
+	my_dbg(" [303]  shl_add\n");
 	ALLOC_ALIGN_BUFFER(struct QH, qh, 1, USB_DMA_MINALIGN);
 	struct qTD *qtd;
 	int qtd_count = 0;
@@ -653,6 +665,7 @@ fail:
 static int ehci_submit_root(struct usb_device *dev, unsigned long pipe,
 			    void *buffer, int length, struct devrequest *req)
 {
+	my_dbg(" [655]  shl_add\n");
 	uint8_t tmpbuf[4];
 	u16 typeReq;
 	void *srcptr = NULL;
@@ -939,6 +952,7 @@ static const struct ehci_ops default_ehci_ops = {
 
 static void ehci_setup_ops(struct ehci_ctrl *ctrl, const struct ehci_ops *ops)
 {
+	my_dbg(" [941]  shl_add\n");
 	if (!ops) {
 		ctrl->ops = default_ehci_ops;
 	} else {
@@ -958,6 +972,7 @@ static void ehci_setup_ops(struct ehci_ctrl *ctrl, const struct ehci_ops *ops)
 #if !CONFIG_IS_ENABLED(DM_USB)
 void ehci_set_controller_priv(int index, void *priv, const struct ehci_ops *ops)
 {
+	my_dbg(" [960]  shl_add\n");
 	struct ehci_ctrl *ctrl = &ehcic[index];
 
 	ctrl->priv = priv;
@@ -966,12 +981,14 @@ void ehci_set_controller_priv(int index, void *priv, const struct ehci_ops *ops)
 
 void *ehci_get_controller_priv(int index)
 {
+	my_dbg(" [968]  shl_add\n");
 	return ehcic[index].priv;
 }
 #endif
 
 static int ehci_common_init(struct ehci_ctrl *ctrl, uint tweaks)
 {
+	my_dbg(" [974]  shl_add\n");
 	struct QH *qh_list;
 	struct QH *periodic;
 	uint32_t reg;
@@ -1084,12 +1101,14 @@ static int ehci_common_init(struct ehci_ctrl *ctrl, uint tweaks)
 #if !CONFIG_IS_ENABLED(DM_USB)
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [1086]  shl_add\n");
 	ehci_shutdown(&ehcic[index]);
 	return ehci_hcd_stop(index);
 }
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [1092]  shl_add\n");
 	struct ehci_ctrl *ctrl = &ehcic[index];
 	uint tweaks = 0;
 	int rc;
@@ -1134,6 +1153,7 @@ done:
 static int _ehci_submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
 				 void *buffer, int length)
 {
+	my_dbg(" [1136]  shl_add\n");
 
 	if (usb_pipetype(pipe) != PIPE_BULK) {
 		debug("non-bulk pipe (type=%lu)", usb_pipetype(pipe));
@@ -1146,6 +1166,7 @@ static int _ehci_submit_control_msg(struct usb_device *dev, unsigned long pipe,
 				    void *buffer, int length,
 				    struct devrequest *setup)
 {
+	my_dbg(" [1148]  shl_add\n");
 	struct ehci_ctrl *ctrl = ehci_get_ctrl(dev);
 
 	if (usb_pipetype(pipe) != PIPE_CONTROL) {
@@ -1175,6 +1196,7 @@ struct int_queue {
 static int
 enable_periodic(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [1177]  shl_add\n");
 	uint32_t cmd;
 	struct ehci_hcor *hcor = ctrl->hcor;
 	int ret;
@@ -1196,6 +1218,7 @@ enable_periodic(struct ehci_ctrl *ctrl)
 static int
 disable_periodic(struct ehci_ctrl *ctrl)
 {
+	my_dbg(" [1198]  shl_add\n");
 	uint32_t cmd;
 	struct ehci_hcor *hcor = ctrl->hcor;
 	int ret;
@@ -1217,6 +1240,7 @@ static struct int_queue *_ehci_create_int_queue(struct usb_device *dev,
 			unsigned long pipe, int queuesize, int elementsize,
 			void *buffer, int interval)
 {
+	my_dbg(" [1219]  shl_add\n");
 	struct ehci_ctrl *ctrl = ehci_get_ctrl(dev);
 	struct int_queue *result = NULL;
 	uint32_t i, toggle;
@@ -1380,6 +1404,7 @@ fail1:
 static void *_ehci_poll_int_queue(struct usb_device *dev,
 				  struct int_queue *queue)
 {
+	my_dbg(" [1382]  shl_add\n");
 	struct QH *cur = queue->current;
 	struct qTD *cur_td;
 	uint32_t token, toggle;
@@ -1421,6 +1446,7 @@ static void *_ehci_poll_int_queue(struct usb_device *dev,
 static int _ehci_destroy_int_queue(struct usb_device *dev,
 				   struct int_queue *queue)
 {
+	my_dbg(" [1423]  shl_add\n");
 	struct ehci_ctrl *ctrl = ehci_get_ctrl(dev);
 	int result = -1;
 	unsigned long timeout;
@@ -1469,6 +1495,7 @@ static int _ehci_submit_int_msg(struct usb_device *dev, unsigned long pipe,
 				void *buffer, int length, int interval,
 				bool nonblock)
 {
+	my_dbg(" [1471]  shl_add\n");
 	void *backbuffer;
 	struct int_queue *queue;
 	unsigned long timeout;
@@ -1507,18 +1534,21 @@ static int _ehci_submit_int_msg(struct usb_device *dev, unsigned long pipe,
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
 			    void *buffer, int length)
 {
+	my_dbg(" [1509]  shl_add\n");
 	return _ehci_submit_bulk_msg(dev, pipe, buffer, length);
 }
 
 int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		   int length, struct devrequest *setup)
 {
+	my_dbg(" [1515]  shl_add\n");
 	return _ehci_submit_control_msg(dev, pipe, buffer, length, setup);
 }
 
 int submit_int_msg(struct usb_device *dev, unsigned long pipe,
 		   void *buffer, int length, int interval, bool nonblock)
 {
+	my_dbg(" [1521]  shl_add\n");
 	return _ehci_submit_int_msg(dev, pipe, buffer, length, interval,
 				    nonblock);
 }
@@ -1527,17 +1557,20 @@ struct int_queue *create_int_queue(struct usb_device *dev,
 		unsigned long pipe, int queuesize, int elementsize,
 		void *buffer, int interval)
 {
+	my_dbg(" [1529]  shl_add\n");
 	return _ehci_create_int_queue(dev, pipe, queuesize, elementsize,
 				      buffer, interval);
 }
 
 void *poll_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [1535]  shl_add\n");
 	return _ehci_poll_int_queue(dev, queue);
 }
 
 int destroy_int_queue(struct usb_device *dev, struct int_queue *queue)
 {
+	my_dbg(" [1540]  shl_add\n");
 	return _ehci_destroy_int_queue(dev, queue);
 }
 #endif
@@ -1547,6 +1580,7 @@ static int ehci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 				   unsigned long pipe, void *buffer, int length,
 				   struct devrequest *setup)
 {
+	my_dbg(" [1549]  shl_add\n");
 	debug("%s: dev='%s', udev=%p, udev->dev='%s', portnr=%d\n", __func__,
 	      dev->name, udev, udev->dev->name, udev->portnr);
 
@@ -1556,6 +1590,7 @@ static int ehci_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 static int ehci_submit_bulk_msg(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [1558]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _ehci_submit_bulk_msg(udev, pipe, buffer, length);
 }
@@ -1564,6 +1599,7 @@ static int ehci_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length,
 			       int interval, bool nonblock)
 {
+	my_dbg(" [1566]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _ehci_submit_int_msg(udev, pipe, buffer, length, interval,
 				    nonblock);
@@ -1573,6 +1609,7 @@ static struct int_queue *ehci_create_int_queue(struct udevice *dev,
 		struct usb_device *udev, unsigned long pipe, int queuesize,
 		int elementsize, void *buffer, int interval)
 {
+	my_dbg(" [1575]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _ehci_create_int_queue(udev, pipe, queuesize, elementsize,
 				      buffer, interval);
@@ -1581,6 +1618,7 @@ static struct int_queue *ehci_create_int_queue(struct udevice *dev,
 static void *ehci_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 				 struct int_queue *queue)
 {
+	my_dbg(" [1583]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _ehci_poll_int_queue(udev, queue);
 }
@@ -1588,12 +1626,14 @@ static void *ehci_poll_int_queue(struct udevice *dev, struct usb_device *udev,
 static int ehci_destroy_int_queue(struct udevice *dev, struct usb_device *udev,
 				  struct int_queue *queue)
 {
+	my_dbg(" [1590]  shl_add\n");
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
 	return _ehci_destroy_int_queue(udev, queue);
 }
 
 static int ehci_get_max_xfer_size(struct udevice *dev, size_t *size)
 {
+	my_dbg(" [1596]  shl_add\n");
 	/*
 	 * EHCD can handle any transfer length as long as there is enough
 	 * free heap space left, hence set the theoretical max number here.
@@ -1607,6 +1647,7 @@ int ehci_register(struct udevice *dev, struct ehci_hccr *hccr,
 		  struct ehci_hcor *hcor, const struct ehci_ops *ops,
 		  uint tweaks, enum usb_init_type init)
 {
+	my_dbg(" [1609]  shl_add\n");
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
 	struct ehci_ctrl *ctrl = dev_get_priv(dev);
 	int ret = -1;
@@ -1651,6 +1692,7 @@ err:
 
 int ehci_deregister(struct udevice *dev)
 {
+	my_dbg(" [1653]  shl_add\n");
 	struct ehci_ctrl *ctrl = dev_get_priv(dev);
 
 	if (ctrl->init == USB_INIT_DEVICE)
@@ -1676,6 +1718,7 @@ struct dm_usb_ops ehci_usb_ops = {
 #ifdef CONFIG_PHY
 int ehci_setup_phy(struct udevice *dev, struct phy *phy, int index)
 {
+	my_dbg(" [1678]  shl_add\n");
 	int ret;
 
 	if (!phy)
@@ -1706,6 +1749,7 @@ int ehci_setup_phy(struct udevice *dev, struct phy *phy, int index)
 
 int ehci_shutdown_phy(struct udevice *dev, struct phy *phy)
 {
+	my_dbg(" [1708]  shl_add\n");
 	int ret = 0;
 
 	if (!phy)
@@ -1730,11 +1774,14 @@ int ehci_shutdown_phy(struct udevice *dev, struct phy *phy)
 #else
 int ehci_setup_phy(struct udevice *dev, struct phy *phy, int index)
 {
+	my_dbg(" [1732]  shl_add\n");
 	return 0;
 }
 
 int ehci_shutdown_phy(struct udevice *dev, struct phy *phy)
 {
+	my_dbg(" [1737]  shl_add\n");
 	return 0;
 }
 #endif
+

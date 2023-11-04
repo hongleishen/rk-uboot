@@ -77,6 +77,7 @@ static struct dwc2_priv local;
  */
 static void init_fslspclksel(struct dwc2_core_regs *regs)
 {
+	my_dbg(" [79]  shl_add\n");
 	uint32_t phyclk;
 
 #if (CONFIG_DWC2_PHY_TYPE == DWC2_PHY_TYPE_FS)
@@ -110,6 +111,7 @@ static void init_fslspclksel(struct dwc2_core_regs *regs)
  */
 static void dwc_otg_flush_tx_fifo(struct dwc2_core_regs *regs, const int num)
 {
+	my_dbg(" [112]  shl_add\n");
 	int ret;
 
 	writel(DWC2_GRSTCTL_TXFFLSH | (num << DWC2_GRSTCTL_TXFNUM_OFFSET),
@@ -130,6 +132,7 @@ static void dwc_otg_flush_tx_fifo(struct dwc2_core_regs *regs, const int num)
  */
 static void dwc_otg_flush_rx_fifo(struct dwc2_core_regs *regs)
 {
+	my_dbg(" [132]  shl_add\n");
 	int ret;
 
 	writel(DWC2_GRSTCTL_RXFFLSH, &regs->grstctl);
@@ -148,6 +151,7 @@ static void dwc_otg_flush_rx_fifo(struct dwc2_core_regs *regs)
  */
 static void dwc_otg_core_reset(struct dwc2_core_regs *regs)
 {
+	my_dbg(" [150]  shl_add\n");
 	int ret;
 
 	/* Wait for AHB master IDLE state. */
@@ -174,6 +178,7 @@ static void dwc_otg_core_reset(struct dwc2_core_regs *regs)
 #if CONFIG_IS_ENABLED(DM_USB) && defined(CONFIG_DM_REGULATOR)
 static int dwc_vbus_supply_init(struct udevice *dev)
 {
+	my_dbg(" [176]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -195,6 +200,7 @@ static int dwc_vbus_supply_init(struct udevice *dev)
 
 static int dwc_vbus_supply_exit(struct udevice *dev)
 {
+	my_dbg(" [197]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -211,12 +217,14 @@ static int dwc_vbus_supply_exit(struct udevice *dev)
 #else
 static int dwc_vbus_supply_init(struct udevice *dev)
 {
+	my_dbg(" [213]  shl_add\n");
 	return 0;
 }
 
 #if CONFIG_IS_ENABLED(DM_USB)
 static int dwc_vbus_supply_exit(struct udevice *dev)
 {
+	my_dbg(" [219]  shl_add\n");
 	return 0;
 }
 #endif
@@ -237,6 +245,7 @@ static int dwc_vbus_supply_exit(struct udevice *dev)
 static void dwc_otg_core_host_init(struct udevice *dev,
 				   struct dwc2_core_regs *regs)
 {
+	my_dbg(" [239]  shl_add\n");
 	uint32_t nptxfifosize = 0;
 	uint32_t ptxfifosize = 0;
 	uint32_t hprt0 = 0;
@@ -326,6 +335,7 @@ static void dwc_otg_core_host_init(struct udevice *dev,
  */
 static void dwc_otg_core_init(struct dwc2_priv *priv)
 {
+	my_dbg(" [328]  shl_add\n");
 	struct dwc2_core_regs *regs = priv->regs;
 	uint32_t ahbcfg = 0;
 	uint32_t usbcfg = 0;
@@ -485,6 +495,7 @@ static void dwc_otg_hc_init(struct dwc2_core_regs *regs, uint8_t hc_num,
 		struct usb_device *dev, uint8_t dev_addr, uint8_t ep_num,
 		uint8_t ep_is_in, uint8_t ep_type, uint16_t max_packet)
 {
+	my_dbg(" [487]  shl_add\n");
 	struct dwc2_hc_regs *hc_regs = &regs->hc_regs[hc_num];
 	uint32_t hcchar = (dev_addr << DWC2_HCCHAR_DEVADDR_OFFSET) |
 			  (ep_num << DWC2_HCCHAR_EPNUM_OFFSET) |
@@ -508,6 +519,7 @@ static void dwc_otg_hc_init(struct dwc2_core_regs *regs, uint8_t hc_num,
 static void dwc_otg_hc_init_split(struct dwc2_hc_regs *hc_regs,
 				  uint8_t hub_devnum, uint8_t hub_port)
 {
+	my_dbg(" [510]  shl_add\n");
 	uint32_t hcsplt = 0;
 
 	hcsplt = DWC2_HCSPLT_SPLTENA;
@@ -526,6 +538,7 @@ static int dwc_otg_submit_rh_msg_in_status(struct dwc2_core_regs *regs,
 					   struct usb_device *dev, void *buffer,
 					   int txlen, struct devrequest *cmd)
 {
+	my_dbg(" [528]  shl_add\n");
 	uint32_t hprt0 = 0;
 	uint32_t port_status = 0;
 	uint32_t port_change = 0;
@@ -594,6 +607,7 @@ static int dwc_otg_submit_rh_msg_in_descriptor(struct usb_device *dev,
 					       void *buffer, int txlen,
 					       struct devrequest *cmd)
 {
+	my_dbg(" [596]  shl_add\n");
 	unsigned char data[32];
 	uint32_t dsc;
 	int len = 0;
@@ -677,6 +691,7 @@ static int dwc_otg_submit_rh_msg_in_configuration(struct usb_device *dev,
 						  void *buffer, int txlen,
 						  struct devrequest *cmd)
 {
+	my_dbg(" [679]  shl_add\n");
 	int len = 0;
 	int stat = 0;
 
@@ -701,6 +716,7 @@ static int dwc_otg_submit_rh_msg_in(struct dwc2_priv *priv,
 				    struct usb_device *dev, void *buffer,
 				    int txlen, struct devrequest *cmd)
 {
+	my_dbg(" [703]  shl_add\n");
 	switch (cmd->request) {
 	case USB_REQ_GET_STATUS:
 		return dwc_otg_submit_rh_msg_in_status(priv->regs, dev, buffer,
@@ -723,6 +739,7 @@ static int dwc_otg_submit_rh_msg_out(struct dwc2_priv *priv,
 				     void *buffer, int txlen,
 				     struct devrequest *cmd)
 {
+	my_dbg(" [725]  shl_add\n");
 	struct dwc2_core_regs *regs = priv->regs;
 	int len = 0;
 	int stat = 0;
@@ -791,6 +808,7 @@ static int dwc_otg_submit_rh_msg(struct dwc2_priv *priv, struct usb_device *dev,
 				 unsigned long pipe, void *buffer, int txlen,
 				 struct devrequest *cmd)
 {
+	my_dbg(" [793]  shl_add\n");
 	int stat = 0;
 
 	if (usb_pipeint(pipe)) {
@@ -810,6 +828,7 @@ static int dwc_otg_submit_rh_msg(struct dwc2_priv *priv, struct usb_device *dev,
 
 int wait_for_chhltd(struct dwc2_hc_regs *hc_regs, uint32_t *sub, u8 *toggle)
 {
+	my_dbg(" [812]  shl_add\n");
 	int ret;
 	uint32_t hcint, hctsiz;
 
@@ -848,6 +867,7 @@ static int transfer_chunk(struct dwc2_hc_regs *hc_regs, void *aligned_buffer,
 			  u8 *pid, int in, void *buffer, int num_packets,
 			  int xfer_len, int *actual_len, int odd_frame)
 {
+	my_dbg(" [850]  shl_add\n");
 	int ret = 0;
 	uint32_t sub;
 
@@ -908,6 +928,7 @@ static int transfer_chunk(struct dwc2_hc_regs *hc_regs, void *aligned_buffer,
 int chunk_msg(struct dwc2_priv *priv, struct usb_device *dev,
 	      unsigned long pipe, u8 *pid, int in, void *buffer, int len)
 {
+	my_dbg(" [910]  shl_add\n");
 	struct dwc2_core_regs *regs = priv->regs;
 	struct dwc2_hc_regs *hc_regs = &regs->hc_regs[DWC2_HC_CHANNEL];
 	struct dwc2_host_regs *host_regs = &regs->host_regs;
@@ -1035,6 +1056,7 @@ int chunk_msg(struct dwc2_priv *priv, struct usb_device *dev,
 int _submit_bulk_msg(struct dwc2_priv *priv, struct usb_device *dev,
 		     unsigned long pipe, void *buffer, int len)
 {
+	my_dbg(" [1037]  shl_add\n");
 	int devnum = usb_pipedevice(pipe);
 	int ep = usb_pipeendpoint(pipe);
 	u8* pid;
@@ -1056,6 +1078,7 @@ static int _submit_control_msg(struct dwc2_priv *priv, struct usb_device *dev,
 			       unsigned long pipe, void *buffer, int len,
 			       struct devrequest *setup)
 {
+	my_dbg(" [1058]  shl_add\n");
 	int devnum = usb_pipedevice(pipe);
 	int ret, act_len;
 	u8 pid;
@@ -1114,6 +1137,7 @@ int _submit_int_msg(struct dwc2_priv *priv, struct usb_device *dev,
 		    unsigned long pipe, void *buffer, int len, int interval,
 		    bool nonblock)
 {
+	my_dbg(" [1116]  shl_add\n");
 	unsigned long timeout;
 	int ret;
 
@@ -1133,6 +1157,7 @@ int _submit_int_msg(struct dwc2_priv *priv, struct usb_device *dev,
 
 static int dwc2_reset(struct udevice *dev)
 {
+	my_dbg(" [1135]  shl_add\n");
 	int ret;
 	struct dwc2_priv *priv = dev_get_priv(dev);
 
@@ -1160,6 +1185,7 @@ static int dwc2_reset(struct udevice *dev)
 
 static int dwc2_init_common(struct udevice *dev, struct dwc2_priv *priv)
 {
+	my_dbg(" [1162]  shl_add\n");
 	struct dwc2_core_regs *regs = priv->regs;
 	uint32_t snpsid;
 	int i, j;
@@ -1219,6 +1245,7 @@ static int dwc2_init_common(struct udevice *dev, struct dwc2_priv *priv)
 
 static void dwc2_uninit_common(struct dwc2_core_regs *regs)
 {
+	my_dbg(" [1221]  shl_add\n");
 	/* Put everything in reset. */
 	clrsetbits_le32(&regs->hprt0, DWC2_HPRT0_PRTENA |
 			DWC2_HPRT0_PRTCONNDET | DWC2_HPRT0_PRTENCHNG |
@@ -1230,18 +1257,21 @@ static void dwc2_uninit_common(struct dwc2_core_regs *regs)
 int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		       int len, struct devrequest *setup)
 {
+	my_dbg(" [1232]  shl_add\n");
 	return _submit_control_msg(&local, dev, pipe, buffer, len, setup);
 }
 
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		    int len)
 {
+	my_dbg(" [1238]  shl_add\n");
 	return _submit_bulk_msg(&local, dev, pipe, buffer, len);
 }
 
 int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		   int len, int interval, bool nonblock)
 {
+	my_dbg(" [1244]  shl_add\n");
 	return _submit_int_msg(&local, dev, pipe, buffer, len, interval,
 			       nonblock);
 }
@@ -1249,6 +1279,7 @@ int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 /* U-Boot USB control interface */
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [1251]  shl_add\n");
 	struct dwc2_priv *priv = &local;
 
 	memset(priv, '\0', sizeof(*priv));
@@ -1266,6 +1297,7 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [1268]  shl_add\n");
 	dwc2_uninit_common(local.regs);
 
 	return 0;
@@ -1277,6 +1309,7 @@ static int dwc2_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 				   unsigned long pipe, void *buffer, int length,
 				   struct devrequest *setup)
 {
+	my_dbg(" [1279]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 
 	debug("%s: dev='%s', udev=%p, udev->dev='%s', portnr=%d\n", __func__,
@@ -1288,6 +1321,7 @@ static int dwc2_submit_control_msg(struct udevice *dev, struct usb_device *udev,
 static int dwc2_submit_bulk_msg(struct udevice *dev, struct usb_device *udev,
 				unsigned long pipe, void *buffer, int length)
 {
+	my_dbg(" [1290]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
@@ -1299,6 +1333,7 @@ static int dwc2_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 			       unsigned long pipe, void *buffer, int length,
 			       int interval, bool nonblock)
 {
+	my_dbg(" [1301]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 
 	debug("%s: dev='%s', udev=%p\n", __func__, dev->name, udev);
@@ -1309,6 +1344,7 @@ static int dwc2_submit_int_msg(struct udevice *dev, struct usb_device *udev,
 
 static int dwc2_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [1311]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 	fdt_addr_t addr;
 
@@ -1325,6 +1361,7 @@ static int dwc2_usb_ofdata_to_platdata(struct udevice *dev)
 
 static int dwc2_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [1327]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 	struct usb_bus_priv *bus_priv = dev_get_uclass_priv(dev);
 
@@ -1339,6 +1376,7 @@ static int dwc2_usb_probe(struct udevice *dev)
 
 static int dwc2_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [1341]  shl_add\n");
 	struct dwc2_priv *priv = dev_get_priv(dev);
 	int ret;
 
@@ -1378,3 +1416,4 @@ U_BOOT_DRIVER(usb_dwc2) = {
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
 #endif
+

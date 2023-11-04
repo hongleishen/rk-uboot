@@ -389,6 +389,7 @@ struct fsg_dev {
 static inline int __fsg_is_set(struct fsg_common *common,
 			       const char *func, unsigned line)
 {
+	my_dbg(" [391]  shl_add\n");
 	if (common->fsg)
 		return 1;
 	ERROR(common, "common->fsg is NULL in %s at %u\n", func, line);
@@ -401,6 +402,7 @@ static inline int __fsg_is_set(struct fsg_common *common,
 
 static inline struct fsg_dev *fsg_from_func(struct usb_function *f)
 {
+	my_dbg(" [403]  shl_add\n");
 	return container_of(f, struct fsg_dev, function);
 }
 
@@ -409,6 +411,7 @@ typedef void (*fsg_routine_t)(struct fsg_dev *);
 
 static int exception_in_progress(struct fsg_common *common)
 {
+	my_dbg(" [411]  shl_add\n");
 	return common->state > FSG_STATE_IDLE;
 }
 
@@ -416,6 +419,7 @@ static int exception_in_progress(struct fsg_common *common)
 static void set_bulk_out_req_length(struct fsg_common *common,
 		struct fsg_buffhd *bh, unsigned int length)
 {
+	my_dbg(" [418]  shl_add\n");
 	unsigned int	rem;
 
 	bh->bulk_out_intended_length = length;
@@ -433,6 +437,7 @@ static struct fsg_common *the_fsg_common;
 
 static int fsg_set_halt(struct fsg_dev *fsg, struct usb_ep *ep)
 {
+	my_dbg(" [435]  shl_add\n");
 	const char	*name;
 
 	if (ep == fsg->bulk_in)
@@ -452,11 +457,13 @@ static int fsg_set_halt(struct fsg_dev *fsg, struct usb_ep *ep)
 /* Caller must hold fsg->lock */
 static void wakeup_thread(struct fsg_common *common)
 {
+	my_dbg(" [454]  shl_add\n");
 	common->thread_wakeup_needed = 1;
 }
 
 static void raise_exception(struct fsg_common *common, enum fsg_state new_state)
 {
+	my_dbg(" [459]  shl_add\n");
 	/* Do nothing if a higher-priority exception is already in progress.
 	 * If a lower-or-equal priority exception is in progress, preempt it
 	 * and notify the main thread by sending it a signal. */
@@ -471,6 +478,7 @@ static void raise_exception(struct fsg_common *common, enum fsg_state new_state)
 
 static int ep0_queue(struct fsg_common *common)
 {
+	my_dbg(" [473]  shl_add\n");
 	int	rc;
 
 	rc = usb_ep_queue(common->ep0, common->ep0req, GFP_ATOMIC);
@@ -490,6 +498,7 @@ static int ep0_queue(struct fsg_common *common)
 
 static void bulk_in_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [492]  shl_add\n");
 	struct fsg_common	*common = ep->driver_data;
 	struct fsg_buffhd	*bh = req->context;
 
@@ -507,6 +516,7 @@ static void bulk_in_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void bulk_out_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [509]  shl_add\n");
 	struct fsg_common	*common = ep->driver_data;
 	struct fsg_buffhd	*bh = req->context;
 
@@ -531,6 +541,7 @@ static void bulk_out_complete(struct usb_ep *ep, struct usb_request *req)
 static int fsg_setup(struct usb_function *f,
 		const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [533]  shl_add\n");
 	struct fsg_dev		*fsg = fsg_from_func(f);
 	struct usb_request	*req = fsg->common->ep0req;
 	u16			w_index = get_unaligned_le16(&ctrl->wIndex);
@@ -586,6 +597,7 @@ static void start_transfer(struct fsg_dev *fsg, struct usb_ep *ep,
 		struct usb_request *req, int *pbusy,
 		enum fsg_buffer_state *state)
 {
+	my_dbg(" [588]  shl_add\n");
 	int	rc;
 
 	if (ep == fsg->bulk_in)
@@ -620,6 +632,7 @@ static void start_transfer(struct fsg_dev *fsg, struct usb_ep *ep,
 
 static void busy_indicator(void)
 {
+	my_dbg(" [622]  shl_add\n");
 	static int state;
 
 	switch (state) {
@@ -648,6 +661,7 @@ static void busy_indicator(void)
 
 static int sleep_thread(struct fsg_common *common)
 {
+	my_dbg(" [650]  shl_add\n");
 	int	rc = 0;
 	int i = 0, k = 0;
 
@@ -684,6 +698,7 @@ static int sleep_thread(struct fsg_common *common)
 
 static int do_read(struct fsg_common *common)
 {
+	my_dbg(" [686]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	u32			lba;
 	struct fsg_buffhd	*bh;
@@ -811,6 +826,7 @@ static int do_read(struct fsg_common *common)
 
 static int do_write(struct fsg_common *common)
 {
+	my_dbg(" [813]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	u32			lba;
 	struct fsg_buffhd	*bh;
@@ -986,6 +1002,7 @@ static int do_write(struct fsg_common *common)
 
 static int do_synchronize_cache(struct fsg_common *common)
 {
+	my_dbg(" [988]  shl_add\n");
 	return 0;
 }
 
@@ -993,6 +1010,7 @@ static int do_synchronize_cache(struct fsg_common *common)
 
 static int do_verify(struct fsg_common *common)
 {
+	my_dbg(" [995]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	u32			lba;
 	u32			verification_length;
@@ -1081,6 +1099,7 @@ static int do_verify(struct fsg_common *common)
 
 static int do_inquiry(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1083]  shl_add\n");
 	struct fsg_lun *curlun = &common->luns[common->lun];
 	static const char vendor_id[] = "Linux   ";
 	u8	*buf = (u8 *) bh->buf;
@@ -1109,6 +1128,7 @@ static int do_inquiry(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_request_sense(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1111]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	u8		*buf = (u8 *) bh->buf;
 	u32		sd, sdinfo;
@@ -1160,6 +1180,7 @@ static int do_request_sense(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_read_capacity(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1162]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	u32		lba = get_unaligned_be32(&common->cmnd[2]);
 	int		pmi = common->cmnd[8];
@@ -1179,6 +1200,7 @@ static int do_read_capacity(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_read_header(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1181]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	int		msf = common->cmnd[1] & 0x02;
 	u32		lba = get_unaligned_be32(&common->cmnd[2]);
@@ -1202,6 +1224,7 @@ static int do_read_header(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_read_toc(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1204]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	int		msf = common->cmnd[1] & 0x02;
 	int		start_track = common->cmnd[6];
@@ -1230,6 +1253,7 @@ static int do_read_toc(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_mode_sense(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1232]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	int		mscmnd = common->cmnd[0];
 	u8		*buf = (u8 *) bh->buf;
@@ -1311,6 +1335,7 @@ static int do_mode_sense(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int do_start_stop(struct fsg_common *common)
 {
+	my_dbg(" [1313]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 
 	if (!curlun) {
@@ -1325,6 +1350,7 @@ static int do_start_stop(struct fsg_common *common)
 
 static int do_prevent_allow(struct fsg_common *common)
 {
+	my_dbg(" [1327]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	int		prevent;
 
@@ -1349,6 +1375,7 @@ static int do_prevent_allow(struct fsg_common *common)
 static int do_read_format_capacities(struct fsg_common *common,
 			struct fsg_buffhd *bh)
 {
+	my_dbg(" [1351]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 	u8		*buf = (u8 *) bh->buf;
 
@@ -1366,6 +1393,7 @@ static int do_read_format_capacities(struct fsg_common *common,
 
 static int do_mode_select(struct fsg_common *common, struct fsg_buffhd *bh)
 {
+	my_dbg(" [1368]  shl_add\n");
 	struct fsg_lun	*curlun = &common->luns[common->lun];
 
 	/* We don't support MODE SELECT */
@@ -1379,6 +1407,7 @@ static int do_mode_select(struct fsg_common *common, struct fsg_buffhd *bh)
 
 static int halt_bulk_in_endpoint(struct fsg_dev *fsg)
 {
+	my_dbg(" [1381]  shl_add\n");
 	int	rc;
 
 	rc = fsg_set_halt(fsg, fsg->bulk_in);
@@ -1398,6 +1427,7 @@ static int halt_bulk_in_endpoint(struct fsg_dev *fsg)
 
 static int wedge_bulk_in_endpoint(struct fsg_dev *fsg)
 {
+	my_dbg(" [1400]  shl_add\n");
 	int	rc;
 
 	DBG(fsg, "bulk-in set wedge\n");
@@ -1416,6 +1446,7 @@ static int wedge_bulk_in_endpoint(struct fsg_dev *fsg)
 
 static int pad_with_zeros(struct fsg_dev *fsg)
 {
+	my_dbg(" [1418]  shl_add\n");
 	struct fsg_buffhd	*bh = fsg->common->next_buffhd_to_fill;
 	u32			nkeep = bh->inreq->length;
 	u32			nsend;
@@ -1447,6 +1478,7 @@ static int pad_with_zeros(struct fsg_dev *fsg)
 
 static int throw_away_data(struct fsg_common *common)
 {
+	my_dbg(" [1449]  shl_add\n");
 	struct fsg_buffhd	*bh;
 	u32			amount;
 	int			rc;
@@ -1502,6 +1534,7 @@ static int throw_away_data(struct fsg_common *common)
 
 static int finish_reply(struct fsg_common *common)
 {
+	my_dbg(" [1504]  shl_add\n");
 	struct fsg_buffhd	*bh = common->next_buffhd_to_fill;
 	int			rc = 0;
 
@@ -1598,6 +1631,7 @@ static int finish_reply(struct fsg_common *common)
 
 static int send_status(struct fsg_common *common)
 {
+	my_dbg(" [1600]  shl_add\n");
 	struct fsg_lun		*curlun = &common->luns[common->lun];
 	struct fsg_buffhd	*bh;
 	struct bulk_cs_wrap	*csw;
@@ -1663,6 +1697,7 @@ static int check_command(struct fsg_common *common, int cmnd_size,
 		enum data_direction data_dir, unsigned int mask,
 		int needs_medium, const char *name)
 {
+	my_dbg(" [1665]  shl_add\n");
 	int			i;
 	int			lun = common->cmnd[1] >> 5;
 	static const char	dirletter[4] = {'u', 'o', 'i', 'n'};
@@ -1775,6 +1810,7 @@ static int check_command(struct fsg_common *common, int cmnd_size,
 
 static int do_scsi_command(struct fsg_common *common)
 {
+	my_dbg(" [1777]  shl_add\n");
 	struct fsg_buffhd	*bh;
 	int			rc;
 	int			reply = -EINVAL;
@@ -2059,6 +2095,7 @@ finish:
 
 static int received_cbw(struct fsg_dev *fsg, struct fsg_buffhd *bh)
 {
+	my_dbg(" [2061]  shl_add\n");
 	struct usb_request	*req = bh->outreq;
 	struct fsg_bulk_cb_wrap	*cbw = req->buf;
 	struct fsg_common	*common = fsg->common;
@@ -2123,6 +2160,7 @@ static int received_cbw(struct fsg_dev *fsg, struct fsg_buffhd *bh)
 
 static int get_next_command(struct fsg_common *common)
 {
+	my_dbg(" [2125]  shl_add\n");
 	struct fsg_buffhd	*bh;
 	int			rc = 0;
 
@@ -2165,6 +2203,7 @@ static int get_next_command(struct fsg_common *common)
 static int enable_endpoint(struct fsg_common *common, struct usb_ep *ep,
 		const struct usb_endpoint_descriptor *d)
 {
+	my_dbg(" [2167]  shl_add\n");
 	int	rc;
 
 	ep->driver_data = common;
@@ -2177,6 +2216,7 @@ static int enable_endpoint(struct fsg_common *common, struct usb_ep *ep,
 static int alloc_request(struct fsg_common *common, struct usb_ep *ep,
 		struct usb_request **preq)
 {
+	my_dbg(" [2179]  shl_add\n");
 	*preq = usb_ep_alloc_request(ep, GFP_ATOMIC);
 	if (*preq)
 		return 0;
@@ -2187,6 +2227,7 @@ static int alloc_request(struct fsg_common *common, struct usb_ep *ep,
 /* Reset interface setting and re-init endpoint state (toggle etc). */
 static int do_set_interface(struct fsg_common *common, struct fsg_dev *new_fsg)
 {
+	my_dbg(" [2189]  shl_add\n");
 	const struct usb_endpoint_descriptor *d;
 	struct fsg_dev *fsg;
 	int i, rc = 0;
@@ -2282,6 +2323,7 @@ reset:
 
 static int fsg_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 {
+	my_dbg(" [2284]  shl_add\n");
 	struct fsg_dev *fsg = fsg_from_func(f);
 	fsg->common->new_fsg = fsg;
 	raise_exception(fsg->common, FSG_STATE_CONFIG_CHANGE);
@@ -2290,6 +2332,7 @@ static int fsg_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 
 static void fsg_disable(struct usb_function *f)
 {
+	my_dbg(" [2292]  shl_add\n");
 	struct fsg_dev *fsg = fsg_from_func(f);
 	fsg->common->new_fsg = NULL;
 	raise_exception(fsg->common, FSG_STATE_CONFIG_CHANGE);
@@ -2299,6 +2342,7 @@ static void fsg_disable(struct usb_function *f)
 
 static void handle_exception(struct fsg_common *common)
 {
+	my_dbg(" [2301]  shl_add\n");
 	int			i;
 	struct fsg_buffhd	*bh;
 	enum fsg_state		old_state;
@@ -2407,6 +2451,7 @@ static void handle_exception(struct fsg_common *common)
 
 int fsg_main_thread(void *common_)
 {
+	my_dbg(" [2409]  shl_add\n");
 	int ret;
 	struct fsg_common	*common = the_fsg_common;
 	/* The main loop */
@@ -2454,6 +2499,7 @@ static void fsg_common_release(struct kref *ref);
 static struct fsg_common *fsg_common_init(struct fsg_common *common,
 					  struct usb_composite_dev *cdev)
 {
+	my_dbg(" [2456]  shl_add\n");
 	struct usb_gadget *gadget = cdev->gadget;
 	struct fsg_buffhd *bh;
 	struct fsg_lun *curlun;
@@ -2569,6 +2615,7 @@ error_release:
 
 static void fsg_common_release(struct kref *ref)
 {
+	my_dbg(" [2571]  shl_add\n");
 	struct fsg_common *common = container_of(ref, struct fsg_common, ref);
 
 	/* If the thread isn't already dead, tell it to exit now */
@@ -2618,6 +2665,7 @@ static void fsg_common_release(struct kref *ref)
 struct usb_descriptor_header **
 usb_copy_descriptors(struct usb_descriptor_header **src)
 {
+	my_dbg(" [2620]  shl_add\n");
 	struct usb_descriptor_header **tmp;
 	unsigned bytes;
 	unsigned n_desc;
@@ -2654,6 +2702,7 @@ usb_copy_descriptors(struct usb_descriptor_header **src)
 
 static void fsg_unbind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [2656]  shl_add\n");
 	struct fsg_dev		*fsg = fsg_from_func(f);
 
 	DBG(fsg, "unbind\n");
@@ -2669,6 +2718,7 @@ static void fsg_unbind(struct usb_configuration *c, struct usb_function *f)
 
 static int fsg_bind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [2671]  shl_add\n");
 	struct fsg_dev		*fsg = fsg_from_func(f);
 	struct usb_gadget	*gadget = c->cdev->gadget;
 	int			i;
@@ -2757,6 +2807,7 @@ static int fsg_bind_config(struct usb_composite_dev *cdev,
 			   struct usb_configuration *c,
 			   struct fsg_common *common)
 {
+	my_dbg(" [2759]  shl_add\n");
 	struct fsg_dev *fsg;
 	int rc;
 
@@ -2789,6 +2840,7 @@ static int fsg_bind_config(struct usb_composite_dev *cdev,
 
 int fsg_add(struct usb_configuration *c)
 {
+	my_dbg(" [2791]  shl_add\n");
 	struct fsg_common *fsg_common;
 
 	fsg_common = fsg_common_init(NULL, c->cdev);
@@ -2807,6 +2859,7 @@ int fsg_add(struct usb_configuration *c)
 
 int fsg_init(struct ums *ums_devs, int count)
 {
+	my_dbg(" [2809]  shl_add\n");
 	ums = ums_devs;
 	ums_count = count;
 
@@ -2814,3 +2867,4 @@ int fsg_init(struct ums *ums_devs, int count)
 }
 
 DECLARE_GADGET_BIND_CALLBACK(usb_dnl_ums, fsg_add);
+

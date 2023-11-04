@@ -45,6 +45,7 @@ struct keystone_xhci keystone;
 
 static void keystone_xhci_phy_set(struct keystone_xhci_phy *phy)
 {
+	my_dbg(" [47]  shl_add\n");
 	u32 val;
 
 	/*
@@ -60,6 +61,7 @@ static void keystone_xhci_phy_set(struct keystone_xhci_phy *phy)
 
 static void keystone_xhci_phy_unset(struct keystone_xhci_phy *phy)
 {
+	my_dbg(" [62]  shl_add\n");
 	u32 val;
 
 	/* Disable the PHY REFCLK clock gate */
@@ -70,6 +72,7 @@ static void keystone_xhci_phy_unset(struct keystone_xhci_phy *phy)
 
 static int keystone_xhci_core_init(struct dwc3 *dwc3_reg)
 {
+	my_dbg(" [72]  shl_add\n");
 	int ret;
 
 	ret = dwc3_core_init(dwc3_reg);
@@ -87,6 +90,7 @@ static int keystone_xhci_core_init(struct dwc3 *dwc3_reg)
 int xhci_hcd_init(int index,
 		  struct xhci_hccr **ret_hccr, struct xhci_hcor **ret_hcor)
 {
+	my_dbg(" [89]  shl_add\n");
 	u32 val;
 	int ret;
 	struct xhci_hccr *hcd;
@@ -152,6 +156,7 @@ int xhci_hcd_init(int index,
 
 static int keystone_xhci_phy_suspend(void)
 {
+	my_dbg(" [154]  shl_add\n");
 	int loop_cnt = 0;
 	struct xhci_hcor *hcor;
 	uint32_t *portsc_1 = NULL;
@@ -224,6 +229,7 @@ static int keystone_xhci_phy_suspend(void)
 
 void xhci_hcd_stop(int index)
 {
+	my_dbg(" [226]  shl_add\n");
 	/* Disable USB */
 	if (keystone_xhci_phy_suspend())
 		return;
@@ -239,3 +245,4 @@ void xhci_hcd_stop(int index)
 /*	memset(&keystone, 0, sizeof(struct keystone_xhci)); */
 	debug("xhci_hcd_stop OK.\n");
 }
+

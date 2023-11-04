@@ -38,6 +38,7 @@ static LIST_HEAD(dwc3_list);
 
 static void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
 {
+	my_dbg(" [40]  shl_add\n");
 	u32 reg;
 
 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
@@ -52,6 +53,7 @@ static void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
  */
 static int dwc3_core_soft_reset(struct dwc3 *dwc)
 {
+	my_dbg(" [54]  shl_add\n");
 	u32		reg;
 
 	/* Before Resetting PHY, put Core in Reset */
@@ -99,6 +101,7 @@ static int dwc3_core_soft_reset(struct dwc3 *dwc)
 static void dwc3_free_one_event_buffer(struct dwc3 *dwc,
 		struct dwc3_event_buffer *evt)
 {
+	my_dbg(" [101]  shl_add\n");
 	dma_free_coherent(evt->buf);
 }
 
@@ -113,6 +116,7 @@ static void dwc3_free_one_event_buffer(struct dwc3 *dwc,
 static struct dwc3_event_buffer *dwc3_alloc_one_event_buffer(struct dwc3 *dwc,
 		unsigned length)
 {
+	my_dbg(" [115]  shl_add\n");
 	struct dwc3_event_buffer	*evt;
 
 	evt = devm_kzalloc((struct udevice *)dwc->dev, sizeof(*evt),
@@ -138,6 +142,7 @@ static struct dwc3_event_buffer *dwc3_alloc_one_event_buffer(struct dwc3 *dwc,
  */
 static void dwc3_free_event_buffers(struct dwc3 *dwc)
 {
+	my_dbg(" [140]  shl_add\n");
 	struct dwc3_event_buffer	*evt;
 	int i;
 
@@ -158,6 +163,7 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
  */
 static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
 {
+	my_dbg(" [160]  shl_add\n");
 	int			num;
 	int			i;
 
@@ -191,6 +197,7 @@ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
  */
 static int dwc3_event_buffers_setup(struct dwc3 *dwc)
 {
+	my_dbg(" [193]  shl_add\n");
 	struct dwc3_event_buffer	*evt;
 	int				n;
 
@@ -216,6 +223,7 @@ static int dwc3_event_buffers_setup(struct dwc3 *dwc)
 
 static void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
 {
+	my_dbg(" [218]  shl_add\n");
 	struct dwc3_event_buffer	*evt;
 	int				n;
 
@@ -234,6 +242,7 @@ static void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
 
 static int dwc3_alloc_scratch_buffers(struct dwc3 *dwc)
 {
+	my_dbg(" [236]  shl_add\n");
 	if (!dwc->has_hibernation)
 		return 0;
 
@@ -250,6 +259,7 @@ static int dwc3_alloc_scratch_buffers(struct dwc3 *dwc)
 
 static int dwc3_setup_scratch_buffers(struct dwc3 *dwc)
 {
+	my_dbg(" [252]  shl_add\n");
 	dma_addr_t scratch_addr;
 	u32 param;
 	int ret;
@@ -297,6 +307,7 @@ err0:
 
 static void dwc3_free_scratch_buffers(struct dwc3 *dwc)
 {
+	my_dbg(" [299]  shl_add\n");
 	if (!dwc->has_hibernation)
 		return;
 
@@ -310,6 +321,7 @@ static void dwc3_free_scratch_buffers(struct dwc3 *dwc)
 
 static void dwc3_core_num_eps(struct dwc3 *dwc)
 {
+	my_dbg(" [312]  shl_add\n");
 	struct dwc3_hwparams	*parms = &dwc->hwparams;
 
 	dwc->num_in_eps = DWC3_NUM_IN_EPS(parms);
@@ -321,6 +333,7 @@ static void dwc3_core_num_eps(struct dwc3 *dwc)
 
 static void dwc3_cache_hwparams(struct dwc3 *dwc)
 {
+	my_dbg(" [323]  shl_add\n");
 	struct dwc3_hwparams	*parms = &dwc->hwparams;
 
 	parms->hwparams0 = dwc3_readl(dwc->regs, DWC3_GHWPARAMS0);
@@ -336,6 +349,7 @@ static void dwc3_cache_hwparams(struct dwc3 *dwc)
 
 static void dwc3_hsphy_mode_setup(struct dwc3 *dwc)
 {
+	my_dbg(" [338]  shl_add\n");
 	enum usb_phy_interface hsphy_mode = dwc->hsphy_mode;
 	u32 reg;
 
@@ -368,6 +382,7 @@ static void dwc3_hsphy_mode_setup(struct dwc3 *dwc)
  */
 static void dwc3_phy_setup(struct dwc3 *dwc)
 {
+	my_dbg(" [370]  shl_add\n");
 	u32 reg;
 
 	reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
@@ -455,6 +470,7 @@ static void dwc3_phy_setup(struct dwc3 *dwc)
  */
 static int dwc3_core_init(struct dwc3 *dwc)
 {
+	my_dbg(" [457]  shl_add\n");
 	unsigned long		timeout;
 	u32			hwparams4 = dwc->hwparams.hwparams4;
 	u32			reg;
@@ -596,11 +612,13 @@ err0:
 
 static void dwc3_core_exit(struct dwc3 *dwc)
 {
+	my_dbg(" [598]  shl_add\n");
 	dwc3_free_scratch_buffers(dwc);
 }
 
 static int dwc3_core_init_mode(struct dwc3 *dwc)
 {
+	my_dbg(" [603]  shl_add\n");
 	int ret;
 
 	switch (dwc->dr_mode) {
@@ -644,12 +662,14 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
 
 static void dwc3_gadget_run(struct dwc3 *dwc)
 {
+	my_dbg(" [646]  shl_add\n");
 	dwc3_writel(dwc->regs, DWC3_DCTL, DWC3_DCTL_RUN_STOP);
 	mdelay(100);
 }
 
 static void dwc3_core_exit_mode(struct dwc3 *dwc)
 {
+	my_dbg(" [652]  shl_add\n");
 	switch (dwc->dr_mode) {
 	case USB_DR_MODE_PERIPHERAL:
 		dwc3_gadget_exit(dwc);
@@ -689,6 +709,7 @@ static void dwc3_core_exit_mode(struct dwc3 *dwc)
  */
 int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 {
+	my_dbg(" [691]  shl_add\n");
 	struct dwc3		*dwc;
 	struct device		*dev = NULL;
 	u8			lpm_nyet_threshold;
@@ -837,6 +858,7 @@ err0:
  */
 void dwc3_uboot_exit(int index)
 {
+	my_dbg(" [839]  shl_add\n");
 	struct dwc3 *dwc;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
@@ -863,6 +885,7 @@ void dwc3_uboot_exit(int index)
  */
 void dwc3_uboot_handle_interrupt(int index)
 {
+	// my_dbg(" [865]  shl_add\n");
 	struct dwc3 *dwc = NULL;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
@@ -882,6 +905,7 @@ MODULE_DESCRIPTION("DesignWare USB3 DRD Controller Driver");
 #if CONFIG_IS_ENABLED(PHY) && CONFIG_IS_ENABLED(DM_USB)
 int dwc3_setup_phy(struct udevice *dev, struct phy **array, int *num_phys)
 {
+	my_dbg(" [884]  shl_add\n");
 	int i, ret, count;
 	struct phy *usb_phys;
 
@@ -946,6 +970,7 @@ phys_init_err:
 
 int dwc3_shutdown_phy(struct udevice *dev, struct phy *usb_phys, int num_phys)
 {
+	my_dbg(" [948]  shl_add\n");
 	int i, ret;
 
 	for (i = 0; i < num_phys; i++) {
@@ -967,6 +992,7 @@ int dwc3_shutdown_phy(struct udevice *dev, struct phy *usb_phys, int num_phys)
 #if CONFIG_IS_ENABLED(DM_USB)
 void dwc3_of_parse(struct dwc3 *dwc)
 {
+	my_dbg(" [969]  shl_add\n");
 	const u8 *tmp;
 	struct udevice *dev = dwc->dev;
 	u8 lpm_nyet_threshold;
@@ -1038,6 +1064,7 @@ void dwc3_of_parse(struct dwc3 *dwc)
 
 int dwc3_init(struct dwc3 *dwc)
 {
+	my_dbg(" [1040]  shl_add\n");
 	int ret;
 
 	dwc3_cache_hwparams(dwc);
@@ -1080,6 +1107,7 @@ core_fail:
 
 void dwc3_remove(struct dwc3 *dwc)
 {
+	my_dbg(" [1082]  shl_add\n");
 	dwc3_core_exit_mode(dwc);
 	dwc3_event_buffers_cleanup(dwc);
 	dwc3_free_event_buffers(dwc);
@@ -1087,3 +1115,4 @@ void dwc3_remove(struct dwc3 *dwc)
 	kfree(dwc->mem);
 }
 #endif
+

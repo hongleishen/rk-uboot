@@ -44,6 +44,7 @@ struct rcar_xhci {
 static int xhci_rcar_download_fw(struct rcar_xhci *ctx, const u32 *fw_data,
 				 const size_t fw_array_size)
 {
+	my_dbg(" [46]  shl_add\n");
 	void __iomem *regs = (void __iomem *)ctx->hcd;
 	int i, ret;
 
@@ -85,6 +86,7 @@ static int xhci_rcar_download_fw(struct rcar_xhci *ctx, const u32 *fw_data,
 
 static int xhci_rcar_probe(struct udevice *dev)
 {
+	my_dbg(" [87]  shl_add\n");
 	struct rcar_xhci_platdata *plat = dev_get_platdata(dev);
 	struct rcar_xhci *ctx = dev_get_priv(dev);
 	struct xhci_hcor *hcor;
@@ -130,6 +132,7 @@ err_clk:
 
 static int xhci_rcar_deregister(struct udevice *dev)
 {
+	my_dbg(" [132]  shl_add\n");
 	int ret;
 	struct rcar_xhci_platdata *plat = dev_get_platdata(dev);
 
@@ -143,6 +146,7 @@ static int xhci_rcar_deregister(struct udevice *dev)
 
 static int xhci_rcar_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [145]  shl_add\n");
 	struct rcar_xhci_platdata *plat = dev_get_platdata(dev);
 
 	plat->hcd_base = devfdt_get_addr(dev);
@@ -173,3 +177,4 @@ U_BOOT_DRIVER(usb_xhci) = {
 	.priv_auto_alloc_size = sizeof(struct rcar_xhci),
 	.flags		= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

@@ -37,11 +37,13 @@ struct mvebu_xhci {
  */
 __weak int board_xhci_enable(fdt_addr_t base)
 {
+	my_dbg(" [39]  shl_add\n");
 	return 0;
 }
 
 static int xhci_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [44]  shl_add\n");
 	struct mvebu_xhci_platdata *plat = dev_get_platdata(dev);
 	struct mvebu_xhci *ctx = dev_get_priv(dev);
 	struct xhci_hcor *hcor;
@@ -69,6 +71,7 @@ static int xhci_usb_probe(struct udevice *dev)
 
 static int xhci_usb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [71]  shl_add\n");
 	struct mvebu_xhci_platdata *plat = dev_get_platdata(dev);
 
 	/*
@@ -102,3 +105,4 @@ U_BOOT_DRIVER(usb_xhci) = {
 	.priv_auto_alloc_size = sizeof(struct mvebu_xhci),
 	.flags	= DM_FLAG_ALLOC_PRIV_DMA,
 };
+

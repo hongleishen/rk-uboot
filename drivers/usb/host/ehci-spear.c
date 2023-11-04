@@ -18,6 +18,7 @@
 
 static void spear6xx_usbh_stop(void)
 {
+	my_dbg(" [20]  shl_add\n");
 	struct misc_regs *const misc_p =
 	    (struct misc_regs *)CONFIG_SPEAR_MISCBASE;
 	u32 periph1_rst = readl(misc_p->periph1_rst);
@@ -37,6 +38,7 @@ static void spear6xx_usbh_stop(void)
 int ehci_hcd_init(int index, enum usb_init_type init,
 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [39]  shl_add\n");
 	u32 ehci = 0;
 
 	switch (index) {
@@ -68,9 +70,11 @@ int ehci_hcd_init(int index, enum usb_init_type init,
  */
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [70]  shl_add\n");
 #if defined(CONFIG_SPEAR600)
 	spear6xx_usbh_stop();
 #endif
 
 	return 0;
 }
+

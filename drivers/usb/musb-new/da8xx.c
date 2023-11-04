@@ -62,6 +62,7 @@
 
 static irqreturn_t da8xx_musb_interrupt(int irq, void *hci)
 {
+	my_dbg(" [64]  shl_add\n");
 	struct musb		*musb = hci;
 	void __iomem		*reg_base = musb->ctrl_base;
 	unsigned long		flags;
@@ -149,6 +150,7 @@ eoi:
 
 static int da8xx_musb_init(struct musb *musb)
 {
+	my_dbg(" [151]  shl_add\n");
 	u32  revision;
 	void __iomem *reg_base = musb->ctrl_base;
 
@@ -179,6 +181,7 @@ static int da8xx_musb_init(struct musb *musb)
 
 static int da8xx_musb_exit(struct musb *musb)
 {
+	my_dbg(" [181]  shl_add\n");
 	/* flush any interrupts */
 	writel((DA8XX_USB_USBINT_MASK | DA8XX_USB_TXINT_MASK |
 		DA8XX_USB_RXINT_MASK), &da8xx_usb_regs->intmsk_clr);
@@ -192,6 +195,7 @@ static int da8xx_musb_exit(struct musb *musb)
  */
 static int da8xx_musb_enable(struct musb *musb)
 {
+	my_dbg(" [194]  shl_add\n");
 	void __iomem *reg_base = musb->ctrl_base;
 	u32 mask;
 
@@ -213,6 +217,7 @@ static int da8xx_musb_enable(struct musb *musb)
  */
 static void da8xx_musb_disable(struct musb *musb)
 {
+	my_dbg(" [215]  shl_add\n");
 	void __iomem *reg_base = musb->ctrl_base;
 
 	musb_writel(reg_base, DA8XX_USB_INTR_MASK_CLEAR_REG,
@@ -223,6 +228,7 @@ static void da8xx_musb_disable(struct musb *musb)
 
 void da8xx_musb_reset(struct udevice *dev)
 {
+	my_dbg(" [225]  shl_add\n");
 	void *reg_base = dev_read_addr_ptr(dev);
 
 	/* Reset the controller */
@@ -231,6 +237,7 @@ void da8xx_musb_reset(struct udevice *dev)
 
 void da8xx_musb_clear_irq(struct udevice *dev)
 {
+	my_dbg(" [233]  shl_add\n");
 	/* flush any interrupts */
 	writel((DA8XX_USB_USBINT_MASK | DA8XX_USB_TXINT_MASK |
 		DA8XX_USB_RXINT_MASK), &da8xx_usb_regs->intmsk_clr);
@@ -255,6 +262,7 @@ struct da8xx_musb_platdata {
 
 static int da8xx_musb_ofdata_to_platdata(struct udevice *dev)
 {
+	my_dbg(" [257]  shl_add\n");
 	struct da8xx_musb_platdata *platdata = dev_get_platdata(dev);
 	const void *fdt = gd->fdt_blob;
 	int node = dev_of_offset(dev);
@@ -278,6 +286,7 @@ static int da8xx_musb_ofdata_to_platdata(struct udevice *dev)
 
 static int da8xx_musb_probe(struct udevice *dev)
 {
+	my_dbg(" [280]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 	struct da8xx_musb_platdata *platdata = dev_get_platdata(dev);
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
@@ -325,6 +334,7 @@ shutdown:
 
 static int da8xx_musb_remove(struct udevice *dev)
 {
+	my_dbg(" [327]  shl_add\n");
 	struct musb_host_data *host = dev_get_priv(dev);
 
 	musb_stop(host->host);
@@ -348,3 +358,4 @@ U_BOOT_DRIVER(da8xx_musb) = {
 	.platdata_auto_alloc_size = sizeof(struct da8xx_musb_platdata),
 	.priv_auto_alloc_size = sizeof(struct musb_host_data),
 };
+

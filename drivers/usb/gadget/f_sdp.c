@@ -121,6 +121,7 @@ static struct f_sdp *sdp_func;
 
 static inline struct f_sdp *func_to_sdp(struct usb_function *f)
 {
+	my_dbg(" [123]  shl_add\n");
 	return container_of(f, struct f_sdp, usb_function);
 }
 
@@ -233,11 +234,13 @@ static struct usb_gadget_strings *sdp_generic_strings[] = {
 
 static inline void *sdp_ptr(u32 val)
 {
+	my_dbg(" [235]  shl_add\n");
 	return (void *)(uintptr_t)val;
 }
 
 static void sdp_rx_command_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [240]  shl_add\n");
 	struct f_sdp *sdp = req->context;
 	int status = req->status;
 	u8 *data = req->buf;
@@ -323,6 +326,7 @@ static void sdp_rx_command_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void sdp_rx_data_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [325]  shl_add\n");
 	struct f_sdp *sdp = req->context;
 	int status = req->status;
 	u8 *data = req->buf;
@@ -377,6 +381,7 @@ static void sdp_rx_data_complete(struct usb_ep *ep, struct usb_request *req)
 
 static void sdp_tx_complete(struct usb_ep *ep, struct usb_request *req)
 {
+	my_dbg(" [379]  shl_add\n");
 	struct f_sdp *sdp = req->context;
 	int status = req->status;
 
@@ -414,6 +419,7 @@ static void sdp_tx_complete(struct usb_ep *ep, struct usb_request *req)
 
 static int sdp_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 {
+	my_dbg(" [416]  shl_add\n");
 	struct usb_gadget *gadget = f->config->cdev->gadget;
 	struct usb_request *req = f->config->cdev->req;
 	struct f_sdp *sdp = f->config->cdev->req->context;
@@ -469,6 +475,7 @@ static int sdp_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
 
 static int sdp_bind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [471]  shl_add\n");
 	struct usb_gadget *gadget = c->cdev->gadget;
 	struct usb_composite_dev *cdev = c->cdev;
 	struct f_sdp *sdp = func_to_sdp(f);
@@ -498,12 +505,14 @@ error:
 
 static void sdp_unbind(struct usb_configuration *c, struct usb_function *f)
 {
+	my_dbg(" [500]  shl_add\n");
 	free(sdp_func);
 	sdp_func = NULL;
 }
 
 static struct usb_request *alloc_ep_req(struct usb_ep *ep, unsigned length)
 {
+	my_dbg(" [506]  shl_add\n");
 	struct usb_request *req;
 
 	req = usb_ep_alloc_request(ep, 0);
@@ -523,6 +532,7 @@ static struct usb_request *alloc_ep_req(struct usb_ep *ep, unsigned length)
 
 static struct usb_request *sdp_start_ep(struct usb_ep *ep)
 {
+	my_dbg(" [525]  shl_add\n");
 	struct usb_request *req;
 
 	req = alloc_ep_req(ep, 64);
@@ -538,6 +548,7 @@ static struct usb_request *sdp_start_ep(struct usb_ep *ep)
 }
 static int sdp_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 {
+	my_dbg(" [540]  shl_add\n");
 	struct f_sdp *sdp = func_to_sdp(f);
 	struct usb_composite_dev *cdev = f->config->cdev;
 	int result;
@@ -560,6 +571,7 @@ static int sdp_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
 
 static int sdp_get_alt(struct usb_function *f, unsigned intf)
 {
+	my_dbg(" [562]  shl_add\n");
 	struct f_sdp *sdp = func_to_sdp(f);
 
 	return sdp->altsetting;
@@ -567,6 +579,7 @@ static int sdp_get_alt(struct usb_function *f, unsigned intf)
 
 static void sdp_disable(struct usb_function *f)
 {
+	my_dbg(" [569]  shl_add\n");
 	struct f_sdp *sdp = func_to_sdp(f);
 
 	usb_ep_disable(sdp->in_ep);
@@ -579,6 +592,7 @@ static void sdp_disable(struct usb_function *f)
 
 static int sdp_bind_config(struct usb_configuration *c)
 {
+	my_dbg(" [581]  shl_add\n");
 	int status;
 
 	if (!sdp_func) {
@@ -607,6 +621,7 @@ static int sdp_bind_config(struct usb_configuration *c)
 
 int sdp_init(int controller_index)
 {
+	my_dbg(" [609]  shl_add\n");
 	printf("SDP: initialize...\n");
 	while (!sdp_func->configuration_done) {
 		if (ctrlc()) {
@@ -623,6 +638,7 @@ int sdp_init(int controller_index)
 
 static u32 sdp_jump_imxheader(void *address)
 {
+	my_dbg(" [625]  shl_add\n");
 	flash_header_v2_t *headerv2 = address;
 	ulong (*entry)(void);
 
@@ -644,6 +660,7 @@ static u32 sdp_jump_imxheader(void *address)
 static ulong sdp_fit_read(struct spl_load_info *load, ulong sector,
 			  ulong count, void *buf)
 {
+	my_dbg(" [646]  shl_add\n");
 	debug("%s: sector %lx, count %lx, buf %lx\n",
 	      __func__, sector, count, (ulong)buf);
 	memcpy(buf, (void *)(load->dev + sector), count);
@@ -654,6 +671,7 @@ static ulong sdp_fit_read(struct spl_load_info *load, ulong sector,
 
 static void sdp_handle_in_ep(struct spl_image_info *spl_image)
 {
+	my_dbg(" [656]  shl_add\n");
 	u8 *data = sdp_func->in_req->buf;
 	u32 status;
 	int datalen;
@@ -750,6 +768,7 @@ int sdp_handle(int controller_index)
 int spl_sdp_handle(int controller_index, struct spl_image_info *spl_image)
 #endif
 {
+	my_dbg(" [752]  shl_add\n");
 	printf("SDP: handle requests...\n");
 	while (1) {
 		if (ctrlc()) {
@@ -775,6 +794,7 @@ int spl_sdp_handle(int controller_index, struct spl_image_info *spl_image)
 
 int sdp_add(struct usb_configuration *c)
 {
+	my_dbg(" [777]  shl_add\n");
 	int id;
 
 	id = usb_string_id(c->cdev);
@@ -790,3 +810,4 @@ int sdp_add(struct usb_configuration *c)
 }
 
 DECLARE_GADGET_BIND_CALLBACK(usb_dnl_sdp, sdp_add);
+

@@ -47,6 +47,7 @@ static int sl811_rh_submit_urb(struct usb_device *usb_dev, unsigned long pipe,
 
 static void sl811_write (__u8 index, __u8 data)
 {
+	my_dbg(" [49]  shl_add\n");
 	*(volatile unsigned char *) (SL811_ADR) = index;
 	EIEIO;
 	*(volatile unsigned char *) (SL811_DAT) = data;
@@ -55,6 +56,7 @@ static void sl811_write (__u8 index, __u8 data)
 
 static __u8 sl811_read (__u8 index)
 {
+	my_dbg(" [57]  shl_add\n");
 	__u8 data;
 
 	*(volatile unsigned char *) (SL811_ADR) = index;
@@ -69,6 +71,7 @@ static __u8 sl811_read (__u8 index)
  */
 static void inline sl811_read_buf(__u8 offset, __u8 *buf, __u8 size)
 {
+	my_dbg(" [71]  shl_add\n");
 	*(volatile unsigned char *) (SL811_ADR) = offset;
 	EIEIO;
 	while (size--) {
@@ -82,6 +85,7 @@ static void inline sl811_read_buf(__u8 offset, __u8 *buf, __u8 size)
  */
 static void inline sl811_write_buf(__u8 offset, __u8 *buf, __u8 size)
 {
+	my_dbg(" [84]  shl_add\n");
 	*(volatile unsigned char *) (SL811_ADR) = offset;
 	EIEIO;
 	while (size--) {
@@ -92,6 +96,7 @@ static void inline sl811_write_buf(__u8 offset, __u8 *buf, __u8 size)
 
 int usb_init_kup4x (void)
 {
+	my_dbg(" [94]  shl_add\n");
 	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
 	volatile memctl8xx_t *memctl = &immap->im_memctl;
 	int i;
@@ -129,6 +134,7 @@ int usb_init_kup4x (void)
  */
 static int sl811_hc_reset(void)
 {
+	my_dbg(" [131]  shl_add\n");
 	int status ;
 
 	sl811_write(SL811_CTRL2, SL811_CTL2_HOST | SL811_12M_HI);
@@ -196,6 +202,7 @@ static int sl811_hc_reset(void)
 
 int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 {
+	my_dbg(" [198]  shl_add\n");
 	root_hub_devnum = 0;
 	sl811_hc_reset();
 	return 0;
@@ -203,17 +210,20 @@ int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
 
 int usb_lowlevel_stop(int index)
 {
+	my_dbg(" [205]  shl_add\n");
 	sl811_hc_reset();
 	return 0;
 }
 
 static int calc_needed_buswidth(int bytes, int need_preamble)
 {
+	my_dbg(" [211]  shl_add\n");
 	return !need_preamble ? bytes * 8 + 256 : 8 * 8 * bytes + 2048;
 }
 
 static int sl811_send_packet(struct usb_device *dev, unsigned long pipe, __u8 *buffer, int len)
 {
+	my_dbg(" [216]  shl_add\n");
 	__u8 ctrl = SL811_USB_CTRL_ARM | SL811_USB_CTRL_ENABLE;
 	__u16 status = 0;
 	int err = 0, time_start = get_timer(0);
@@ -288,6 +298,7 @@ static int sl811_send_packet(struct usb_device *dev, unsigned long pipe, __u8 *b
 int submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		    int len)
 {
+	my_dbg(" [290]  shl_add\n");
 	int dir_out = usb_pipeout(pipe);
 	int ep = usb_pipeendpoint(pipe);
 	int max = usb_maxpacket(dev, pipe);
@@ -323,6 +334,7 @@ int submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		       int len,struct devrequest *setup)
 {
+	my_dbg(" [325]  shl_add\n");
 	int done = 0;
 	int devnum = usb_pipedevice(pipe);
 	int ep = usb_pipeendpoint(pipe);
@@ -387,6 +399,7 @@ int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 int submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 		   int len, int interval, bool nonblock)
 {
+	my_dbg(" [389]  shl_add\n");
 	PDEBUG(0, "dev = %p pipe = %#lx buf = %p size = %d int = %d\n", dev, pipe,
 	       buffer, len, interval);
 	return -1;
@@ -475,6 +488,7 @@ static __u8 sl811_rh_hub_des[] =
  */
 static int ascii2utf (char *s, u8 *utf, int utfmax)
 {
+	my_dbg(" [477]  shl_add\n");
 	int retval;
 
 	for (retval = 0; *s && utfmax > 1; utfmax -= 2, retval += 2) {
@@ -490,6 +504,7 @@ static int ascii2utf (char *s, u8 *utf, int utfmax)
  */
 static int usb_root_hub_string (int id, int serial, char *type, __u8 *data, int len)
 {
+	my_dbg(" [492]  shl_add\n");
 	char buf [30];
 
 	/* assert (len > (2 * (sizeof (buf) + 1)));
@@ -530,6 +545,7 @@ static int usb_root_hub_string (int id, int serial, char *type, __u8 *data, int 
 static int sl811_rh_submit_urb(struct usb_device *usb_dev, unsigned long pipe,
 			       void *data, int buf_len, struct devrequest *cmd)
 {
+	my_dbg(" [532]  shl_add\n");
 	__u8 data_buf[16];
 	__u8 *bufp = data_buf;
 	int len = 0;
@@ -712,3 +728,4 @@ static int sl811_rh_submit_urb(struct usb_device *usb_dev, unsigned long pipe,
 
 	return status == 0 ? len : status;
 }
+

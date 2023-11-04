@@ -148,6 +148,7 @@ static void dsps_musb_enable(struct musb *musb)
 static int dsps_musb_enable(struct musb *musb)
 #endif
 {
+	my_dbg(" [150]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct platform_device *pdev = to_platform_device(dev->parent);
@@ -181,6 +182,7 @@ static int dsps_musb_enable(struct musb *musb)
  */
 static void dsps_musb_disable(struct musb *musb)
 {
+	my_dbg(" [183]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct platform_device *pdev = to_platform_device(dev->parent);
@@ -199,6 +201,7 @@ static void dsps_musb_disable(struct musb *musb)
 #ifndef __UBOOT__
 static void otg_timer(unsigned long _musb)
 {
+	my_dbg(" [201]  shl_add\n");
 	struct musb *musb = (void *)_musb;
 	void __iomem *mregs = musb->mregs;
 	struct device *dev = musb->controller;
@@ -255,6 +258,7 @@ static void otg_timer(unsigned long _musb)
 
 static void dsps_musb_try_idle(struct musb *musb, unsigned long timeout)
 {
+	my_dbg(" [257]  shl_add\n");
 	struct device *dev = musb->controller;
 	struct platform_device *pdev = to_platform_device(dev->parent);
 	struct dsps_glue *glue = platform_get_drvdata(pdev);
@@ -292,6 +296,7 @@ static void dsps_musb_try_idle(struct musb *musb, unsigned long timeout)
 
 static irqreturn_t dsps_interrupt(int irq, void *hci)
 {
+	my_dbg(" [294]  shl_add\n");
 	struct musb  *musb = hci;
 	void __iomem *reg_base = musb->ctrl_base;
 #ifndef __UBOOT__
@@ -408,6 +413,7 @@ static irqreturn_t dsps_interrupt(int irq, void *hci)
 
 static int dsps_musb_init(struct musb *musb)
 {
+	my_dbg(" [410]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
@@ -475,6 +481,7 @@ err0:
 
 static int dsps_musb_exit(struct musb *musb)
 {
+	my_dbg(" [477]  shl_add\n");
 #ifndef __UBOOT__
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
@@ -527,6 +534,7 @@ static u64 musb_dmamask = DMA_BIT_MASK(32);
 #ifndef __UBOOT__
 static int __devinit dsps_create_musb_pdev(struct dsps_glue *glue, u8 id)
 {
+	my_dbg(" [529]  shl_add\n");
 	struct device *dev = glue->dev;
 	struct platform_device *pdev = to_platform_device(dev);
 	struct musb_hdrc_platform_data  *pdata = dev->platform_data;
@@ -603,12 +611,14 @@ err0:
 
 static void __devexit dsps_delete_musb_pdev(struct dsps_glue *glue)
 {
+	my_dbg(" [605]  shl_add\n");
 	platform_device_del(glue->musb);
 	platform_device_put(glue->musb);
 }
 
 static int __devinit dsps_probe(struct platform_device *pdev)
 {
+	my_dbg(" [611]  shl_add\n");
 	const struct platform_device_id *id = platform_get_device_id(pdev);
 	const struct dsps_musb_wrapper *wrp =
 				(struct dsps_musb_wrapper *)id->driver_data;
@@ -672,6 +682,7 @@ err0:
 }
 static int __devexit dsps_remove(struct platform_device *pdev)
 {
+	my_dbg(" [674]  shl_add\n");
 	struct dsps_glue *glue = platform_get_drvdata(pdev);
 
 	/* delete the child platform device */
@@ -688,6 +699,7 @@ static int __devexit dsps_remove(struct platform_device *pdev)
 #ifdef CONFIG_PM_SLEEP
 static int dsps_suspend(struct device *dev)
 {
+	my_dbg(" [690]  shl_add\n");
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 	struct omap_musb_board_data *data = plat->board_data;
 
@@ -700,6 +712,7 @@ static int dsps_suspend(struct device *dev)
 
 static int dsps_resume(struct device *dev)
 {
+	my_dbg(" [702]  shl_add\n");
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 	struct omap_musb_board_data *data = plat->board_data;
 
@@ -750,13 +763,16 @@ MODULE_LICENSE("GPL v2");
 
 static int __init dsps_init(void)
 {
+	my_dbg(" [752]  shl_add\n");
 	return platform_driver_register(&dsps_usbss_driver);
 }
 subsys_initcall(dsps_init);
 
 static void __exit dsps_exit(void)
 {
+	my_dbg(" [758]  shl_add\n");
 	platform_driver_unregister(&dsps_usbss_driver);
 }
 module_exit(dsps_exit);
 #endif
+

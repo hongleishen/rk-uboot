@@ -32,11 +32,13 @@ struct xhci_fsl_priv {
 
 __weak int __board_usb_init(int index, enum usb_init_type init)
 {
+	my_dbg(" [34]  shl_add\n");
 	return 0;
 }
 
 static int erratum_a008751(void)
 {
+	my_dbg(" [39]  shl_add\n");
 #if defined(CONFIG_TARGET_LS2080AQDS) || defined(CONFIG_TARGET_LS2080ARDB) ||\
 					defined(CONFIG_TARGET_LS2080AQDS)
 	u32 __iomem *scfg = (u32 __iomem *)SCFG_BASE;
@@ -48,6 +50,7 @@ static int erratum_a008751(void)
 
 static void fsl_apply_xhci_errata(void)
 {
+	my_dbg(" [50]  shl_add\n");
 	int ret;
 	if (has_erratum_a008751()) {
 		ret = erratum_a008751();
@@ -58,6 +61,7 @@ static void fsl_apply_xhci_errata(void)
 
 static void fsl_xhci_set_beat_burst_length(struct dwc3 *dwc3_reg)
 {
+	my_dbg(" [60]  shl_add\n");
 	clrsetbits_le32(&dwc3_reg->g_sbuscfg0, USB3_ENABLE_BEAT_BURST_MASK,
 			USB3_ENABLE_BEAT_BURST);
 	setbits_le32(&dwc3_reg->g_sbuscfg1, USB3_SET_BEAT_BURST_LIMIT);
@@ -65,6 +69,7 @@ static void fsl_xhci_set_beat_burst_length(struct dwc3 *dwc3_reg)
 
 static int fsl_xhci_core_init(struct fsl_xhci *fsl_xhci)
 {
+	my_dbg(" [67]  shl_add\n");
 	int ret = 0;
 
 	ret = dwc3_core_init(fsl_xhci->dwc3_reg);
@@ -100,6 +105,7 @@ static int fsl_xhci_core_init(struct fsl_xhci *fsl_xhci)
 
 static int fsl_xhci_core_exit(struct fsl_xhci *fsl_xhci)
 {
+	my_dbg(" [102]  shl_add\n");
 	/*
 	 * Currently fsl socs do not support PHY shutdown from
 	 * sw. But this support may be added in future socs.
@@ -110,6 +116,7 @@ static int fsl_xhci_core_exit(struct fsl_xhci *fsl_xhci)
 #if CONFIG_IS_ENABLED(DM_USB)
 static int xhci_fsl_probe(struct udevice *dev)
 {
+	my_dbg(" [112]  shl_add\n");
 	struct xhci_fsl_priv *priv = dev_get_priv(dev);
 	struct xhci_hccr *hccr;
 	struct xhci_hcor *hcor;
@@ -149,6 +156,7 @@ static int xhci_fsl_probe(struct udevice *dev)
 
 static int xhci_fsl_remove(struct udevice *dev)
 {
+	my_dbg(" [151]  shl_add\n");
 	struct xhci_fsl_priv *priv = dev_get_priv(dev);
 
 	fsl_xhci_core_exit(&priv->ctx);
@@ -175,6 +183,7 @@ U_BOOT_DRIVER(xhci_fsl) = {
 #else
 int xhci_hcd_init(int index, struct xhci_hccr **hccr, struct xhci_hcor **hcor)
 {
+	my_dbg(" [177]  shl_add\n");
 	struct fsl_xhci *ctx = &fsl_xhci;
 	int ret = 0;
 
@@ -208,8 +217,10 @@ int xhci_hcd_init(int index, struct xhci_hccr **hccr, struct xhci_hcor **hcor)
 
 void xhci_hcd_stop(int index)
 {
+	my_dbg(" [210]  shl_add\n");
 	struct fsl_xhci *ctx = &fsl_xhci;
 
 	fsl_xhci_core_exit(ctx);
 }
 #endif
+

@@ -34,6 +34,7 @@
  */
 static int ulpi_wait(struct ulpi_viewport *ulpi_vp, u32 mask)
 {
+	my_dbg(" [36]  shl_add\n");
 	int timeout = CONFIG_USB_ULPI_TIMEOUT;
 
 	/* Wait for the bits in mask to become zero. */
@@ -54,6 +55,7 @@ static int ulpi_wait(struct ulpi_viewport *ulpi_vp, u32 mask)
  */
 static int ulpi_wakeup(struct ulpi_viewport *ulpi_vp)
 {
+	my_dbg(" [56]  shl_add\n");
 	int err;
 
 	if (readl(ulpi_vp->viewport_addr) & ULPI_SS)
@@ -75,6 +77,7 @@ static int ulpi_wakeup(struct ulpi_viewport *ulpi_vp)
  */
 static int ulpi_request(struct ulpi_viewport *ulpi_vp, u32 value)
 {
+	my_dbg(" [77]  shl_add\n");
 	int err;
 
 	err = ulpi_wakeup(ulpi_vp);
@@ -92,6 +95,7 @@ static int ulpi_request(struct ulpi_viewport *ulpi_vp, u32 value)
 
 int ulpi_write(struct ulpi_viewport *ulpi_vp, u8 *reg, u32 value)
 {
+	my_dbg(" [94]  shl_add\n");
 	u32 addr = (uintptr_t)reg & 0xFF;
 	u32 val = ULPI_RWRUN | ULPI_RWCTRL | addr << 16 | (value & 0xff);
 
@@ -101,6 +105,7 @@ int ulpi_write(struct ulpi_viewport *ulpi_vp, u8 *reg, u32 value)
 
 u32 ulpi_read(struct ulpi_viewport *ulpi_vp, u8 *reg)
 {
+	my_dbg(" [103]  shl_add\n");
 	int err;
 	u32 val = ULPI_RWRUN | ((uintptr_t)reg & 0xFF) << 16;
 
@@ -111,3 +116,4 @@ u32 ulpi_read(struct ulpi_viewport *ulpi_vp, u8 *reg)
 
 	return (readl(ulpi_vp->viewport_addr) >> 8) & 0xff;
 }
+

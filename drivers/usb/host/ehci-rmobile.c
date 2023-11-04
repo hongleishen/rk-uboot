@@ -34,6 +34,7 @@ static u32 usb_base_address[] = {
 
 int ehci_hcd_stop(int index)
 {
+	my_dbg(" [36]  shl_add\n");
 	int i;
 	u32 base;
 	struct ahbcom_pci_bridge *ahbcom_pci;
@@ -62,6 +63,7 @@ int ehci_hcd_stop(int index)
 int ehci_hcd_init(int index, enum usb_init_type init,
 	struct ehci_hccr **hccr, struct ehci_hcor **hcor)
 {
+	my_dbg(" [64]  shl_add\n");
 	u32 base;
 	u32 phys_base;
 	struct rmobile_ehci_reg *rehci;
@@ -127,3 +129,4 @@ int ehci_hcd_init(int index, enum usb_init_type init,
 
 	return 0;
 }
+

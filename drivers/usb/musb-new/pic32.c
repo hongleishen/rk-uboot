@@ -52,11 +52,13 @@ struct pic32_musb_data {
 
 static void pic32_musb_disable(struct musb *musb)
 {
+	my_dbg(" [54]  shl_add\n");
 	/* no way to shut the controller */
 }
 
 static int pic32_musb_enable(struct musb *musb)
 {
+	my_dbg(" [59]  shl_add\n");
 	/* soft reset by NRSTx */
 	musb_writeb(musb->mregs, MUSB_SOFTRST, MUSB_SOFTRST_NRSTX);
 	/* set mode */
@@ -67,6 +69,7 @@ static int pic32_musb_enable(struct musb *musb)
 
 static irqreturn_t pic32_interrupt(int irq, void *hci)
 {
+	my_dbg(" [69]  shl_add\n");
 	struct musb  *musb = hci;
 	irqreturn_t ret = IRQ_NONE;
 	u32 epintr, usbintr;
@@ -99,6 +102,7 @@ static irqreturn_t pic32_interrupt(int irq, void *hci)
 
 static int pic32_musb_set_mode(struct musb *musb, u8 mode)
 {
+	my_dbg(" [101]  shl_add\n");
 	struct device *dev = musb->controller;
 	struct pic32_musb_data *pdata = to_pic32_musb_data(dev);
 
@@ -124,6 +128,7 @@ static int pic32_musb_set_mode(struct musb *musb, u8 mode)
 
 static int pic32_musb_init(struct musb *musb)
 {
+	my_dbg(" [126]  shl_add\n");
 	struct pic32_musb_data *pdata = to_pic32_musb_data(musb->controller);
 	u32 ctrl, hwvers;
 	u8 power;
@@ -158,6 +163,7 @@ static int pic32_musb_init(struct musb *musb)
 /* PIC32 supports only 32bit read operation */
 void musb_read_fifo(struct musb_hw_ep *hw_ep, u16 len, u8 *dst)
 {
+	my_dbg(" [160]  shl_add\n");
 	void __iomem *fifo = hw_ep->fifo;
 	u32 val, rem = len % 4;
 
@@ -214,6 +220,7 @@ static struct musb_hdrc_platform_data pic32_musb_plat = {
 
 static int musb_usb_probe(struct udevice *dev)
 {
+	my_dbg(" [216]  shl_add\n");
 	struct usb_bus_priv *priv = dev_get_uclass_priv(dev);
 	struct pic32_musb_data *pdata = dev_get_priv(dev);
 	struct musb_host_data *mdata = &pdata->mdata;
@@ -262,6 +269,7 @@ static int musb_usb_probe(struct udevice *dev)
 
 static int musb_usb_remove(struct udevice *dev)
 {
+	my_dbg(" [264]  shl_add\n");
 	struct pic32_musb_data *pdata = dev_get_priv(dev);
 
 	musb_stop(pdata->mdata.host);
@@ -286,3 +294,4 @@ U_BOOT_DRIVER(usb_musb) = {
 	.platdata_auto_alloc_size = sizeof(struct usb_platdata),
 	.priv_auto_alloc_size = sizeof(struct pic32_musb_data),
 };
+
