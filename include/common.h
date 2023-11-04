@@ -48,6 +48,17 @@ typedef volatile unsigned char	vu_char;
 
 #include <log.h>
 
+#define DEBUG_SHL
+#ifdef DEBUG_SHL
+#define my_dbg(format, ...) printf("[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define n_my_dbg(format, ...) printf("\n[dbg: %s, %d ]" format, __func__, __LINE__, ##__VA_ARGS__)
+#else
+#define my_dbg(format, ...)
+#define n_my_dbg(format, ...)
+#endif
+
+
+
 #if (__STDC_VERSION__ >= 201112L) || defined(__cplusplus)
 # undef static_assert
 # define static_assert _Static_assert
