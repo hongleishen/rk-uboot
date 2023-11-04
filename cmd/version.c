@@ -41,7 +41,7 @@ U_BOOT_CMD(
 
 static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
-    printf("hello shl 1029 2117=====\n");
+    printf("hello shl 1104=====\n");
 	debug("this is debug ....\n");
     return 0;
 }
