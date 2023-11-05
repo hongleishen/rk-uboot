@@ -19,6 +19,7 @@
 static int ums_read_sector(struct ums *ums_dev,
 			   ulong start, lbaint_t blkcnt, void *buf)
 {
+	my_dbg(" [21]  shl_add\n");
 	struct blk_desc *block_dev = &ums_dev->block_dev;
 	lbaint_t blkstart = start + ums_dev->start_sector;
 
@@ -28,6 +29,7 @@ static int ums_read_sector(struct ums *ums_dev,
 static int ums_write_sector(struct ums *ums_dev,
 			    ulong start, lbaint_t blkcnt, const void *buf)
 {
+	my_dbg(" [30]  shl_add\n");
 	struct blk_desc *block_dev = &ums_dev->block_dev;
 	lbaint_t blkstart = start + ums_dev->start_sector;
 
@@ -39,6 +41,7 @@ static int ums_count;
 
 static void ums_fini(void)
 {
+	my_dbg(" [41]  shl_add\n");
 	int i;
 
 	for (i = 0; i < ums_count; i++)
@@ -52,6 +55,7 @@ static void ums_fini(void)
 
 static int ums_init(const char *devtype, const char *devnums_part_str)
 {
+	my_dbg(" [54]  shl_add\n");
 	char *s, *t, *devnum_part_str, *name;
 	struct blk_desc *block_dev;
 	disk_partition_t info;
@@ -136,6 +140,7 @@ cleanup:
 static int do_usb_mass_storage(cmd_tbl_t *cmdtp, int flag,
 			       int argc, char * const argv[])
 {
+	my_dbg(" [138]  shl_add\n");
 	const char *usb_controller;
 	const char *devtype;
 	const char *devnum;
@@ -244,3 +249,4 @@ U_BOOT_CMD(ums, 4, 1, do_usb_mass_storage,
 	"<USB_controller> [<devtype>] <dev[:part]>  e.g. ums 0 mmc 0\n"
 	"    devtype defaults to mmc"
 );
+
