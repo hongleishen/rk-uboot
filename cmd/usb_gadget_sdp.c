@@ -14,6 +14,7 @@
 
 static int do_sdp(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+	my_dbg(" [16]  shl_add\n");
 	int ret = CMD_RET_FAILURE;
 
 	if (argc < 2)
@@ -48,3 +49,4 @@ U_BOOT_CMD(sdp, 2, 1, do_sdp,
 	"<USB_controller>\n"
 	"  - serial downloader protocol via <USB_controller>\n"
 );
+

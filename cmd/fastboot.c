@@ -17,6 +17,7 @@
 
 static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 {
+	my_dbg(" [19]  shl_add\n");
 #ifdef CONFIG_USB_FUNCTION_FASTBOOT
 	int controller_index;
 	char *usb_controller;
@@ -102,3 +103,4 @@ U_BOOT_CMD(
 	"   usb: specify <USB_controller>\n"
 	"   udp: requires ip_addr set and ethernet initialized\n"
 );
+

@@ -32,6 +32,7 @@ static int __maybe_unused usb_ether_curr_dev = -1; /* current ethernet device */
 /* some display routines (info command) */
 static char *usb_get_class_desc(unsigned char dclass)
 {
+	my_dbg(" [34]  shl_add\n");
 	switch (dclass) {
 	case USB_CLASS_PER_INTERFACE:
 		return "See Interface";
@@ -59,6 +60,7 @@ static char *usb_get_class_desc(unsigned char dclass)
 static void usb_display_class_sub(unsigned char dclass, unsigned char subclass,
 				  unsigned char proto)
 {
+	my_dbg(" [61]  shl_add\n");
 	switch (dclass) {
 	case USB_CLASS_PER_INTERFACE:
 		printf("See Interface");
@@ -140,6 +142,7 @@ static void usb_display_class_sub(unsigned char dclass, unsigned char subclass,
 
 static void usb_display_string(struct usb_device *dev, int index)
 {
+	my_dbg(" [142]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(char, buffer, 256);
 
 	if (index != 0) {
@@ -150,6 +153,7 @@ static void usb_display_string(struct usb_device *dev, int index)
 
 static void usb_display_desc(struct usb_device *dev)
 {
+	my_dbg(" [152]  shl_add\n");
 	uint packet_size = dev->descriptor.bMaxPacketSize0;
 
 	if (dev->descriptor.bDescriptorType == USB_DT_DEVICE) {
@@ -188,6 +192,7 @@ static void usb_display_desc(struct usb_device *dev)
 static void usb_display_conf_desc(struct usb_config_descriptor *config,
 				  struct usb_device *dev)
 {
+	my_dbg(" [190]  shl_add\n");
 	printf("   Configuration: %d\n", config->bConfigurationValue);
 	printf("   - Interfaces: %d %s%s%dmA\n", config->bNumInterfaces,
 	       (config->bmAttributes & 0x40) ? "Self Powered " : "Bus Powered ",
@@ -203,6 +208,7 @@ static void usb_display_conf_desc(struct usb_config_descriptor *config,
 static void usb_display_if_desc(struct usb_interface_descriptor *ifdesc,
 				struct usb_device *dev)
 {
+	my_dbg(" [205]  shl_add\n");
 	printf("     Interface: %d\n", ifdesc->bInterfaceNumber);
 	printf("     - Alternate Setting %d, Endpoints: %d\n",
 		ifdesc->bAlternateSetting, ifdesc->bNumEndpoints);
@@ -219,6 +225,7 @@ static void usb_display_if_desc(struct usb_interface_descriptor *ifdesc,
 
 static void usb_display_ep_desc(struct usb_endpoint_descriptor *epdesc)
 {
+	my_dbg(" [221]  shl_add\n");
 	printf("     - Endpoint %d %s ", epdesc->bEndpointAddress & 0xf,
 		(epdesc->bEndpointAddress & 0x80) ? "In" : "Out");
 	switch ((epdesc->bmAttributes & 0x03)) {
@@ -244,6 +251,7 @@ static void usb_display_ep_desc(struct usb_endpoint_descriptor *epdesc)
 /* main routine to diasplay the configs, interfaces and endpoints */
 static void usb_display_config(struct usb_device *dev)
 {
+	my_dbg(" [246]  shl_add\n");
 	struct usb_config *config;
 	struct usb_interface *ifdesc;
 	struct usb_endpoint_descriptor *epdesc;
@@ -269,6 +277,7 @@ static void usb_display_config(struct usb_device *dev)
  */
 static struct usb_device *usb_find_device(int devnum)
 {
+	my_dbg(" [271]  shl_add\n");
 #ifdef CONFIG_DM_USB
 	struct usb_device *udev;
 	struct udevice *hub;
@@ -319,6 +328,7 @@ static struct usb_device *usb_find_device(int devnum)
 
 static inline char *portspeed(int speed)
 {
+	my_dbg(" [321]  shl_add\n");
 	char *speed_str;
 
 	switch (speed) {
@@ -342,6 +352,7 @@ static inline char *portspeed(int speed)
 /* shows the device tree recursively */
 static void usb_show_tree_graph(struct usb_device *dev, char *pre)
 {
+	my_dbg(" [344]  shl_add\n");
 	int index;
 	int has_child, last_child;
 
@@ -449,6 +460,7 @@ static void usb_show_tree_graph(struct usb_device *dev, char *pre)
 /* main routine for the tree command */
 static void usb_show_subtree(struct usb_device *dev)
 {
+	my_dbg(" [451]  shl_add\n");
 	char preamble[32];
 
 	memset(preamble, '\0', sizeof(preamble));
@@ -460,6 +472,7 @@ typedef void (*usb_dev_func_t)(struct usb_device *udev);
 
 static void usb_for_each_root_dev(usb_dev_func_t func)
 {
+	my_dbg(" [462]  shl_add\n");
 	struct udevice *bus;
 
 	for (uclass_find_first_device(UCLASS_USB, &bus);
@@ -482,6 +495,7 @@ static void usb_for_each_root_dev(usb_dev_func_t func)
 
 void usb_show_tree(void)
 {
+	my_dbg(" [484]  shl_add\n");
 #ifdef CONFIG_DM_USB
 	usb_for_each_root_dev(usb_show_subtree);
 #else
@@ -500,6 +514,7 @@ void usb_show_tree(void)
 
 static int usb_test(struct usb_device *dev, int port, char* arg)
 {
+	my_dbg(" [502]  shl_add\n");
 	int mode;
 
 	if (port > dev->maxchild) {
@@ -565,12 +580,14 @@ static int usb_test(struct usb_device *dev, int port, char* arg)
 #ifdef CONFIG_USB_STORAGE
 static int do_usbboot(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+	my_dbg(" [567]  shl_add\n");
 	return common_diskboot(cmdtp, "usb", argc, argv);
 }
 #endif /* CONFIG_USB_STORAGE */
 
 static int do_usb_stop_keyboard(int force)
 {
+	my_dbg(" [573]  shl_add\n");
 #if !defined CONFIG_DM_USB && defined CONFIG_USB_KEYBOARD
 	if (usb_kbd_deregister(force) != 0) {
 		printf("USB not stopped: usbkbd still using USB\n");
@@ -582,6 +599,7 @@ static int do_usb_stop_keyboard(int force)
 
 static void do_usb_start(void)
 {
+	my_dbg(" [584]  shl_add\n");
 	bootstage_mark_name(BOOTSTAGE_ID_USB_START, "usb_start");
 
 	if (usb_init() < 0)
@@ -612,6 +630,7 @@ static void do_usb_start(void)
 #ifdef CONFIG_DM_USB
 static void usb_show_info(struct usb_device *udev)
 {
+	my_dbg(" [614]  shl_add\n");
 	struct udevice *child;
 
 	usb_display_desc(udev);
@@ -634,6 +653,7 @@ static void usb_show_info(struct usb_device *udev)
  */
 static int do_usb(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
+	my_dbg(" [636]  shl_add\n");
 	struct usb_device *udev = NULL;
 	int i;
 	extern char usb_started;
@@ -762,3 +782,4 @@ U_BOOT_CMD(
 	"loadAddr dev:part"
 );
 #endif /* CONFIG_USB_STORAGE */
+
