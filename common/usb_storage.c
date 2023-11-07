@@ -128,6 +128,7 @@ void uhci_show_temp_int_td(void);
 
 static void usb_show_progress(void)
 {
+	my_dbg(" [130]  shl_add\n");
 	debug(".");
 }
 
@@ -137,6 +138,7 @@ static void usb_show_progress(void)
  */
 int usb_stor_info(void)
 {
+	my_dbg(" [139]  shl_add\n");
 	int count = 0;
 #ifdef CONFIG_BLK
 	struct udevice *dev;
@@ -171,6 +173,7 @@ int usb_stor_info(void)
 
 static unsigned int usb_get_max_lun(struct us_data *us)
 {
+	my_dbg(" [173]  shl_add\n");
 	int len;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, result, 1);
 	len = usb_control_msg(us->pusb_dev,
@@ -186,6 +189,7 @@ static unsigned int usb_get_max_lun(struct us_data *us)
 
 static int usb_stor_probe_device(struct usb_device *udev)
 {
+	my_dbg(" [188]  shl_add\n");
 	int lun, max_lun;
 
 #ifdef CONFIG_BLK
@@ -290,6 +294,7 @@ static int usb_stor_probe_device(struct usb_device *udev)
 
 void usb_stor_reset(void)
 {
+	my_dbg(" [292]  shl_add\n");
 	usb_max_devs = 0;
 }
 
@@ -300,6 +305,7 @@ void usb_stor_reset(void)
  */
 int usb_stor_scan(int mode)
 {
+	my_dbg(" [302]  shl_add\n");
 	if (mode == 1)
 		printf("       scanning usb for storage devices... ");
 
@@ -328,6 +334,7 @@ int usb_stor_scan(int mode)
 
 static int usb_stor_irq(struct usb_device *dev)
 {
+	my_dbg(" [330]  shl_add\n");
 	struct us_data *us;
 	us = (struct us_data *)dev->privptr;
 
@@ -341,6 +348,7 @@ static int usb_stor_irq(struct usb_device *dev)
 
 static void usb_show_srb(struct scsi_cmd *pccb)
 {
+	my_dbg(" [343]  shl_add\n");
 	int i;
 	printf("SRB: len %d datalen 0x%lX\n ", pccb->cmdlen, pccb->datalen);
 	for (i = 0; i < 12; i++)
@@ -350,6 +358,7 @@ static void usb_show_srb(struct scsi_cmd *pccb)
 
 static void display_int_status(unsigned long tmp)
 {
+	my_dbg(" [352]  shl_add\n");
 	printf("Status: %s %s %s %s %s %s %s\n",
 		(tmp & USB_ST_ACTIVE) ? "Active" : "",
 		(tmp & USB_ST_STALLED) ? "Stalled" : "",
@@ -366,6 +375,7 @@ static void display_int_status(unsigned long tmp)
 
 static int us_one_transfer(struct us_data *us, int pipe, char *buf, int length)
 {
+	my_dbg(" [368]  shl_add\n");
 	int max_size;
 	int this_xfer;
 	int result;
@@ -449,6 +459,7 @@ static int us_one_transfer(struct us_data *us, int pipe, char *buf, int length)
 
 static int usb_stor_BBB_reset(struct us_data *us)
 {
+	my_dbg(" [451]  shl_add\n");
 	int result;
 	unsigned int pipe;
 
@@ -503,6 +514,7 @@ static int usb_stor_BBB_reset(struct us_data *us)
  */
 static int usb_stor_CB_reset(struct us_data *us)
 {
+	my_dbg(" [505]  shl_add\n");
 	unsigned char cmd[12];
 	int result;
 
@@ -533,6 +545,7 @@ static int usb_stor_CB_reset(struct us_data *us)
  */
 static int usb_stor_BBB_comdat(struct scsi_cmd *srb, struct us_data *us)
 {
+	my_dbg(" [535]  shl_add\n");
 	int result;
 	int actlen;
 	int dir_in;
@@ -582,6 +595,7 @@ static int usb_stor_BBB_comdat(struct scsi_cmd *srb, struct us_data *us)
  */
 static int usb_stor_CB_comdat(struct scsi_cmd *srb, struct us_data *us)
 {
+	my_dbg(" [584]  shl_add\n");
 	int result = 0;
 	int dir_in, retry;
 	unsigned int pipe;
@@ -651,6 +665,7 @@ static int usb_stor_CB_comdat(struct scsi_cmd *srb, struct us_data *us)
 
 static int usb_stor_CBI_get_status(struct scsi_cmd *srb, struct us_data *us)
 {
+	my_dbg(" [653]  shl_add\n");
 	int timeout;
 
 	us->ip_wanted = 1;
@@ -698,6 +713,7 @@ static int usb_stor_CBI_get_status(struct scsi_cmd *srb, struct us_data *us)
 /* clear a stall on an endpoint - special for BBB devices */
 static int usb_stor_BBB_clear_endpt_stall(struct us_data *us, __u8 endpt)
 {
+	my_dbg(" [700]  shl_add\n");
 	/* ENDPOINT_HALT = 0, so set value to 0 */
 	return usb_control_msg(us->pusb_dev, usb_sndctrlpipe(us->pusb_dev, 0),
 			       USB_REQ_CLEAR_FEATURE, USB_RECIP_ENDPOINT, 0,
@@ -706,6 +722,7 @@ static int usb_stor_BBB_clear_endpt_stall(struct us_data *us, __u8 endpt)
 
 static int usb_stor_BBB_transport(struct scsi_cmd *srb, struct us_data *us)
 {
+	my_dbg(" [708]  shl_add\n");
 	int result, retry;
 	int dir_in;
 	int actlen, data_actlen;
@@ -829,6 +846,7 @@ again:
 
 static int usb_stor_CB_transport(struct scsi_cmd *srb, struct us_data *us)
 {
+	my_dbg(" [831]  shl_add\n");
 	int result, status;
 	struct scsi_cmd *psrb;
 	struct scsi_cmd reqsrb;
@@ -942,6 +960,7 @@ do_retry:
 static void usb_stor_set_max_xfer_blk(struct usb_device *udev,
 				      struct us_data *us)
 {
+	my_dbg(" [944]  shl_add\n");
 	/*
 	 * Limit the total size of a transfer to 120 KB.
 	 *
@@ -975,6 +994,7 @@ static void usb_stor_set_max_xfer_blk(struct usb_device *udev,
 
 static int usb_inquiry(struct scsi_cmd *srb, struct us_data *ss)
 {
+	my_dbg(" [977]  shl_add\n");
 	int retry, i;
 	retry = 5;
 	do {
@@ -999,6 +1019,7 @@ static int usb_inquiry(struct scsi_cmd *srb, struct us_data *ss)
 
 static int usb_request_sense(struct scsi_cmd *srb, struct us_data *ss)
 {
+	my_dbg(" [1001]  shl_add\n");
 	char *ptr;
 
 	ptr = (char *)srb->pdata;
@@ -1019,6 +1040,7 @@ static int usb_request_sense(struct scsi_cmd *srb, struct us_data *ss)
 
 static int usb_test_unit_ready(struct scsi_cmd *srb, struct us_data *ss)
 {
+	my_dbg(" [1021]  shl_add\n");
 	int retries = 10;
 
 	do {
@@ -1050,6 +1072,7 @@ static int usb_test_unit_ready(struct scsi_cmd *srb, struct us_data *ss)
 
 static int usb_read_capacity(struct scsi_cmd *srb, struct us_data *ss)
 {
+	my_dbg(" [1052]  shl_add\n");
 	int retry;
 	/* XXX retries */
 	retry = 3;
@@ -1069,6 +1092,7 @@ static int usb_read_capacity(struct scsi_cmd *srb, struct us_data *ss)
 static int usb_read_10(struct scsi_cmd *srb, struct us_data *ss,
 		       unsigned long start, unsigned short blocks)
 {
+	my_dbg(" [1071]  shl_add\n");
 	memset(&srb->cmd[0], 0, 12);
 	srb->cmd[0] = SCSI_READ10;
 	srb->cmd[1] = srb->lun << 5;
@@ -1086,6 +1110,7 @@ static int usb_read_10(struct scsi_cmd *srb, struct us_data *ss,
 static int usb_write_10(struct scsi_cmd *srb, struct us_data *ss,
 			unsigned long start, unsigned short blocks)
 {
+	my_dbg(" [1088]  shl_add\n");
 	memset(&srb->cmd[0], 0, 12);
 	srb->cmd[0] = SCSI_WRITE10;
 	srb->cmd[1] = srb->lun << 5;
@@ -1132,6 +1157,7 @@ static unsigned long usb_stor_read(struct blk_desc *block_dev, lbaint_t blknr,
 				   lbaint_t blkcnt, void *buffer)
 #endif
 {
+	my_dbg(" [1134]  shl_add\n");
 	lbaint_t start, blks;
 	uintptr_t buf_addr;
 	unsigned short smallblks;
@@ -1214,6 +1240,7 @@ static unsigned long usb_stor_write(struct blk_desc *block_dev, lbaint_t blknr,
 				    lbaint_t blkcnt, const void *buffer)
 #endif
 {
+	my_dbg(" [1216]  shl_add\n");
 	lbaint_t start, blks;
 	uintptr_t buf_addr;
 	unsigned short smallblks;
@@ -1296,6 +1323,7 @@ retry_it:
 int usb_storage_probe(struct usb_device *dev, unsigned int ifnum,
 		      struct us_data *ss)
 {
+	my_dbg(" [1298]  shl_add\n");
 	struct usb_interface *iface;
 	int i;
 	struct usb_endpoint_descriptor *ep_desc;
@@ -1418,6 +1446,7 @@ int usb_storage_probe(struct usb_device *dev, unsigned int ifnum,
 int usb_stor_get_info(struct usb_device *dev, struct us_data *ss,
 		      struct blk_desc *dev_desc)
 {
+	my_dbg(" [1420]  shl_add\n");
 	unsigned char perq, modi;
 	ALLOC_CACHE_ALIGN_BUFFER(u32, cap, 2);
 	ALLOC_CACHE_ALIGN_BUFFER(u8, usb_stor_buf, 36);
@@ -1505,6 +1534,7 @@ int usb_stor_get_info(struct usb_device *dev, struct us_data *ss,
 
 static int usb_mass_storage_probe(struct udevice *dev)
 {
+	my_dbg(" [1507]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(dev);
 	int ret;
 
@@ -1565,3 +1595,4 @@ U_BOOT_LEGACY_BLK(usb) = {
 	.desc		= usb_dev_desc,
 };
 #endif
+

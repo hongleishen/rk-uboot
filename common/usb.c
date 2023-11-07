@@ -56,6 +56,7 @@ static int dev_index;
  */
 int usb_init(void)
 {
+	my_dbg(" [58]  shl_add\n");
 	void *ctrl;
 	struct usb_device *dev;
 	int i, start_index = 0;
@@ -130,6 +131,7 @@ int usb_init(void)
  */
 int usb_stop(void)
 {
+	my_dbg(" [132]  shl_add\n");
 	int i;
 
 	if (usb_started) {
@@ -151,6 +153,7 @@ int usb_stop(void)
  */
 int usb_detect_change(void)
 {
+	my_dbg(" [153]  shl_add\n");
 	int i, j;
 	int change = 0;
 
@@ -179,6 +182,7 @@ int usb_detect_change(void)
  */
 int usb_disable_asynch(int disable)
 {
+	my_dbg(" [181]  shl_add\n");
 	int old_value = asynch_allowed;
 
 	asynch_allowed = !disable;
@@ -200,6 +204,7 @@ int usb_disable_asynch(int disable)
 int usb_int_msg(struct usb_device *dev, unsigned long pipe,
 		void *buffer, int transfer_len, int interval, bool nonblock)
 {
+	my_dbg(" [202]  shl_add\n");
 	return submit_int_msg(dev, pipe, buffer, transfer_len, interval,
 			      nonblock);
 }
@@ -218,6 +223,7 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
 			unsigned short value, unsigned short index,
 			void *data, unsigned short size, int timeout)
 {
+	my_dbg(" [220]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct devrequest, setup_packet, 1);
 	int err;
 
@@ -271,6 +277,7 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
 int usb_bulk_msg(struct usb_device *dev, unsigned int pipe,
 			void *data, int len, int *actual_length, int timeout)
 {
+	my_dbg(" [273]  shl_add\n");
 	if (len < 0)
 		return -EINVAL;
 	dev->status = USB_ST_NOT_PROC; /*not yet processed */
@@ -299,6 +306,7 @@ int usb_bulk_msg(struct usb_device *dev, unsigned int pipe,
  */
 int usb_maxpacket(struct usb_device *dev, unsigned long pipe)
 {
+	my_dbg(" [301]  shl_add\n");
 	/* direction is out -> use emaxpacket out */
 	if ((pipe & USB_DIR_IN) == 0)
 		return dev->epmaxpacketout[((pipe>>15) & 0xf)];
@@ -320,6 +328,7 @@ int usb_maxpacket(struct usb_device *dev, unsigned long pipe)
 static void noinline
 usb_set_maxpacket_ep(struct usb_device *dev, int if_idx, int ep_idx)
 {
+	my_dbg(" [322]  shl_add\n");
 	int b;
 	struct usb_endpoint_descriptor *ep;
 	u16 ep_wMaxPacketSize;
@@ -360,6 +369,7 @@ usb_set_maxpacket_ep(struct usb_device *dev, int if_idx, int ep_idx)
  */
 static int usb_set_maxpacket(struct usb_device *dev)
 {
+	my_dbg(" [362]  shl_add\n");
 	int i, ii;
 
 	for (i = 0; i < dev->config.desc.bNumInterfaces; i++)
@@ -377,6 +387,7 @@ static int usb_set_maxpacket(struct usb_device *dev)
 static int usb_parse_config(struct usb_device *dev,
 			unsigned char *buffer, int cfgno)
 {
+	my_dbg(" [379]  shl_add\n");
 	struct usb_descriptor_header *head;
 	int index, ifno, epno, curr_if_num;
 	u16 ep_wMaxPacketSize;
@@ -544,6 +555,7 @@ static int usb_parse_config(struct usb_device *dev,
  */
 int usb_clear_halt(struct usb_device *dev, int pipe)
 {
+	my_dbg(" [546]  shl_add\n");
 	int result;
 	int endp = usb_pipeendpoint(pipe)|(usb_pipein(pipe)<<7);
 
@@ -574,6 +586,7 @@ int usb_clear_halt(struct usb_device *dev, int pipe)
 static int usb_get_descriptor(struct usb_device *dev, unsigned char type,
 			unsigned char index, void *buf, int size)
 {
+	my_dbg(" [576]  shl_add\n");
 	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
 			       USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
 			       (type << 8) + index, 0, buf, size,
@@ -585,6 +598,7 @@ static int usb_get_descriptor(struct usb_device *dev, unsigned char type,
  */
 int usb_get_configuration_len(struct usb_device *dev, int cfgno)
 {
+	my_dbg(" [587]  shl_add\n");
 	int result;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buffer, 9);
 	struct usb_config_descriptor *config;
@@ -609,6 +623,7 @@ int usb_get_configuration_len(struct usb_device *dev, int cfgno)
 int usb_get_configuration_no(struct usb_device *dev, int cfgno,
 			     unsigned char *buffer, int length)
 {
+	my_dbg(" [611]  shl_add\n");
 	int result;
 	struct usb_config_descriptor *config;
 
@@ -627,6 +642,7 @@ int usb_get_configuration_no(struct usb_device *dev, int cfgno,
  */
 static int usb_set_address(struct usb_device *dev)
 {
+	my_dbg(" [629]  shl_add\n");
 	debug("set address %d\n", dev->devnum);
 
 	return usb_control_msg(dev, usb_snddefctrl(dev), USB_REQ_SET_ADDRESS,
@@ -638,6 +654,7 @@ static int usb_set_address(struct usb_device *dev)
  */
 int usb_set_interface(struct usb_device *dev, int interface, int alternate)
 {
+	my_dbg(" [640]  shl_add\n");
 	struct usb_interface *if_face = NULL;
 	int ret, i;
 
@@ -676,6 +693,7 @@ int usb_set_interface(struct usb_device *dev, int interface, int alternate)
  */
 static int usb_set_configuration(struct usb_device *dev, int configuration)
 {
+	my_dbg(" [678]  shl_add\n");
 	int res;
 	debug("set configuration %d\n", configuration);
 	/* set setup command */
@@ -696,6 +714,7 @@ static int usb_set_configuration(struct usb_device *dev, int configuration)
  */
 int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol)
 {
+	my_dbg(" [698]  shl_add\n");
 	return usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 		USB_REQ_SET_PROTOCOL, USB_TYPE_CLASS | USB_RECIP_INTERFACE,
 		protocol, ifnum, NULL, 0, USB_CNTL_TIMEOUT);
@@ -706,6 +725,7 @@ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol)
  */
 int usb_set_idle(struct usb_device *dev, int ifnum, int duration, int report_id)
 {
+	my_dbg(" [708]  shl_add\n");
 	return usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 		USB_REQ_SET_IDLE, USB_TYPE_CLASS | USB_RECIP_INTERFACE,
 		(duration << 8) | report_id, ifnum, NULL, 0, USB_CNTL_TIMEOUT);
@@ -717,6 +737,7 @@ int usb_set_idle(struct usb_device *dev, int ifnum, int duration, int report_id)
 int usb_get_report(struct usb_device *dev, int ifnum, unsigned char type,
 		   unsigned char id, void *buf, int size)
 {
+	my_dbg(" [719]  shl_add\n");
 	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
 			USB_REQ_GET_REPORT,
 			USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
@@ -729,6 +750,7 @@ int usb_get_report(struct usb_device *dev, int ifnum, unsigned char type,
 int usb_get_class_descriptor(struct usb_device *dev, int ifnum,
 		unsigned char type, unsigned char id, void *buf, int size)
 {
+	my_dbg(" [731]  shl_add\n");
 	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
 		USB_REQ_GET_DESCRIPTOR, USB_RECIP_INTERFACE | USB_DIR_IN,
 		(type << 8) + id, ifnum, buf, size, USB_CNTL_TIMEOUT);
@@ -740,6 +762,7 @@ int usb_get_class_descriptor(struct usb_device *dev, int ifnum,
 static int usb_get_string(struct usb_device *dev, unsigned short langid,
 		   unsigned char index, void *buf, int size)
 {
+	my_dbg(" [742]  shl_add\n");
 	int i;
 	int result;
 
@@ -760,6 +783,7 @@ static int usb_get_string(struct usb_device *dev, unsigned short langid,
 
 static void usb_try_string_workarounds(unsigned char *buf, int *length)
 {
+	my_dbg(" [762]  shl_add\n");
 	int newlength, oldlength = *length;
 
 	for (newlength = 2; newlength + 1 < oldlength; newlength += 2)
@@ -776,6 +800,7 @@ static void usb_try_string_workarounds(unsigned char *buf, int *length)
 static int usb_string_sub(struct usb_device *dev, unsigned int langid,
 		unsigned int index, unsigned char *buf)
 {
+	my_dbg(" [778]  shl_add\n");
 	int rc;
 
 	/* Try to read the string descriptor by asking for the maximum
@@ -815,6 +840,7 @@ static int usb_string_sub(struct usb_device *dev, unsigned int langid,
  */
 int usb_string(struct usb_device *dev, int index, char *buf, size_t size)
 {
+	my_dbg(" [817]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, mybuf, USB_BUFSIZ);
 	unsigned char *tbuf;
 	int err;
@@ -876,6 +902,7 @@ int usb_string(struct usb_device *dev, int index, char *buf, size_t size)
  */
 struct usb_device *usb_get_dev_index(int index)
 {
+	my_dbg(" [878]  shl_add\n");
 	if (usb_dev[index].devnum == -1)
 		return NULL;
 	else
@@ -884,6 +911,7 @@ struct usb_device *usb_get_dev_index(int index)
 
 int usb_alloc_new_device(struct udevice *controller, struct usb_device **devp)
 {
+	my_dbg(" [886]  shl_add\n");
 	int i;
 	debug("New Device %d\n", dev_index);
 	if (dev_index == USB_MAX_DEVICE) {
@@ -910,6 +938,7 @@ int usb_alloc_new_device(struct udevice *controller, struct usb_device **devp)
  */
 void usb_free_device(struct udevice *controller)
 {
+	my_dbg(" [912]  shl_add\n");
 	dev_index--;
 	debug("Freeing device node: %d\n", dev_index);
 	memset(&usb_dev[dev_index], 0, sizeof(struct usb_device));
@@ -924,12 +953,14 @@ void usb_free_device(struct udevice *controller)
  */
 __weak int usb_alloc_device(struct usb_device *udev)
 {
+	my_dbg(" [926]  shl_add\n");
 	return 0;
 }
 #endif /* !CONFIG_IS_ENABLED(DM_USB) */
 
 static int usb_hub_port_reset(struct usb_device *dev, struct usb_device *hub)
 {
+	my_dbg(" [932]  shl_add\n");
 	if (!hub)
 		usb_reset_root_port(dev);
 
@@ -938,6 +969,7 @@ static int usb_hub_port_reset(struct usb_device *dev, struct usb_device *hub)
 
 static int get_descriptor_len(struct usb_device *dev, int len, int expect_len)
 {
+	my_dbg(" [940]  shl_add\n");
 	__maybe_unused struct usb_device_descriptor *desc;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, tmpbuf, USB_BUFSIZ);
 	int err;
@@ -963,6 +995,7 @@ static int get_descriptor_len(struct usb_device *dev, int len, int expect_len)
 
 static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
 {
+	my_dbg(" [965]  shl_add\n");
 	/*
 	 * This is a Windows scheme of initialization sequence, with double
 	 * reset of the device (Linux uses the same sequence)
@@ -1039,6 +1072,7 @@ static int usb_setup_descriptor(struct usb_device *dev, bool do_read)
 static int usb_prepare_device(struct usb_device *dev, int addr, bool do_read,
 			      struct usb_device *parent)
 {
+	my_dbg(" [1041]  shl_add\n");
 	int err;
 
 	/*
@@ -1087,6 +1121,7 @@ static int usb_prepare_device(struct usb_device *dev, int addr, bool do_read,
 
 int usb_select_config(struct usb_device *dev)
 {
+	my_dbg(" [1089]  shl_add\n");
 	unsigned char *tmpbuf = NULL;
 	int err;
 
@@ -1171,6 +1206,7 @@ int usb_select_config(struct usb_device *dev)
 int usb_setup_device(struct usb_device *dev, bool do_read,
 		     struct usb_device *parent)
 {
+	my_dbg(" [1173]  shl_add\n");
 	int addr;
 	int ret;
 
@@ -1196,6 +1232,7 @@ int usb_setup_device(struct usb_device *dev, bool do_read,
  */
 int usb_new_device(struct usb_device *dev)
 {
+	my_dbg(" [1198]  shl_add\n");
 	bool do_read = true;
 	int err;
 
@@ -1224,17 +1261,20 @@ int usb_new_device(struct usb_device *dev)
 __weak
 int board_usb_init(int index, enum usb_init_type init)
 {
+	my_dbg(" [1226]  shl_add\n");
 	return 0;
 }
 
 __weak
 int board_usb_cleanup(int index, enum usb_init_type init)
 {
+	my_dbg(" [1232]  shl_add\n");
 	return 0;
 }
 
 bool usb_device_has_child_on_port(struct usb_device *parent, int port)
 {
+	my_dbg(" [1237]  shl_add\n");
 #if CONFIG_IS_ENABLED(DM_USB)
 	return false;
 #else
@@ -1246,6 +1286,7 @@ bool usb_device_has_child_on_port(struct usb_device *parent, int port)
 void usb_find_usb2_hub_address_port(struct usb_device *udev,
 			       uint8_t *hub_address, uint8_t *hub_port)
 {
+	my_dbg(" [1248]  shl_add\n");
 	struct udevice *parent;
 	struct usb_device *uparent, *ttdev;
 
@@ -1281,6 +1322,7 @@ void usb_find_usb2_hub_address_port(struct usb_device *udev,
 void usb_find_usb2_hub_address_port(struct usb_device *udev,
 			       uint8_t *hub_address, uint8_t *hub_port)
 {
+	my_dbg(" [1283]  shl_add\n");
 	/* Find out the nearest parent which is high speed */
 	while (udev->parent->parent != NULL)
 		if (udev->parent->speed != USB_SPEED_HIGH) {
@@ -1299,3 +1341,4 @@ void usb_find_usb2_hub_address_port(struct usb_device *udev,
 
 
 /* EOF */
+

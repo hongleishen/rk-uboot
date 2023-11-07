@@ -59,17 +59,20 @@ static LIST_HEAD(usb_scan_list);
 
 __weak void usb_hub_reset_devices(struct usb_hub_device *hub, int port)
 {
+	my_dbg(" [61]  shl_add\n");
 	return;
 }
 
 static inline bool usb_hub_is_superspeed(struct usb_device *hdev)
 {
+	my_dbg(" [66]  shl_add\n");
 	return hdev->descriptor.bDeviceProtocol == 3;
 }
 
 #if CONFIG_IS_ENABLED(DM_USB)
 bool usb_hub_is_root_hub(struct udevice *hub)
 {
+	my_dbg(" [72]  shl_add\n");
 	if (device_get_uclass_id(hub->parent) != UCLASS_USB_HUB)
 		return true;
 
@@ -78,6 +81,7 @@ bool usb_hub_is_root_hub(struct udevice *hub)
 
 static int usb_set_hub_depth(struct usb_device *dev, int depth)
 {
+	my_dbg(" [80]  shl_add\n");
 	if (depth < 0 || depth > 4)
 		return -EINVAL;
 
@@ -89,6 +93,7 @@ static int usb_set_hub_depth(struct usb_device *dev, int depth)
 
 static int usb_get_hub_descriptor(struct usb_device *dev, void *data, int size)
 {
+	my_dbg(" [91]  shl_add\n");
 	unsigned short dtype = USB_DT_HUB;
 
 	if (usb_hub_is_superspeed(dev))
@@ -101,6 +106,7 @@ static int usb_get_hub_descriptor(struct usb_device *dev, void *data, int size)
 
 static int usb_clear_port_feature(struct usb_device *dev, int port, int feature)
 {
+	my_dbg(" [103]  shl_add\n");
 	return usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 				USB_REQ_CLEAR_FEATURE, USB_RT_PORT, feature,
 				port, NULL, 0, USB_CNTL_TIMEOUT);
@@ -108,6 +114,7 @@ static int usb_clear_port_feature(struct usb_device *dev, int port, int feature)
 
 static int usb_set_port_feature(struct usb_device *dev, int port, int feature)
 {
+	my_dbg(" [110]  shl_add\n");
 	return usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 				USB_REQ_SET_FEATURE, USB_RT_PORT, feature,
 				port, NULL, 0, USB_CNTL_TIMEOUT);
@@ -115,6 +122,7 @@ static int usb_set_port_feature(struct usb_device *dev, int port, int feature)
 
 static int usb_get_hub_status(struct usb_device *dev, void *data)
 {
+	my_dbg(" [117]  shl_add\n");
 	return usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
 			USB_REQ_GET_STATUS, USB_DIR_IN | USB_RT_HUB, 0, 0,
 			data, sizeof(struct usb_hub_status), USB_CNTL_TIMEOUT);
@@ -122,6 +130,7 @@ static int usb_get_hub_status(struct usb_device *dev, void *data)
 
 int usb_get_port_status(struct usb_device *dev, int port, void *data)
 {
+	my_dbg(" [124]  shl_add\n");
 	int ret;
 
 	ret = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
@@ -161,6 +170,7 @@ int usb_get_port_status(struct usb_device *dev, int port, void *data)
 
 static void usb_hub_power_on(struct usb_hub_device *hub)
 {
+	my_dbg(" [163]  shl_add\n");
 	int i;
 	struct usb_device *dev;
 	unsigned pgood_delay = hub->desc.bPwrOn2PwrGood * 2;
@@ -218,6 +228,7 @@ static int usb_hub_index;
 
 void usb_hub_reset(void)
 {
+	my_dbg(" [220]  shl_add\n");
 	usb_hub_index = 0;
 
 	/* Zero out global hub_dev in case its re-used again */
@@ -226,6 +237,7 @@ void usb_hub_reset(void)
 
 static struct usb_hub_device *usb_hub_allocate(void)
 {
+	my_dbg(" [228]  shl_add\n");
 	if (usb_hub_index < USB_MAX_HUB)
 		return &hub_dev[usb_hub_index++];
 
@@ -238,6 +250,7 @@ static struct usb_hub_device *usb_hub_allocate(void)
 
 static inline char *portspeed(int portstatus)
 {
+	my_dbg(" [240]  shl_add\n");
 	char *speed_str;
 
 	switch (portstatus & USB_PORT_STAT_SPEED_MASK) {
@@ -271,6 +284,7 @@ static inline char *portspeed(int portstatus)
 static int usb_hub_port_reset(struct usb_device *dev, int port,
 			      unsigned short *portstat)
 {
+	my_dbg(" [273]  shl_add\n");
 	int err, tries;
 	ALLOC_CACHE_ALIGN_BUFFER(struct usb_port_status, portsts, 1);
 	unsigned short portstatus, portchange;
@@ -344,6 +358,7 @@ static int usb_hub_port_reset(struct usb_device *dev, int port,
 
 int usb_hub_port_connect_change(struct usb_device *dev, int port)
 {
+	my_dbg(" [346]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct usb_port_status, portsts, 1);
 	unsigned short portstatus;
 	int ret, speed;
@@ -432,6 +447,7 @@ int usb_hub_port_connect_change(struct usb_device *dev, int port)
 
 static int usb_scan_port(struct usb_device_scan *usb_scan)
 {
+	my_dbg(" [434]  shl_add\n");
 	ALLOC_CACHE_ALIGN_BUFFER(struct usb_port_status, portsts, 1);
 	unsigned short portstatus;
 	unsigned short portchange;
@@ -566,6 +582,7 @@ static int usb_scan_port(struct usb_device_scan *usb_scan)
 
 static int usb_device_list_scan(void)
 {
+	my_dbg(" [568]  shl_add\n");
 	struct usb_device_scan *usb_scan;
 	struct usb_device_scan *tmp;
 	static int running;
@@ -605,6 +622,7 @@ out:
 
 static struct usb_hub_device *usb_get_hub_device(struct usb_device *dev)
 {
+	my_dbg(" [607]  shl_add\n");
 	struct usb_hub_device *hub;
 
 #if !CONFIG_IS_ENABLED(DM_USB)
@@ -619,6 +637,7 @@ static struct usb_hub_device *usb_get_hub_device(struct usb_device *dev)
 
 static int usb_hub_configure(struct usb_device *dev)
 {
+	my_dbg(" [621]  shl_add\n");
 	int i, length;
 	ALLOC_CACHE_ALIGN_BUFFER(unsigned char, buffer, USB_BUFSIZ);
 	unsigned char *bitmap;
@@ -884,6 +903,7 @@ static int usb_hub_configure(struct usb_device *dev)
 
 static int usb_hub_check(struct usb_device *dev, int ifnum)
 {
+	my_dbg(" [886]  shl_add\n");
 	struct usb_interface *iface;
 	struct usb_endpoint_descriptor *ep = NULL;
 
@@ -924,6 +944,7 @@ err:
 
 int usb_hub_probe(struct usb_device *dev, int ifnum)
 {
+	my_dbg(" [926]  shl_add\n");
 	int ret;
 
 	ret = usb_hub_check(dev, ifnum);
@@ -936,6 +957,7 @@ int usb_hub_probe(struct usb_device *dev, int ifnum)
 #if CONFIG_IS_ENABLED(DM_USB)
 int usb_hub_scan(struct udevice *hub)
 {
+	my_dbg(" [938]  shl_add\n");
 	struct usb_device *udev = dev_get_parent_priv(hub);
 
 	return usb_hub_configure(udev);
@@ -943,6 +965,7 @@ int usb_hub_scan(struct udevice *hub)
 
 static int usb_hub_post_probe(struct udevice *dev)
 {
+	my_dbg(" [945]  shl_add\n");
 	debug("%s\n", __func__);
 	return usb_hub_scan(dev);
 }
@@ -981,3 +1004,4 @@ static const struct usb_device_id hub_id_table[] = {
 U_BOOT_USB_DEVICE(usb_generic_hub, hub_id_table);
 
 #endif
+
