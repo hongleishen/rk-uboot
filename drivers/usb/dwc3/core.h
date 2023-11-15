@@ -708,7 +708,7 @@ struct dwc3_scratchpad_array {
  * @lfps_filter_quirk: set if we enable LFPS filter quirk
  * @rx_detect_poll_quirk: set if we enable rx_detect to polling lfps quirk
  * @dis_u3_susphy_quirk: set if we disable usb3 suspend phy
- * @dis_u2_susphy_quirk: set if we disable usb2 suspend phy
+ * @dis_u2_susphy_quirk: set if we disable usb2 suspend phy   // 禁用 USB 2.0 的挂起（suspend）功能
  * @dis_u1u2_quirk: set if we reject transition to U1 or U2 state
  * @tx_de_emphasis_quirk: set if we enable Tx de-emphasis quirk
  * @tx_de_emphasis: Tx de-emphasis value
