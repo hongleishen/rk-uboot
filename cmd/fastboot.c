@@ -26,13 +26,15 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 	if (argc < 2)
 		return CMD_RET_USAGE;
 
-	printf("Enter fastboot...");
+	printf("Enter fastboot... shl\n");
 
 	if (!strcmp(argv[1], "udp")) {
 #ifndef CONFIG_UDP_FUNCTION_FASTBOOT
+		n_my_dbg("will UDP\n");
 		pr_err("Fastboot UDP not enabled\n");
 		return -1;
 #else
+		n_my_dbg("will fastboot udp\n");
 		return do_fastboot_udp(cmdtp, flag, argc, argv);
 #endif
 	}
@@ -41,6 +43,7 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 		return CMD_RET_USAGE;
 
 #ifndef CONFIG_USB_FUNCTION_FASTBOOT
+	n_my_dbg("\n");
 	pr_err("Fastboot USB not enabled\n");
 	return -1;
 #else
@@ -48,27 +51,35 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 	usb_controller = argv[2];
 	controller_index = simple_strtoul(usb_controller, NULL, 0);
 
+	my_dbg("will usb_gadget_initialize\n");
 	ret = usb_gadget_initialize(controller_index);
 	if (ret) {
 		pr_err("USB init failed: %d", ret);
 		return CMD_RET_FAILURE;
 	}
 
+	n_my_dbg("\n");
 	g_dnl_clear_detach();
+	n_my_dbg("\n");
 	ret = g_dnl_register("usb_dnl_fastboot");
 	if (ret)
 		return ret;
 
+	n_my_dbg("\n");
 	if (!g_dnl_board_usb_cable_connected()) {
+		n_my_dbg("\n");
 		puts("\rUSB cable not detected.\n" \
 		     "Command exit.\n");
 		ret = CMD_RET_FAILURE;
 		goto exit;
 	}
 
+
+	n_my_dbg("\n");
 	if (!sysmem_alloc_base(MEM_FASTBOOT,
 			       CONFIG_FASTBOOT_BUF_ADDR,
 			       CONFIG_FASTBOOT_BUF_SIZE)) {
+		n_my_dbg("\n");
 		printf("The fastboot memory space is unusable!\n");
 		return CMD_RET_FAILURE;
 	}

@@ -729,7 +729,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	dwc = PTR_ALIGN(mem, DWC3_ALIGN_MASK + 1);
 	dwc->mem = mem;
-
+	// 0xfcc00000 + 0xc100 = 0xfcc0 c100;
 	dwc->regs = (void *)(uintptr_t)(dwc3_dev->base +
 					DWC3_GLOBALS_REGS_START);
 
@@ -745,7 +745,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 	 */
 	hird_threshold = 12;
 
-	dwc->maximum_speed = dwc3_dev->maximum_speed;
+	dwc->maximum_speed = dwc3_dev->maximum_speed;					// USB_SPEED_HIGH
 	dwc->has_lpm_erratum = dwc3_dev->has_lpm_erratum;
 	if (dwc3_dev->lpm_nyet_threshold)
 		lpm_nyet_threshold = dwc3_dev->lpm_nyet_threshold;
@@ -754,7 +754,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 		hird_threshold = dwc3_dev->hird_threshold;
 
 	dwc->needs_fifo_resize = dwc3_dev->tx_fifo_resize;
-	dwc->dr_mode = dwc3_dev->dr_mode;
+	dwc->dr_mode = dwc3_dev->dr_mode;								// USB_DR_MODE_PERIPHERAL
 
 	dwc->disable_scramble_quirk = dwc3_dev->disable_scramble_quirk;
 	dwc->u2exit_lfps_quirk = dwc3_dev->u2exit_lfps_quirk;
@@ -765,7 +765,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 	dwc->lfps_filter_quirk = dwc3_dev->lfps_filter_quirk;
 	dwc->rx_detect_poll_quirk = dwc3_dev->rx_detect_poll_quirk;
 	dwc->dis_u3_susphy_quirk = dwc3_dev->dis_u3_susphy_quirk;
-	dwc->dis_u2_susphy_quirk = dwc3_dev->dis_u2_susphy_quirk;
+	dwc->dis_u2_susphy_quirk = dwc3_dev->dis_u2_susphy_quirk;			// 1
 	dwc->dis_u1u2_quirk = dwc3_dev->dis_u2_susphy_quirk;
 
 	dwc->tx_de_emphasis_quirk = dwc3_dev->tx_de_emphasis_quirk;
@@ -784,18 +784,20 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	dwc->hsphy_mode = dwc3_dev->hsphy_mode;
 
-	dwc->index = dwc3_dev->index;
+	dwc->index = dwc3_dev->index;										// 0
 
 	if (dwc3_dev->usb2_phyif_utmi_width)
-		dwc->usb2_phyif_utmi_width = dwc3_dev->usb2_phyif_utmi_width;
+		dwc->usb2_phyif_utmi_width = dwc3_dev->usb2_phyif_utmi_width;	// 16
 
 	node = fdt_node_offset_by_compatible(blob, -1,
 			"rockchip,rk3399-xhci");
 	if (node < 0)
-		debug("%s dwc3 node not found\n", __func__);
-	else
+		my_dbg("%s dwc3 node not found\n", __func__);
+	else {
+		my_dbg("else\n");
 		dwc->usb2_phyif_utmi_width =
 			fdtdec_get_int(blob, node, "snps,phyif-utmi-bits", -1);
+	}
 
 	dwc3_cache_hwparams(dwc);
 
@@ -830,6 +832,12 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 		goto err2;
 
 	list_add_tail(&dwc->list, &dwc3_list);
+
+
+	unsigned int *addr = (unsigned int *)(dwc3_dev->base + DWC3_GLOBALS_REGS_START);
+	for (int i = 0; i < 720; i++) {
+		printf("addr 0x%p = 0x%x\n", addr + i, *(addr+i));
+	}
 
 	return 0;
 

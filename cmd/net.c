@@ -180,6 +180,7 @@ U_BOOT_CMD(
 #ifdef CONFIG_UDP_FUNCTION_FASTBOOT
 int do_fastboot_udp(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 {
+	n_my_dbg();
 	return netboot_common(FASTBOOT, cmdtp, argc, argv);
 }
 #endif

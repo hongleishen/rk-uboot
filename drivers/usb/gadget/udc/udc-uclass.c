@@ -22,15 +22,20 @@ int usb_gadget_initialize(int index)
 		return -EINVAL;
 	if (dev_array[index])
 		return 0;
+
+	n_my_dbg("\n");
 	ret = uclass_get_device_by_seq(UCLASS_USB_GADGET_GENERIC, index, &dev);
 	if (!dev || ret) {
 		ret = uclass_get_device(UCLASS_USB_GADGET_GENERIC, index, &dev);
+		n_my_dbg("\n");
 		if (!dev || ret) {
+			n_my_dbg("\n");
 			pr_err("No USB device found\n");
 			return -ENODEV;
 		}
 	}
 	dev_array[index] = dev;
+	n_my_dbg("\n");
 	return 0;
 }
 
