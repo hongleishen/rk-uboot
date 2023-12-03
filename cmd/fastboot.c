@@ -28,7 +28,7 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 
 	printf("Enter fastboot... shl\n");
 
-	if (!strcmp(argv[1], "udp")) {
+	if (!strcmp(argv[1], "udp")) {		// 宏在函数里面
 #ifndef CONFIG_UDP_FUNCTION_FASTBOOT
 		n_my_dbg("will UDP\n");
 		pr_err("Fastboot UDP not enabled\n");
