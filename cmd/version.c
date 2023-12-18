@@ -12,6 +12,7 @@
 #ifdef CONFIG_SYS_COREBOOT
 #include <asm/arch/sysinfo.h>
 #endif
+#include "ver_shl.h"
 
 const char __weak version_string[] = U_BOOT_VERSION_STRING;
 
@@ -41,7 +42,11 @@ U_BOOT_CMD(
 
 static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
-    printf("hello shl 1017=====\n");
+
+    printf("hello shl 1104=====\n");
+	// KBUILD_CFLAGS   += $(call cc-option)	# shl   Makefile 619行去掉 -Werror=date-time
+	printf("compile time is: %s  %s\n", __DATE__, __TIME__);
+	printf("ver_shl.h time is: %s %s\n", BUILD_DATE, BUILD_TIME);
 	debug("this is debug ....\n");
 	n_my_dbg("this n_my_dbg\n");
 	my_dbg("this is my_dbg\n");
