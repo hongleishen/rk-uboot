@@ -615,7 +615,8 @@ endif
 endif
 
 # Prohibit date/time macros, which would make the build non-deterministic
-KBUILD_CFLAGS   += $(call cc-option,-Werror=date-time)
+#KBUILD_CFLAGS   += $(call cc-option,-Werror=date-time)
+KBUILD_CFLAGS   += $(call cc-option)	# shl
 
 include scripts/Makefile.extrawarn
 
@@ -865,7 +866,8 @@ quiet_cmd_cfgcheck = CFGCHK  $2
 cmd_cfgcheck = $(srctree)/scripts/check-config.sh $2 \
 		$(srctree)/scripts/config_whitelist.txt $(srctree)
 
-all:		$(ALL-y) cfg
+VER_FILE = cmd/ver_shl.h
+all:		$(ALL-y) cfg $(VER_FILE)
 ifeq ($(CONFIG_DM_I2C_COMPAT)$(CONFIG_SANDBOX),y)
 	@echo "===================== WARNING ======================"
 	@echo "This board uses CONFIG_DM_I2C_COMPAT. Please remove"
@@ -878,7 +880,11 @@ endif
 	@# options are whitelisted, so new ones should not be added.
 	$(call cmd,cfgcheck,u-boot.cfg)
 
-PHONY += dtbs
+$(VER_FILE):
+	echo '#define BUILD_DATE "'`date +%Y-%m-%d`'"' > $(VER_FILE)
+	echo '#define BUILD_TIME "'`date +%H:%M:%S`'"' >> $(VER_FILE)
+
+PHONY += dtbs $(VER_FILE)
 dtbs: dts/dt.dtb
 	@:
 dts/dt.dtb: u-boot
