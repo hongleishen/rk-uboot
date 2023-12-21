@@ -13,6 +13,7 @@
 #include <asm/arch/sysinfo.h>
 #endif
 #include "ver_shl.h"
+#include <stdio.h>
 
 const char __weak version_string[] = U_BOOT_VERSION_STRING;
 
@@ -39,6 +40,20 @@ U_BOOT_CMD(
 	""
 );
 
+// 定义一个函数，用于等待用户输入字符，如果输入字符是 'g'，则继续执行
+void wait_input(void)
+{
+    char input;
+    printf("请输入字符 'g' 以继续程序：\n");
+    while (1) {
+        // scanf(" %c", &input); // 注意这里的空格，用于吸收可能的空白字符
+		input = getc();
+        if (input == 'g') {
+            break; // 如果输入是 'g'，则退出循环
+        }
+    }
+}
+
 
 static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
@@ -48,6 +63,11 @@ static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]
 	printf("ver_shl.h time is: %s %s\n", BUILD_DATE, BUILD_TIME);
 	debug("this is debug ....\n");
 	my_dbg("this is my_dbg\n");
+
+	my_dbg("will wait input...\n");
+	wait_input();
+	my_dbg("out of wait_input!\n");
+
     return 0;
 }
 
