@@ -53,7 +53,7 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 		pr_err("USB init failed: %d", ret);
 		return CMD_RET_FAILURE;
 	}
-
+	my_dbg("will run g_dnl_register\n");	wait_input();
 	g_dnl_clear_detach();
 	ret = g_dnl_register("usb_dnl_fastboot");
 	if (ret)
@@ -72,9 +72,9 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 		printf("The fastboot memory space is unusable!\n");
 		return CMD_RET_FAILURE;
 	}
-
+	
 	printf("OK\n");
-
+	my_dbg("will run while\n");	wait_input();
 	while (1) {
 		if (g_dnl_detach())
 			break;

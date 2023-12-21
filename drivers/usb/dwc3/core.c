@@ -791,19 +791,19 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	if (dwc->dr_mode == USB_DR_MODE_UNKNOWN)
 		dwc->dr_mode = USB_DR_MODE_OTG;
-
+	my_dbg("will run dwc3_core_init\n");	wait_input();
 	ret = dwc3_core_init(dwc);
 	if (ret) {
 		dev_err(dev, "failed to initialize core\n");
 		goto err0;
 	}
-
+	my_dbg("will run dwc3_event_buffers_setup\n");	wait_input();
 	ret = dwc3_event_buffers_setup(dwc);
 	if (ret) {
 		dev_err(dwc->dev, "failed to setup event buffers\n");
 		goto err1;
 	}
-
+	my_dbg("will run dwc3_core_init_mode\n");	wait_input();
 	ret = dwc3_core_init_mode(dwc);
 	if (ret)
 		goto err2;
