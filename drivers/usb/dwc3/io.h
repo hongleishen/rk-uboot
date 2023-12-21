@@ -36,6 +36,8 @@ static inline u32 dwc3_readl(void __iomem *base, u32 offset)
 	return value;
 }
 
+
+#if 0
 static inline void dwc3_writel(void __iomem *base, u32 offset, u32 value)
 {
 	unsigned long offs = offset - DWC3_GLOBALS_REGS_START;
@@ -47,6 +49,16 @@ static inline void dwc3_writel(void __iomem *base, u32 offset, u32 value)
 	 */
 	writel(value, base + offs);
 }
+
+#else
+
+#define dwc3_writel(base, offset, value) do { \
+	unsigned long offs = (u32)offset - DWC3_GLOBALS_REGS_START;	\
+	writel(value, base + offs); \
+	printf("[dwc3_writel %s %d] 0x%p = 0x%08x\n", __FILE__, __LINE__,  (void *)(base + offs), value); \
+} while(0)
+
+#endif
 
 static inline void dwc3_flush_cache(uintptr_t addr, int length)
 {
