@@ -6,6 +6,9 @@
 #
 
 # core
+
+obj-$(CONFIG_SUPPORT_SHL) += shl/
+
 ifndef CONFIG_SPL_BUILD
 obj-y += init/
 obj-$(CONFIG_SUPPORT_USBPLUG) += usbplug/

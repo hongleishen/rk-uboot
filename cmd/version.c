@@ -55,6 +55,6 @@ static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]
 
 U_BOOT_CMD(
 	shl_test,	1,		1,	do_shl_test,
-	"It's just shl test",
+	"It's just shl test, in version.c",
 	""
 );

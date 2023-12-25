@@ -469,6 +469,11 @@ CONFIG_TPL_SERIAL_SUPPORT=y
 # CONFIG_SUPPORT_USBPLUG is not set
 
 #
+# shl_func
+#
+CONFIG_SUPPORT_SHL=y
+
+#
 # Command line interface
 #
 CONFIG_CMDLINE=y

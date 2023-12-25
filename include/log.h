@@ -147,7 +147,7 @@ vscnprintf 通常不是C标准库的一部分。它主要在某些项目或内�
 
 #endif /* _DEBUG */
 
-#if 0
+#if 1
 /* Show a message if DEBUG is defined in a file */
 #define debug(fmt, args...)			\
 	debug_cond(_DEBUG, fmt, ##args)

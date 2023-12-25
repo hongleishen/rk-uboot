@@ -1,0 +1,10 @@
+menu "shl_func"
+
+config SUPPORT_SHL
+	bool "Support shl func"
+	default y
+	help
+	  Support shl's func
+
+endmenu
+

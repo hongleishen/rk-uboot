@@ -1,0 +1,1 @@
+obj-y += shl_cmd.o

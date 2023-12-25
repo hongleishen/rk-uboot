@@ -684,3 +684,4 @@ endmenu
 
 source "common/spl/Kconfig"
 source "common/usbplug/Kconfig"
+source "common/shl/Kconfig"
