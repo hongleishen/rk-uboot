@@ -1,78 +1,45 @@
 #include <stdio.h>
 #include <tree.h>
-
+#include <common.h>
+#include <command.h>
+#include <tree.h>
 // tree_node *root;
-// tree_node *current;
-
-#define d_printf(format, ...)    do {    \
-    for (int i = 0; i < 4*current->depth; i++) {    \
-        printf(" ");    \
-    }   \
-    if (format[0] != '\0') \
-        printf(format, ##__VA_ARGS__); \
-} while(0);
+// tree_node current_node;
 
 
-static void _f_start_hook(const char *func)
-{
-    if (root == NULL) {
-        my_dbg(" root == NULL, return\n");
-        return;
-    }
+//#define f_start_hook()   _f_start_hook((const char *)__func__);
 
-    tree_node *func_node = create_node(func);
-    add_child(func_node);
+// 删除当前节点，current_node上移变parent
 
-    d_printf("%s\n", func);
-
-    return;
-}
-#define f_start_hook()   _f_start_hook((const char *)__func__);
-
-// 删除当前节点，current上移变parent
-static void _f_end_hook(const char *func)
-{
-    if (root == NULL) {
-        my_dbg(" root == NULL, return\n");
-        return;
-    }
-
-    tree_node *tmp = current;
-
-    d_printf("--");
-    preorder_traversal(root);
-    printf("\n");
-
-    remove_child(current->parent, current);
-    d_printf("current->data:%s, current->depth = %d;  set current to %s\n\n", tmp->data, tmp->depth, tmp->parent->data);
-    current = tmp->parent;
-    return;
-}
-#define f_end_hook() _f_end_hook((const char *)__func__);
+//#define f_end_hook() _f_end_hook((const char *)__func__);
 
 
 // ---------------func b------------------------------
 // 叶子函数定义
-void b1() {
-    f_start_hook();
+void b1(void) 
+{
+    f_start_hook(21);
     f_end_hook();
 }
 
-void b2() {
-    f_start_hook();
+void b2(void)
+{
+    f_start_hook(27);
     f_end_hook();
 }
 
-void b_3() {
-    f_start_hook();
+void b_3(void)
+{
+    f_start_hook(33);
     f_end_hook();
 }
 
 
 // --------func a--------------------------------
 // 分支函数定义
-void a1() {
-    f_start_hook();
+void a1(void)
+{
+    f_start_hook(42);
 
     b1();
     b2();
@@ -81,8 +48,9 @@ void a1() {
 }
 
 
-void a2() {
-    f_start_hook();
+void a2(void)
+{
+    f_start_hook(53);
 
     b_3();
 
@@ -91,22 +59,23 @@ void a2() {
 
 // -------------------func root-------------------------
 // 根函数定义      必须跟函数初始化root后，后面的树形结构才会运行，在此之前，函数都直接跳过
-void root_function() {
-    f_start_hook();
+void root_function(void)
+{
+    f_start_hook(64);
     printf("%s\n", __func__);
 
     root = create_node("root");
-    current = root;
+    current_node = root;
     
     a1();
     a2();
 
     free_tree(&root);
-    if (root == NULL) 
+    if (root == NULL) {
         my_dbg("root is null after free\n");
-    else
+    } else {
         my_dbg("root is not null after free\n");
-
+    }
 
     f_end_hook();
 }
