@@ -791,9 +791,9 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	node = fdt_node_offset_by_compatible(blob, -1,
 			"rockchip,rk3399-xhci");
-	if (node < 0)
+	if (node < 0) {
 		my_dbg("%s dwc3 node not found\n", __func__);					// yes
-	else {
+	} else {
 		my_dbg("else\n");
 		dwc->usb2_phyif_utmi_width =
 			fdtdec_get_int(blob, node, "snps,phyif-utmi-bits", -1);

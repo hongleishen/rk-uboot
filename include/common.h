@@ -47,19 +47,41 @@ typedef volatile unsigned char	vu_char;
 #endif
 
 #include <log.h>
+#include <shl.h>
 
+
+#define CMD_CONTROL_MY_DBG
+
+#ifndef CMD_CONTROL_MY_DBG
 #define DEBUG_SHL
 #ifdef DEBUG_SHL
 #define my_dbg(format, ...)   printf("[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 #define n_my_dbg(format, ...) printf("\n[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
-//#define n_my_dbg(format, ...) printf("\n[dbg: %s, %d ]" format, __func__, __LINE__, ##__VA_ARGS__)
-
 
 #else
 #define my_dbg(format, ...)
 #define n_my_dbg(format, ...)
 #endif
 
+#else
+
+#define DEBUG_SHL
+#ifdef DEBUG_SHL
+#define my_dbg(format, ...)   do {\
+			if (g_cmd_open_my_dbg) \
+				printf("[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
+		} while(0);
+
+#define n_my_dbg(format, ...) do { \
+			if (g_cmd_open_my_dbg) \
+				printf("\n[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
+		} while(0); 
+#else
+#define my_dbg(format, ...)
+#define n_my_dbg(format, ...)
+#endif
+
+#endif
 
 
 #if (__STDC_VERSION__ >= 201112L) || defined(__cplusplus)
