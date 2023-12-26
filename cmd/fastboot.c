@@ -51,6 +51,9 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 	usb_controller = argv[2];
 	controller_index = simple_strtoul(usb_controller, NULL, 0);
 
+    root = create_node("root");
+    current_node = root;
+
 	my_dbg("will usb_gadget_initialize\n");
 	ret = usb_gadget_initialize(controller_index);
 	if (ret) {
@@ -94,6 +97,12 @@ static int do_fastboot(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 		usb_gadget_handle_interrupts(controller_index);
 	}
 
+    free_tree(&root);
+    if (root == NULL) {
+        printf("root is null after free\n");
+	} else {
+        printf("root is not null after free\n");
+	}
 	ret = CMD_RET_SUCCESS;
 
 exit:

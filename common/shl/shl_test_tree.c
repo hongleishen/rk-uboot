@@ -6,19 +6,14 @@
 // tree_node *root;
 // tree_node current_node;
 
-
-//#define f_start_hook()   _f_start_hook((const char *)__func__);
-
-// 删除当前节点，current_node上移变parent
-
-//#define f_end_hook() _f_end_hook((const char *)__func__);
-
+void a1(void);
 
 // ---------------func b------------------------------
 // 叶子函数定义
 void b1(void) 
 {
     f_start_hook(21);
+    a1();
     f_end_hook();
 }
 

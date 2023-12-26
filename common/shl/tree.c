@@ -143,58 +143,84 @@ void free_tree(tree_node **pp_node)
 	*pp_node = NULL;
 }
 
-#if 0
-int main() {
-	/ * 创建树
-		root
-		child1           child2
 
-		child3                    child4
-		*/
-		tree_node *root = create_node("Root");
-	tree_node *child1 = create_node("Child1");
-	tree_node *child2 = create_node("Child2");
-	tree_node *child3 = create_node("Child3");
-	tree_node *child4 = create_node("Child4");
+/*
+*    祖宗用完了，如果它自己不除名，后面子代永远不能用
+*/
+#define N_FUNC   10
+char freq_func[N_FUNC][32] = {};  // 存储高频出现的函数名
+void save_func(const char *func)
+{
+	int i = 0;
+	// 更新存储的字符串
+	for (i = N_FUNC - 1; i > 0; i--) {
+		strcpy(freq_func[i], freq_func[i - 1]);
+	}
+	strcpy(freq_func[0], func);
+	return;
+}
 
-	add_child(root, child1);
-	add_child(root, child2);
-	add_child(child1, child3);
-	add_child(child2, child4);
+void rm_func(const char *func)
+{
 
-	// 遍历树
-	printf("Preorder Traversal:\n");
-	preorder_traversal(root);
+}
 
-	printf("\n\nPostorder Traversal:\n");
-	postorder_traversal(root);
-	printf("\n");
 
-	// 搜索节点
-	tree_node *search_result = search(root, "Child3");
-	if (search_result) {
-		printf("\nNode found: %s\n", search_result->data);
-	} else {
-		printf("\nNode not found\n");
+#define SIZE 5
+#define occurred_frequently_n  2
+
+int func_count = 0;
+char recent_strings[SIZE][32] = {};  // 存储最近5次输入的字符串
+int occurred_frequently(const char *func)
+{
+    int i, j, found;
+
+	// 检查字符串是否重复
+
+	found = 0;
+	for (i = 0; i < SIZE; i++) {
+		// printf("recent_strings[%d] = %s\n", i, recent_strings[i]);
+		if (strcmp(recent_strings[i], func) == 0) {
+			if (func_count++ >= occurred_frequently_n) {
+				d_printf("func %s occurred_frequently!!!!!!!\n", func);
+				save_func(func);
+				found = 1;
+				func_count = 0;
+				break;
+			}
+		}
 	}
 
-	// 释放树内存
-	// free_tree(root);
-	printf("\n");
-	remove_child(root, child2);
-	preorder_traversal(root);
-	printf("\n");
+	// 更新存储的字符串
+	for (j = SIZE - 1; j > 0; j--) {
+		strcpy(recent_strings[j], recent_strings[j - 1]);
+	}
+	strcpy(recent_strings[0], func);
 
-	return 0;
+	return found;
 }
-#endif
+
 
 void _f_start_hook(const char *file, const char *func, int line, int n_line)
 {
+	int i = 0;
+
     if (root == NULL) {
         my_dbg(" root == NULL, return\n");
         return;
     }
+
+	for (i = 0; i < N_FUNC; i++) {
+		if (strcmp(freq_func[i], func) == 0) {
+			// printf("---- %s has freq ocur return in start_hook!\n", func);
+			return;
+		}
+	}
+
+	if (occurred_frequently(func)) {
+        my_dbg(" %s occurred_frequently return\n", func);
+        return;		
+	}
 
     tree_node *func_node = create_node(func);
     add_child(func_node);
@@ -206,10 +232,20 @@ void _f_start_hook(const char *file, const char *func, int line, int n_line)
 
 void _f_end_hook(const char *func)
 {
+	int i = 0;
+
     if (root == NULL) {
         my_dbg(" root == NULL, return\n");
         return;
     }
+
+	for (i = 0; i < N_FUNC; i++) {
+		// printf("===== freq_func[%d] = %s\n", i, freq_func[i]);
+		if (strcmp(freq_func[i], func) == 0) {
+			// printf("===== %s has freq ocur return it in end_hook!\n", func);
+			return;
+		}
+	}
 
     tree_node *tmp = current_node;
 
@@ -218,7 +254,7 @@ void _f_end_hook(const char *func)
     printf("\n");
 
     remove_child(current_node->parent, current_node);
-    d_printf("current_node->data:%s, current_node->depth = %d;  set current_node to %s\n\n", tmp->data, tmp->depth, tmp->parent->data);
+    d_printf("rm current_node->data:%s, current_node->depth = %d;  set current_node to %s\n\n", tmp->data, tmp->depth, tmp->parent->data);
     current_node = tmp->parent;
     return;
 }

@@ -28,7 +28,7 @@ extern tree_node *current_node;
 extern void _f_start_hook(const char *file, const char *func, int line, int n_line);
 extern void _f_end_hook(const char *func);
 
-#define f_start_hook(n_line) _f_start_hook(__FILE__, __func__, __LINE__, n_line);
+#define f_start_hook(n_line)  _f_start_hook(__FILE__, __func__, __LINE__, n_line);
 #define f_end_hook() _f_end_hook((const char *)__func__);
 
 
