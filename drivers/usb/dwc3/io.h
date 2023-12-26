@@ -55,7 +55,9 @@ static inline void dwc3_writel(void __iomem *base, u32 offset, u32 value)
 #define dwc3_writel(base, offset, value) do { \
 	unsigned long offs = (u32)offset - DWC3_GLOBALS_REGS_START;	\
 	writel(value, base + offs); \
-	printf("[dwc3_writel %s %d] 0x%p = 0x%08x\n", __FILE__, __LINE__,  (void *)(base + offs), value); \
+	if (g_cmd_open_dwc3_writel) { \
+		printf("[dwc3_writel %s %d] 0x%p = 0x%08x\n", __FILE__, __LINE__,  (void *)(base + offs), value); \
+	} \
 } while(0)
 
 #endif
