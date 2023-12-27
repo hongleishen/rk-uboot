@@ -1,0 +1,4 @@
+uboot cmd to burn: rockusb 0 mmc 0
+kernle cmd to burn:reboot loader
+
+cp .config configs/rk3568_defconfig
