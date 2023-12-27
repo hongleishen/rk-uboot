@@ -39,7 +39,6 @@ static LIST_HEAD(dwc3_list);
 static void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
 {
 	f_start_hook(40);
-	my_dbg(" [40]  shl_add\n");
 	u32 reg;
 
 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
@@ -55,8 +54,7 @@ static void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
  */
 static int dwc3_core_soft_reset(struct dwc3 *dwc)
 {
-	f_start_hook(55);
-	my_dbg(" [54]  shl_add\n");
+	f_start_hook(54);
 	u32		reg;
 
 	/* Before Resetting PHY, put Core in Reset */
@@ -93,8 +91,7 @@ static int dwc3_core_soft_reset(struct dwc3 *dwc)
 	reg &= ~DWC3_GCTL_CORESOFTRESET;
 	dwc3_writel(dwc->regs, DWC3_GCTL, reg);
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 
 /**
@@ -105,8 +102,7 @@ static int dwc3_core_soft_reset(struct dwc3 *dwc)
 static void dwc3_free_one_event_buffer(struct dwc3 *dwc,
 		struct dwc3_event_buffer *evt)
 {
-	f_start_hook(103);
-	my_dbg(" [101]  shl_add\n");
+	f_start_hook(101);
 	dma_free_coherent(evt->buf);
 	f_end_hook();
 }
@@ -122,26 +118,24 @@ static void dwc3_free_one_event_buffer(struct dwc3 *dwc,
 static struct dwc3_event_buffer *dwc3_alloc_one_event_buffer(struct dwc3 *dwc,
 		unsigned length)
 {
-	f_start_hook(118);
-	my_dbg(" [115]  shl_add\n");
+	f_start_hook(115);
 	struct dwc3_event_buffer	*evt;
 
 	evt = devm_kzalloc((struct udevice *)dwc->dev, sizeof(*evt),
 			   GFP_KERNEL);
 	if (!evt)
-		return ERR_PTR(-ENOMEM);
+		{f_end_hook();  return ERR_PTR(-ENOMEM);}
 
 	evt->dwc	= dwc;
 	evt->length	= length;
 	evt->buf	= dma_alloc_coherent(length,
 					     (unsigned long *)&evt->dma);
 	if (!evt->buf)
-		return ERR_PTR(-ENOMEM);
+		{f_end_hook();  return ERR_PTR(-ENOMEM);}
 
 	dwc3_flush_cache((uintptr_t)evt->buf, evt->length);
 
-	return evt;
-	f_end_hook();
+	{f_end_hook();  return evt;}
 }
 
 /**
@@ -150,8 +144,7 @@ static struct dwc3_event_buffer *dwc3_alloc_one_event_buffer(struct dwc3 *dwc,
  */
 static void dwc3_free_event_buffers(struct dwc3 *dwc)
 {
-	f_start_hook(144);
-	my_dbg(" [140]  shl_add\n");
+	f_start_hook(140);
 	struct dwc3_event_buffer	*evt;
 	int i;
 
@@ -173,8 +166,7 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
  */
 static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
 {
-	f_start_hook(165);
-	my_dbg(" [160]  shl_add\n");
+	f_start_hook(160);
 	int			num;
 	int			i;
 
@@ -184,7 +176,7 @@ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
 	dwc->ev_buffs = memalign(CONFIG_SYS_CACHELINE_SIZE,
 				 sizeof(*dwc->ev_buffs) * num);
 	if (!dwc->ev_buffs)
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 
 	for (i = 0; i < num; i++) {
 		struct dwc3_event_buffer	*evt;
@@ -192,13 +184,12 @@ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
 		evt = dwc3_alloc_one_event_buffer(dwc, length);
 		if (IS_ERR(evt)) {
 			dev_err(dwc->dev, "can't allocate event buffer\n");
-			return PTR_ERR(evt);
+			{f_end_hook();  return PTR_ERR(evt);}
 		}
 		dwc->ev_buffs[i] = evt;
 	}
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 
 /**
@@ -209,8 +200,7 @@ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
  */
 static int dwc3_event_buffers_setup(struct dwc3 *dwc)
 {
-	f_start_hook(199);
-	my_dbg(" [193]  shl_add\n");
+	f_start_hook(193);
 	struct dwc3_event_buffer	*evt;
 	int				n;
 
@@ -231,14 +221,12 @@ static int dwc3_event_buffers_setup(struct dwc3 *dwc)
 		dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(n), 0);
 	}
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 
 static void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
 {
-	f_start_hook(225);
-	my_dbg(" [218]  shl_add\n");
+	f_start_hook(218);
 	struct dwc3_event_buffer	*evt;
 	int				n;
 
@@ -258,36 +246,33 @@ static void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
 
 static int dwc3_alloc_scratch_buffers(struct dwc3 *dwc)
 {
-	f_start_hook(244);
-	my_dbg(" [236]  shl_add\n");
+	f_start_hook(236);
 	if (!dwc->has_hibernation)
-		return 0;
+		{f_end_hook();  return 0;}
 
 	if (!dwc->nr_scratch)
-		return 0;
+		{f_end_hook();  return 0;}
 
 	dwc->scratchbuf = kmalloc_array(dwc->nr_scratch,
 			DWC3_SCRATCHBUF_SIZE, GFP_KERNEL);
 	if (!dwc->scratchbuf)
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 
 static int dwc3_setup_scratch_buffers(struct dwc3 *dwc)
 {
-	f_start_hook(261);
-	my_dbg(" [252]  shl_add\n");
+	f_start_hook(252);
 	dma_addr_t scratch_addr;
 	u32 param;
 	int ret;
 
 	if (!dwc->has_hibernation)
-		return 0;
+		{f_end_hook();  return 0;}
 
 	if (!dwc->nr_scratch)
-		return 0;
+		{f_end_hook();  return 0;}
 
 	scratch_addr = dma_map_single(dwc->scratchbuf,
 				      dwc->nr_scratch * DWC3_SCRATCHBUF_SIZE,
@@ -314,26 +299,24 @@ static int dwc3_setup_scratch_buffers(struct dwc3 *dwc)
 	if (ret < 0)
 		goto err1;
 
-	return 0;
+	{f_end_hook();  return 0;}
 
 err1:
 	dma_unmap_single((void *)(uintptr_t)dwc->scratch_addr, dwc->nr_scratch *
 			 DWC3_SCRATCHBUF_SIZE, DMA_BIDIRECTIONAL);
 
 err0:
-	return ret;
-	f_end_hook();
+	{f_end_hook();  return ret;}
 }
 
 static void dwc3_free_scratch_buffers(struct dwc3 *dwc)
 {
-	f_start_hook(309);
-	my_dbg(" [299]  shl_add\n");
+	f_start_hook(299);
 	if (!dwc->has_hibernation)
-		return;
+		{f_end_hook();  return;}
 
 	if (!dwc->nr_scratch)
-		return;
+		{f_end_hook();  return;}
 
 	dma_unmap_single((void *)(uintptr_t)dwc->scratch_addr, dwc->nr_scratch *
 			 DWC3_SCRATCHBUF_SIZE, DMA_BIDIRECTIONAL);
@@ -343,8 +326,7 @@ static void dwc3_free_scratch_buffers(struct dwc3 *dwc)
 
 static void dwc3_core_num_eps(struct dwc3 *dwc)
 {
-	f_start_hook(323);
-	my_dbg(" [312]  shl_add\n");
+	f_start_hook(312);
 	struct dwc3_hwparams	*parms = &dwc->hwparams;
 
 	dwc->num_in_eps = DWC3_NUM_IN_EPS(parms);
@@ -357,8 +339,7 @@ static void dwc3_core_num_eps(struct dwc3 *dwc)
 
 static void dwc3_cache_hwparams(struct dwc3 *dwc)
 {
-	f_start_hook(335);
-	my_dbg(" [323]  shl_add\n");
+	f_start_hook(323);
 	struct dwc3_hwparams	*parms = &dwc->hwparams;
 
 	parms->hwparams0 = dwc3_readl(dwc->regs, DWC3_GHWPARAMS0);
@@ -375,8 +356,7 @@ static void dwc3_cache_hwparams(struct dwc3 *dwc)
 
 static void dwc3_hsphy_mode_setup(struct dwc3 *dwc)
 {
-	f_start_hook(351);
-	my_dbg(" [338]  shl_add\n");
+	f_start_hook(338);
 	enum usb_phy_interface hsphy_mode = dwc->hsphy_mode;
 	u32 reg;
 
@@ -410,8 +390,7 @@ static void dwc3_hsphy_mode_setup(struct dwc3 *dwc)
  */
 static void dwc3_phy_setup(struct dwc3 *dwc)
 {
-	f_start_hook(384);
-	my_dbg(" [370]  shl_add\n");
+	f_start_hook(370);
 	u32 reg;
 
 	reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
@@ -500,8 +479,7 @@ static void dwc3_phy_setup(struct dwc3 *dwc)
  */
 static int dwc3_core_init(struct dwc3 *dwc)
 {
-	f_start_hook(472);
-	my_dbg(" [457]  shl_add\n");
+	f_start_hook(457);
 	unsigned long		timeout;
 	u32			hwparams4 = dwc->hwparams.hwparams4;
 	u32			reg;
@@ -632,28 +610,25 @@ static int dwc3_core_init(struct dwc3 *dwc)
 	if (ret)
 		goto err1;
 
-	return 0;
+	{f_end_hook();  return 0;}
 
 err1:
 	dwc3_free_scratch_buffers(dwc);
 
 err0:
-	return ret;
-	f_end_hook();
+	{f_end_hook();  return ret;}
 }
 
 static void dwc3_core_exit(struct dwc3 *dwc)
 {
-	f_start_hook(614);
-	my_dbg(" [598]  shl_add\n");
+	f_start_hook(598);
 	dwc3_free_scratch_buffers(dwc);
 	f_end_hook();
 }
 
 static int dwc3_core_init_mode(struct dwc3 *dwc)
 {
-	f_start_hook(620);
-	my_dbg(" [603]  shl_add\n");
+	f_start_hook(603);
 	int ret;
 
 	switch (dwc->dr_mode) {
@@ -662,7 +637,7 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
 		ret = dwc3_gadget_init(dwc);
 		if (ret) {
 			dev_err(dev, "failed to initialize gadget\n");
-			return ret;
+			{f_end_hook();  return ret;}
 		}
 		break;
 	case USB_DR_MODE_HOST:
@@ -670,7 +645,7 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
 		ret = dwc3_host_init(dwc);
 		if (ret) {
 			dev_err(dev, "failed to initialize host\n");
-			return ret;
+			{f_end_hook();  return ret;}
 		}
 		break;
 	case USB_DR_MODE_OTG:
@@ -678,28 +653,26 @@ static int dwc3_core_init_mode(struct dwc3 *dwc)
 		ret = dwc3_host_init(dwc);
 		if (ret) {
 			dev_err(dev, "failed to initialize host\n");
-			return ret;
+			{f_end_hook();  return ret;}
 		}
 
 		ret = dwc3_gadget_init(dwc);
 		if (ret) {
 			dev_err(dev, "failed to initialize gadget\n");
-			return ret;
+			{f_end_hook();  return ret;}
 		}
 		break;
 	default:
 		dev_err(dev, "Unsupported mode of operation %d\n", dwc->dr_mode);
-		return -EINVAL;
+		{f_end_hook();  return -EINVAL;}
 	}
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 
 static void dwc3_gadget_run(struct dwc3 *dwc)
 {
-	f_start_hook(664);
-	my_dbg(" [646]  shl_add\n");
+	f_start_hook(646);
 	dwc3_writel(dwc->regs, DWC3_DCTL, DWC3_DCTL_RUN_STOP);
 	mdelay(100);
 	f_end_hook();
@@ -707,8 +680,7 @@ static void dwc3_gadget_run(struct dwc3 *dwc)
 
 static void dwc3_core_exit_mode(struct dwc3 *dwc)
 {
-	f_start_hook(671);
-	my_dbg(" [652]  shl_add\n");
+	f_start_hook(652);
 	switch (dwc->dr_mode) {
 	case USB_DR_MODE_PERIPHERAL:
 		dwc3_gadget_exit(dwc);
@@ -749,8 +721,7 @@ static void dwc3_core_exit_mode(struct dwc3 *dwc)
  */
 int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 {
-	f_start_hook(711);
-	my_dbg(" [691]  shl_add\n");
+	f_start_hook(691);
 	struct dwc3		*dwc;
 	struct device		*dev = NULL;
 	u8			lpm_nyet_threshold;
@@ -766,11 +737,11 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 	mem = devm_kzalloc((struct udevice *)dev,
 			   sizeof(*dwc) + DWC3_ALIGN_MASK, GFP_KERNEL);
 	if (!mem)
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 
 	dwc = PTR_ALIGN(mem, DWC3_ALIGN_MASK + 1);
 	dwc->mem = mem;
-	// 0xfcc00000 + 0xc100 = 0xfcc0 c100;
+
 	dwc->regs = (void *)(uintptr_t)(dwc3_dev->base +
 					DWC3_GLOBALS_REGS_START);
 
@@ -786,7 +757,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 	 */
 	hird_threshold = 12;
 
-	dwc->maximum_speed = dwc3_dev->maximum_speed;					// USB_SPEED_HIGH
+	dwc->maximum_speed = dwc3_dev->maximum_speed;
 	dwc->has_lpm_erratum = dwc3_dev->has_lpm_erratum;
 	if (dwc3_dev->lpm_nyet_threshold)
 		lpm_nyet_threshold = dwc3_dev->lpm_nyet_threshold;
@@ -795,7 +766,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 		hird_threshold = dwc3_dev->hird_threshold;
 
 	dwc->needs_fifo_resize = dwc3_dev->tx_fifo_resize;
-	dwc->dr_mode = dwc3_dev->dr_mode;								// USB_DR_MODE_PERIPHERAL
+	dwc->dr_mode = dwc3_dev->dr_mode;
 
 	dwc->disable_scramble_quirk = dwc3_dev->disable_scramble_quirk;
 	dwc->u2exit_lfps_quirk = dwc3_dev->u2exit_lfps_quirk;
@@ -806,7 +777,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 	dwc->lfps_filter_quirk = dwc3_dev->lfps_filter_quirk;
 	dwc->rx_detect_poll_quirk = dwc3_dev->rx_detect_poll_quirk;
 	dwc->dis_u3_susphy_quirk = dwc3_dev->dis_u3_susphy_quirk;
-	dwc->dis_u2_susphy_quirk = dwc3_dev->dis_u2_susphy_quirk;			// 1   禁用 USB 2.0 的挂起（suspend）功能
+	dwc->dis_u2_susphy_quirk = dwc3_dev->dis_u2_susphy_quirk;
 	dwc->dis_u1u2_quirk = dwc3_dev->dis_u2_susphy_quirk;
 
 	dwc->tx_de_emphasis_quirk = dwc3_dev->tx_de_emphasis_quirk;
@@ -825,27 +796,25 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	dwc->hsphy_mode = dwc3_dev->hsphy_mode;
 
-	dwc->index = dwc3_dev->index;										// 0
+	dwc->index = dwc3_dev->index;
 
 	if (dwc3_dev->usb2_phyif_utmi_width)
-		dwc->usb2_phyif_utmi_width = dwc3_dev->usb2_phyif_utmi_width;	// 16
+		dwc->usb2_phyif_utmi_width = dwc3_dev->usb2_phyif_utmi_width;
 
 	node = fdt_node_offset_by_compatible(blob, -1,
 			"rockchip,rk3399-xhci");
-	if (node < 0) {
-		my_dbg("%s dwc3 node not found\n", __func__);					// yes
-	} else {
-		my_dbg("else\n");
+	if (node < 0)
+		debug("%s dwc3 node not found\n", __func__);
+	else
 		dwc->usb2_phyif_utmi_width =
 			fdtdec_get_int(blob, node, "snps,phyif-utmi-bits", -1);
-	}
 
 	dwc3_cache_hwparams(dwc);
 
 	ret = dwc3_alloc_event_buffers(dwc, DWC3_EVENT_BUFFERS_SIZE);
 	if (ret) {
 		dev_err(dwc->dev, "failed to allocate event buffers\n");
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 	}
 
 	if (IS_ENABLED(CONFIG_USB_DWC3_HOST))
@@ -874,15 +843,7 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	list_add_tail(&dwc->list, &dwc3_list);
 
-
-	/*
-	unsigned int *addr = (unsigned int *)(dwc3_dev->base + DWC3_GLOBALS_REGS_START);
-	for (int i = 0; i < 720; i++) {
-		printf("addr 0x%p = 0x%x\n", addr + i, *(addr+i));
-	}
-	*/
-
-	return 0;
+	{f_end_hook();  return 0;}
 
 err2:
 	dwc3_event_buffers_cleanup(dwc);
@@ -893,8 +854,7 @@ err1:
 err0:
 	dwc3_free_event_buffers(dwc);
 
-	return ret;
-	f_end_hook();
+	{f_end_hook();  return ret;}
 }
 
 /**
@@ -910,8 +870,7 @@ err0:
  */
 void dwc3_uboot_exit(int index)
 {
-	f_start_hook(868);
-	my_dbg(" [839]  shl_add\n");
+	f_start_hook(839);
 	struct dwc3 *dwc;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
@@ -939,8 +898,7 @@ void dwc3_uboot_exit(int index)
  */
 void dwc3_uboot_handle_interrupt(int index)
 {
-	f_start_hook(895);
-	// my_dbg(" [865]  shl_add\n");
+	f_start_hook(865);
 	struct dwc3 *dwc = NULL;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
@@ -961,29 +919,28 @@ MODULE_DESCRIPTION("DesignWare USB3 DRD Controller Driver");
 #if CONFIG_IS_ENABLED(PHY) && CONFIG_IS_ENABLED(DM_USB)
 int dwc3_setup_phy(struct udevice *dev, struct phy **array, int *num_phys)
 {
-	f_start_hook(915);
-	my_dbg(" [884]  shl_add\n");
+	f_start_hook(884);
 	int i, ret, count;
 	struct phy *usb_phys;
 
 	/* Return if no phy declared */
 	if (!dev_read_prop(dev, "phys", NULL))
-		return 0;
+		{f_end_hook();  return 0;}
 	count = dev_count_phandle_with_args(dev, "phys", "#phy-cells");
 	if (count <= 0)
-		return count;
+		{f_end_hook();  return count;}
 
 	usb_phys = devm_kcalloc(dev, count, sizeof(struct phy),
 				GFP_KERNEL);
 	if (!usb_phys)
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 
 	for (i = 0; i < count; i++) {
 		ret = generic_phy_get_by_index(dev, i, &usb_phys[i]);
 		if (ret && ret != -ENOENT) {
 			pr_err("Failed to get USB PHY%d for %s\n",
 			       i, dev->name);
-			return ret;
+			{f_end_hook();  return ret;}
 		}
 	}
 
@@ -1007,7 +964,7 @@ int dwc3_setup_phy(struct udevice *dev, struct phy **array, int *num_phys)
 
 	*array = usb_phys;
 	*num_phys =  count;
-	return 0;
+	{f_end_hook();  return 0;}
 
 phys_poweron_err:
 	for (i = count - 1; i >= 0; i--)
@@ -1016,20 +973,18 @@ phys_poweron_err:
 	for (i = 0; i < count; i++)
 		generic_phy_exit(&usb_phys[i]);
 
-	return ret;
+	{f_end_hook();  return ret;}
 
 phys_init_err:
 	for (; i >= 0; i--)
 		generic_phy_exit(&usb_phys[i]);
 
-	return ret;
-	f_end_hook();
+	{f_end_hook();  return ret;}
 }
 
 int dwc3_shutdown_phy(struct udevice *dev, struct phy *usb_phys, int num_phys)
 {
-	f_start_hook(980);
-	my_dbg(" [948]  shl_add\n");
+	f_start_hook(948);
 	int i, ret;
 
 	for (i = 0; i < num_phys; i++) {
@@ -1044,16 +999,14 @@ int dwc3_shutdown_phy(struct udevice *dev, struct phy *usb_phys, int num_phys)
 		}
 	}
 
-	return 0;
-	f_end_hook();
+	{f_end_hook();  return 0;}
 }
 #endif
 
 #if CONFIG_IS_ENABLED(DM_USB)
 void dwc3_of_parse(struct dwc3 *dwc)
 {
-	f_start_hook(1002);
-	my_dbg(" [969]  shl_add\n");
+	f_start_hook(969);
 	const u8 *tmp;
 	struct udevice *dev = dwc->dev;
 	u8 lpm_nyet_threshold;
@@ -1126,8 +1079,7 @@ void dwc3_of_parse(struct dwc3 *dwc)
 
 int dwc3_init(struct dwc3 *dwc)
 {
-	f_start_hook(1074);
-	my_dbg(" [1040]  shl_add\n");
+	f_start_hook(1040);
 	int ret;
 
 	dwc3_cache_hwparams(dwc);
@@ -1135,7 +1087,7 @@ int dwc3_init(struct dwc3 *dwc)
 	ret = dwc3_alloc_event_buffers(dwc, DWC3_EVENT_BUFFERS_SIZE);
 	if (ret) {
 		dev_err(dwc->dev, "failed to allocate event buffers\n");
-		return -ENOMEM;
+		{f_end_hook();  return -ENOMEM;}
 	}
 
 	ret = dwc3_core_init(dwc);
@@ -1154,7 +1106,7 @@ int dwc3_init(struct dwc3 *dwc)
 	if (ret)
 		goto mode_fail;
 
-	return 0;
+	{f_end_hook();  return 0;}
 
 mode_fail:
 	dwc3_event_buffers_cleanup(dwc);
@@ -1165,14 +1117,12 @@ event_fail:
 core_fail:
 	dwc3_free_event_buffers(dwc);
 
-	return ret;
-	f_end_hook();
+	{f_end_hook();  return ret;}
 }
 
 void dwc3_remove(struct dwc3 *dwc)
 {
-	f_start_hook(1117);
-	my_dbg(" [1082]  shl_add\n");
+	f_start_hook(1082);
 	dwc3_core_exit_mode(dwc);
 	dwc3_event_buffers_cleanup(dwc);
 	dwc3_free_event_buffers(dwc);
@@ -1181,5 +1131,4 @@ void dwc3_remove(struct dwc3 *dwc)
 	f_end_hook();
 }
 #endif
-
 
