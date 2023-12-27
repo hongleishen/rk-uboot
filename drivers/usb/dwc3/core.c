@@ -898,7 +898,7 @@ void dwc3_uboot_exit(int index)
  */
 void dwc3_uboot_handle_interrupt(int index)
 {
-	f_start_hook(865);
+	//f_start_hook(865);
 	struct dwc3 *dwc = NULL;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
@@ -908,7 +908,7 @@ void dwc3_uboot_handle_interrupt(int index)
 		dwc3_gadget_uboot_handle_interrupt(dwc);
 		break;
 	}
-	f_end_hook();
+	// f_end_hook();
 }
 
 MODULE_ALIAS("platform:dwc3");
