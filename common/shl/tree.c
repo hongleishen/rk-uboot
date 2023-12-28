@@ -108,6 +108,9 @@ void remove_child(tree_node *parent, tree_node *child)
 {
 	if (parent == NULL || child == NULL) return;
 
+	if (strcmp(parent->data, "root") == 0)
+		return;
+
 	// 创建一个新的子节点数组
 	int new_count = 0;
 	tree_node* *new_children = malloc(sizeof(tree_node*)  *parent->child_count);
@@ -249,12 +252,14 @@ void _f_end_hook(const char *func)
 
     tree_node *tmp = current_node;
 
+	#if 0
     d_printf("--");
     preorder_traversal(root);
     printf("\n");
+	#endif
 
     remove_child(current_node->parent, current_node);
-    d_printf("rm current_node->data:%s, current_node->depth = %d;  set current_node to %s\n\n", tmp->data, tmp->depth, tmp->parent->data);
+    // d_printf("rm current_node->data:%s, current_node->depth = %d;  set current_node to %s\n\n", tmp->data, tmp->depth, tmp->parent->data);
     current_node = tmp->parent;
     return;
 }

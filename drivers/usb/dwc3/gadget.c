@@ -302,7 +302,7 @@ int dwc3_send_gadget_generic_command(struct dwc3 *dwc, unsigned cmd, u32 param)
 int dwc3_send_gadget_ep_cmd(struct dwc3 *dwc, unsigned ep,
 		unsigned cmd, struct dwc3_gadget_ep_cmd_params *params)
 {
-	f_start_hook(296);
+	// f_start_hook(296);
 	u32			timeout = 500;
 	u32			reg;
 
@@ -329,7 +329,7 @@ int dwc3_send_gadget_ep_cmd(struct dwc3 *dwc, unsigned ep,
 
 		udelay(1);
 	} while (1);
-	f_end_hook();
+	// f_end_hook();
 }
 
 static dma_addr_t dwc3_trb_dma_offset(struct dwc3_ep *dep,
@@ -343,7 +343,7 @@ static dma_addr_t dwc3_trb_dma_offset(struct dwc3_ep *dep,
 
 static int dwc3_alloc_trb_pool(struct dwc3_ep *dep)
 {
-	f_start_hook(334);
+	// f_start_hook(334);
 	if (dep->trb_pool)
 		{f_end_hook();  return 0;}
 
@@ -359,7 +359,8 @@ static int dwc3_alloc_trb_pool(struct dwc3_ep *dep)
 		{f_end_hook();  return -ENOMEM;}
 	}
 
-	{f_end_hook();  return 0;}
+	{ // f_end_hook();  
+	return 0;}
 }
 
 static void dwc3_free_trb_pool(struct dwc3_ep *dep)
@@ -401,7 +402,7 @@ static int dwc3_gadget_set_ep_config(struct dwc3 *dwc, struct dwc3_ep *dep,
 		const struct usb_ss_ep_comp_descriptor *comp_desc,
 		bool ignore, bool restore)
 {
-	f_start_hook(388);
+	// f_start_hook(388);
 	struct dwc3_gadget_ep_cmd_params params;
 
 	memset(&params, 0x00, sizeof(params));
@@ -456,7 +457,7 @@ static int dwc3_gadget_set_ep_config(struct dwc3 *dwc, struct dwc3_ep *dep,
 		dep->interval = 1 << (desc->bInterval - 1);
 	}
 
-	{f_end_hook();
+	{ // f_end_hook();
 	return dwc3_send_gadget_ep_cmd(dwc, dep->number,
 			DWC3_DEPCMD_SETEPCONFIG, &params);}
 }
@@ -2634,7 +2635,7 @@ static irqreturn_t dwc3_thread_interrupt(int irq, void *_dwc)
 
 static irqreturn_t dwc3_check_event_buf(struct dwc3 *dwc, u32 buf)
 {
-	f_start_hook(2535);
+	// f_start_hook(2535);
 	struct dwc3_event_buffer *evt;
 	u32 count;
 	u32 reg;
@@ -2654,12 +2655,13 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3 *dwc, u32 buf)
 	reg |= DWC3_GEVNTSIZ_INTMASK;
 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(buf), reg);
 
-	{f_end_hook();  return IRQ_WAKE_THREAD;}
+	{ // f_end_hook();  
+	return IRQ_WAKE_THREAD;}
 }
 
 static irqreturn_t dwc3_interrupt(int irq, void *_dwc)
 {
-	f_start_hook(2559);
+	// f_start_hook(2559);
 	struct dwc3			*dwc = _dwc;
 	int				i;
 	irqreturn_t			ret = IRQ_NONE;
@@ -2676,7 +2678,8 @@ static irqreturn_t dwc3_interrupt(int irq, void *_dwc)
 
 	spin_unlock(&dwc->lock);
 
-	{f_end_hook();  return ret;}
+	{// f_end_hook();  
+	return ret;}
 }
 
 /**
