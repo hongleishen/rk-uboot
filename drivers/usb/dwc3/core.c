@@ -483,7 +483,7 @@ static int dwc3_core_init(struct dwc3 *dwc)
 		ret = -ENODEV;
 		goto err0;
 	}
-	dwc->revision = reg;
+	dwc->revision = reg;   printf("==== dwc->revision = 0x%x\n", dwc->revision);
 
 	/* Handle USB2.0-only core configuration */
 	if (DWC3_GHWPARAMS3_SSPHY_IFC(dwc->hwparams.hwparams3) ==
@@ -833,11 +833,12 @@ int dwc3_uboot_init(struct dwc3_device *dwc3_dev)
 
 	list_add_tail(&dwc->list, &dwc3_list);
 
-
+	/*
 	unsigned int *addr = (unsigned int *)(dwc3_dev->base + DWC3_GLOBALS_REGS_START);
 	for (int i = 0; i < 720; i++) {
 		printf("addr 0x%p = 0x%x\n", addr + i, *(addr+i));
 	}
+	*/
 
 	return 0;
 
