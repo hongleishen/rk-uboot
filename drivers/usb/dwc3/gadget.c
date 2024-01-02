@@ -1909,7 +1909,7 @@ static void dwc3_endpoint_transfer_complete(struct dwc3 *dwc,
 static void dwc3_endpoint_interrupt(struct dwc3 *dwc,
 		const struct dwc3_event_depevt *event)
 {
-	my_dbg(" [1863]  shl_add\n");
+	my_dbg(" [1863]  shl_add ---------------------------------- 2.1 ------\n");
 	struct dwc3_ep		*dep;
 	u8			epnum = event->endpoint_number;
 
@@ -2467,7 +2467,7 @@ static void dwc3_gadget_hibernation_interrupt(struct dwc3 *dwc,
 static void dwc3_gadget_interrupt(struct dwc3 *dwc,
 		const struct dwc3_event_devt *event)
 {
-	my_dbg(" [2406]  shl_add\n");
+	my_dbg(" [2406]  shl_add ------------------------------------ 2.2 ------  \n");
 	switch (event->type) {
 	case DWC3_DEVICE_EVENT_DISCONNECT:
 		dwc3_gadget_disconnect_interrupt(dwc);
@@ -2514,15 +2514,15 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
 static void dwc3_process_event_entry(struct dwc3 *dwc,
 		const union dwc3_event *event)
 {
-	my_dbg(" [2452]  shl_add\n");
+	my_dbg(" [2452]  shl_add ----------------------------- 1. ----------\n");
 	/* Endpoint IRQ, handle it and return early */
-	if (event->type.is_devspec == 0) {
+	if (event->type.is_devspec == 0) {		// 不是 特定于设备的事件
 		/* depevt */
 		return dwc3_endpoint_interrupt(dwc, &event->depevt);
 	}
 
 	switch (event->type.type) {
-	case DWC3_EVENT_TYPE_DEV:
+	case DWC3_EVENT_TYPE_DEV:				// 设备事件
 		dwc3_gadget_interrupt(dwc, &event->devt);
 		break;
 	/* REVISIT what to do with Carkit and I2C events ? */
@@ -2533,7 +2533,7 @@ static void dwc3_process_event_entry(struct dwc3 *dwc,
 
 static irqreturn_t dwc3_process_event_buf(struct dwc3 *dwc, u32 buf)
 {
-	my_dbg(" [2470]  shl_add\n");
+	my_dbg(" [2470]  shl_add ========================= d.2.1 =============\n");
 	struct dwc3_event_buffer *evt;
 	irqreturn_t ret = IRQ_NONE;
 	int left;
@@ -2582,7 +2582,7 @@ static irqreturn_t dwc3_process_event_buf(struct dwc3 *dwc, u32 buf)
 
 static irqreturn_t dwc3_thread_interrupt(int irq, void *_dwc)
 {
-	my_dbg(" [2518]  shl_add\n");
+	my_dbg(" [2518]  shl_add  ==================== d.2 ====================\n");
 	struct dwc3 *dwc = _dwc;
 	unsigned long flags = 0;
 	irqreturn_t ret = IRQ_NONE;
@@ -2600,7 +2600,7 @@ static irqreturn_t dwc3_thread_interrupt(int irq, void *_dwc)
 
 static irqreturn_t dwc3_check_event_buf(struct dwc3 *dwc, u32 buf)
 {
-	// my_dbg(" [2535]  shl_add\n");
+	my_dbg(" [2535]  shl_add   ==== ===================   d.1.1 ============\n");
 	struct dwc3_event_buffer *evt;
 	u32 count;
 	u32 reg;
@@ -2625,7 +2625,7 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3 *dwc, u32 buf)
 
 static irqreturn_t dwc3_interrupt(int irq, void *_dwc)
 {
-	// my_dbg(" [2559]  shl_add\n");
+	my_dbg(" [2559]  shl_add ============================ d.1 ===================\n");
 	struct dwc3			*dwc = _dwc;
 	int				i;
 	irqreturn_t			ret = IRQ_NONE;
@@ -2760,7 +2760,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
  */
 void dwc3_gadget_uboot_handle_interrupt(struct dwc3 *dwc)
 {
-	// my_dbg(" [2691]  shl_add\n");
+	my_dbg(" [2691]  shl_add === c. =========================\n");
 	int ret = dwc3_interrupt(0, dwc);
 
 	if (ret == IRQ_WAKE_THREAD) {

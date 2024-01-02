@@ -22,6 +22,8 @@ static struct dwc3_device dwc3_device_data = {
 
 int usb_gadget_handle_interrupts(void)
 {
+	printf("\n");
+    n_my_dbg("==== a. ====================================\n");
 	dwc3_uboot_handle_interrupt(0);
 	return 0;
 }

@@ -894,7 +894,7 @@ void dwc3_uboot_exit(int index)
  */
 void dwc3_uboot_handle_interrupt(int index)
 {
-	// my_dbg(" [865]  shl_add\n");
+	my_dbg(" [865]  shl_add ======== b. ===============================\n");
 	struct dwc3 *dwc = NULL;
 
 	list_for_each_entry(dwc, &dwc3_list, list) {
