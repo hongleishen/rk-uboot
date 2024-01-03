@@ -13,6 +13,7 @@
 #include <asm/arch/sysinfo.h>
 #endif
 #include "ver_shl.h"
+#include <linux/compat.h>
 
 const char __weak version_string[] = U_BOOT_VERSION_STRING;
 
@@ -40,6 +41,11 @@ U_BOOT_CMD(
 );
 
 
+
+#define _my_dev_dbg(dev, fmt, ...)   do {\
+			printf("my_dev_dbg: " fmt, ##__VA_ARGS__); \
+		} while(0);
+
 static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 
@@ -48,8 +54,12 @@ static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]
 	printf("compile time is: %s  %s\n", __DATE__, __TIME__);
 	printf("ver_shl.h time is: %s %s\n", BUILD_DATE, BUILD_TIME);
 	debug("this is debug ....\n");
+	dev_dbg(NULL, "this is dev_dbg\n");
+
 	n_my_dbg("this n_my_dbg\n");
 	my_dbg("this is my_dbg\n");
+	my_dev_dbg(dwc->dev, "this is my_dev_dbg\n");
+	_my_dev_dbg(dwc->dev, "this is _my_dev_dbg\n");
     return 0;
 }
 

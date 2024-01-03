@@ -34,9 +34,9 @@ extern struct p_current *current;
 #endif
 
 #define dev_dbg(dev, fmt, args...)		\
-	debug(fmt, ##args)
+	{debug(fmt, ##args); printf("\n");}
 #define dev_vdbg(dev, fmt, args...)		\
-	debug(fmt, ##args)
+	{debug(fmt, ##args); printf("\n");}
 #define dev_info(dev, fmt, args...)		\
 	printf(fmt, ##args)
 #define dev_err(dev, fmt, args...)		\

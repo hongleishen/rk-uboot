@@ -75,6 +75,16 @@ typedef volatile unsigned char	vu_char;
 				printf("[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
 		} while(0);
 
+/*
+#define dev_dbg(dev, fmt, args...)		\
+ 	debug(fmt, ##args)
+*/
+
+#define my_dev_dbg(dev, fmt, ...)   do {\
+			if (g_cmd_open_my_dbg) \
+				printf("my_dev_dbg: " fmt, ##__VA_ARGS__); \
+		} while(0);
+
 #define n_my_dbg(format, ...) do { \
 			if (g_cmd_open_my_dbg) \
 				printf("\n[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
