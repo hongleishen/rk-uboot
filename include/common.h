@@ -75,6 +75,26 @@ typedef volatile unsigned char	vu_char;
 				printf("[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
 		} while(0);
 
+#define n_my_dbg(format, ...)              \
+    do {                                   \
+		if (g_cmd_open_my_dbg) { \
+			const char *new_format_ = format;  \
+			while (*new_format_ == '\n') {     \
+				new_format_++;                 \
+				printf("\n");                  \
+			}                                  \
+			printf("[dbg: %s, %s, %d] ", __FILE__, __func__, __LINE__); \
+			printf(new_format_, ##__VA_ARGS__);\
+		} \
+    } while (0)
+
+#define n_add_dev_dbg(format, ...)              \
+    do {                                   \
+		if (g_cmd_open_my_dbg && g_cmd_open_debug) { \
+            printf("\n"); \
+		} \
+    } while (0)
+
 /*
 #define dev_dbg(dev, fmt, args...)		\
  	debug(fmt, ##args)
@@ -82,16 +102,13 @@ typedef volatile unsigned char	vu_char;
 
 #define my_dev_dbg(dev, fmt, ...)   do {\
 			if (g_cmd_open_my_dbg) \
-				printf("my_dev_dbg: " fmt, ##__VA_ARGS__); \
+				printf("[my_dev_dbg ] " fmt, ##__VA_ARGS__); \
 		} while(0);
-
-#define n_my_dbg(format, ...) do { \
-			if (g_cmd_open_my_dbg) \
-				printf("\n[dbg: %s, %s, %d ]" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
-		} while(0); 
 #else
 #define my_dbg(format, ...)
 #define n_my_dbg(format, ...)
+#define n_add_dev_dbg(format, ...)
+#define my_dev_dbg(dev, fmt, ...) 
 #endif
 
 #endif

@@ -155,7 +155,7 @@ vscnprintf 通常不是C标准库的一部分。它主要在某些项目或内�
 #else
     #define shl_debug_cond(cond, fmt, args...)			\
 	do {						\
-		if (1)				\
+		if (g_cmd_open_debug)			\
 			printf(pr_fmt(fmt), ##args);	\
 	} while (0)
 

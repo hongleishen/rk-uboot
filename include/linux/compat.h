@@ -6,6 +6,7 @@
 #include <linux/err.h>
 #include <linux/kernel.h>
 #include <stacktrace.h>
+#include <common.h>
 
 struct unused {};
 typedef struct unused unused_t;
@@ -34,9 +35,9 @@ extern struct p_current *current;
 #endif
 
 #define dev_dbg(dev, fmt, args...)		\
-	{debug(fmt, ##args); printf("\n");}
+	{debug(fmt, ##args); n_add_dev_dbg("\n");}
 #define dev_vdbg(dev, fmt, args...)		\
-	{debug(fmt, ##args); printf("\n");}
+	{debug(fmt, ##args); n_add_dev_dbg("\n");}
 #define dev_info(dev, fmt, args...)		\
 	printf(fmt, ##args)
 #define dev_err(dev, fmt, args...)		\
