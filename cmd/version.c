@@ -46,6 +46,7 @@ U_BOOT_CMD(
 			printf("my_dev_dbg: " fmt, ##__VA_ARGS__); \
 		} while(0);
 
+
 static int do_shl_test(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 

@@ -2,11 +2,30 @@
 #include <command.h>
 #include <version.h>
 #include <linux/compiler.h>
+
+#include <linux/compat.h>
 #include "../../cmd/ver_shl.h"
 
 unsigned int g_cmd_open_my_dbg;
 unsigned int g_cmd_open_dwc3_writel;
 unsigned int g_cmd_open_debug;
+
+
+// 定义一个函数，用于等待用户输入字符，如果输入字符是 'g'，则继续执行
+void wait_input(void)
+{
+    char input;
+    // printf("请输入字符 'g' 以继续程序：\n");
+    while (1) {
+        // scanf(" %c", &input); // 注意这里的空格，用于吸收可能的空白字符
+        input = getc();
+        if (input == 'g') {  // 如果输入是 'g'，则退出循环
+            // printf("get 'g', return\n");
+            break;
+        }
+        // while (getc() != '\n');  // 清理输入缓冲区
+    }
+}
 
 static int do_shl_cmd(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
@@ -15,13 +34,25 @@ static int do_shl_cmd(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	// KBUILD_CFLAGS   += $(call cc-option)	# shl   Makefile 619行去掉 -Werror=date-time
 	printf("compile time is: %s  %s\n", __DATE__, __TIME__);
 	printf("ver_shl.h time is: %s %s\n", BUILD_DATE, BUILD_TIME);
-	debug("this is debug ....\n");
-	n_my_dbg("this n_my_dbg\n");
+
+
 	my_dbg("this is my_dbg\n");
+    n_my_dbg("\nthis n_my_dbg\n");
+
+    my_dev_dbg(dwc->dev, "this is my_dev_dbg\n");
+
+	debug("this is debug ....\n");
+    printf("--------------------\n");
+	dev_dbg(NULL, "this is dev_dbg\n");
+    printf("--------------\n");
 
     printf("g_cmd_open_my_dbg = %d\n", g_cmd_open_my_dbg);
     printf("g_cmd_open_dwc3_writel = %d\n", g_cmd_open_dwc3_writel);
     printf("g_cmd_open_debug = %d\n", g_cmd_open_debug);
+
+	printf("will wait input... ---------\n");
+	wait_input();
+	printf("out of wait_input! ========\n");
 
     return 0;
 }
@@ -140,6 +171,27 @@ static int _shl_open_debug(cmd_tbl_t *cmdtp, int flag, int argc, char * const ar
 
 U_BOOT_CMD(
     shl_open_debug, 2, 1, _shl_open_debug,
+    "shl open my dbg, in common",
+    "<u32 number>"
+);
+
+
+static int _shl_open_all(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+
+    g_cmd_open_my_dbg = 1;
+    g_cmd_open_dwc3_writel = 2;
+    g_cmd_open_debug = 1;
+
+    printf("g_cmd_open_my_dbg = %d\n", g_cmd_open_my_dbg);
+    printf("g_cmd_open_debug = %d\n", g_cmd_open_debug);
+    printf("g_cmd_open_dwc3_writel = %d\n", g_cmd_open_dwc3_writel);
+
+    return 0;
+}
+
+U_BOOT_CMD(
+    shl_open_all, 1, 1, _shl_open_all,
     "shl open my dbg, in common",
     "<u32 number>"
 );

@@ -52,7 +52,7 @@ typedef volatile unsigned char	vu_char;
 #include <log.h>
 #include <shl.h>
 
-
+// ^^^^^^^^^^^^  shl add ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #define CMD_CONTROL_MY_DBG
 
 #ifndef CMD_CONTROL_MY_DBG
@@ -112,6 +112,7 @@ typedef volatile unsigned char	vu_char;
 #endif
 
 #endif
+// =================  end shl add ==========================================================
 
 
 #if (__STDC_VERSION__ >= 201112L) || defined(__cplusplus)
