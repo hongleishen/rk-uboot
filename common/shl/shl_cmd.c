@@ -54,6 +54,8 @@ static int do_shl_cmd(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	wait_input();
 	printf("out of wait_input! ========\n");
 
+    _shl_test();
+    dwc3_device_hs_test();
     return 0;
 }
 
